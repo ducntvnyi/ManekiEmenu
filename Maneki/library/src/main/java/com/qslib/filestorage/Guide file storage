@@ -1,0 +1,125 @@
+Usage
+
+Initialize
+
+You have the next options to initialize the simple storage:
+
+Prepere to work on External Storage.
+
+Storage storage = SimpleStorage.getExternalStorage();
+Prepare to work on Internal Storage. In your Activity or Application or any other place where you have Context:
+
+Storage storage = SimpleStorage.getInternalStorage(mContext);
+You prefer to use External Storage, but if it doesn't exist on the device, then use Internal Storage.
+
+Storage storage = null;
+if (SimpleStorage.isExternalStorageWritable()) {
+    storage = SimpleStorage.getExternalStorage();
+}
+else {
+    storage = SimpleStorage.getInternalStorage(mContext);
+}
+Create directory
+
+Create directory under the root path.
+
+// create directory
+storage.createDirectory("MyDirName");
+Create sub directory.
+
+// create directory
+storage.createDirectory("MyDirName/MySubDirectory");
+Create directory and override the existing one.
+
+// create directory
+storage.createDirectory("MyDirName", true);
+Create file
+
+Create a new file with the content in it.
+
+// create new file
+storage.createFile("MyDirName", "fileName", "some content of the file");
+The content of the file can be one of the next types:
+
+String
+byte[]
+Bitmap
+Storable
+Read file
+
+Read the content of any file to byte array.
+
+byte[] bytes = storage.readFile("MyDirName", "fileName");
+Read the content of the file to String.
+
+String content = storage.readTextFile("MyDirName", "my_text.txt");
+Append content to file
+
+storage.appendFile("MyDirName", "fileName", "more new data");
+You can append:
+
+String
+byte[]
+Copy
+
+storage.copy(file, "MyDirName", "newFileName");
+Move
+
+storage.move(file, "MyDirName", "newFileName");
+Delete directory
+
+storage.deleteDirectory("MyDirName");
+Delete file
+
+storage.deleteFile("MyDirName", "fileName");
+Get files
+
+Get files in ordered way by: name, dateTime, size
+
+List<File> files = storage.getFiles("MyDirName", OrderType.DATE);
+Get files and filter by regular expression:
+
+String regex = ...;
+List<File> files = storage.getFiles("MyDirName", regex);
+Get all nested files (without the directories)
+
+List<File> files = storage.getNestedFiles("MyDirName");
+More...
+
+Is directory exists
+
+boolean dirExists = storage.isDirectoryExists("MyDirName");
+Is file exists
+
+boolean fileExists = storage.isFileExist("MyDirName", "fileName");
+Security configuration
+
+You can write and read files while the content is encrypted. It means, that no one can read the data of your files from external or internal storage.
+
+You will continue using the same api as before. The only thing you need to do is to configure the Simple Storage library before the you want to create/read encrypted data.
+
+// set encryption
+String IVX = "abcdefghijklmnop"; // 16 lenght - not secret
+String SECRET_KEY = "secret1234567890"; // 16 lenght - secret
+
+// build configuratio
+SimpleStorageConfiguration configuration = new SimpleStorageConfiguration.Builder()
+    .setEncryptContent(IVX, SECRET_KEY)
+    .build();
+
+// configure the simple storage
+SimpleStorage.updateConfiguration(configuration);
+Now, you can create a new file with content and the content will be automatically encrypted.
+You can read the file and the content will be decrypted.
+
+Example
+
+Create file with next content "this is the secret data":
+
+storage.createFile("MyDirName", "fileName", "this is the secret data");
+If we open the file to see it's content then it we will something like this: „f°α�ΤG†_i�ΐp . It looks good :)
+
+And now, read the file data with the same api:
+
+String content = storage.readTextFile("MyDirName", "fileName");
+You will see that the content will be: "this is the secret data".

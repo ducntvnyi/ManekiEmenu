@@ -1,0 +1,86 @@
+package com.qslib.permission;
+
+import android.app.Activity;
+import android.content.ActivityNotFoundException;
+import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
+import android.os.Build;
+import android.support.v4.app.ActivityCompat;
+import android.util.Log;
+
+/**
+ * Created by Dang on 10/14/2015.
+ */
+public class PermissionUtils {
+    public static final int REQUEST_CODE_PERMISSION = 123;
+
+    /**
+     * request permission for android >= 6
+     *
+     * @param context
+     * @param requestCodePermission
+     * @param permissions
+     * @return
+     */
+    public static boolean requestPermission(Activity context, int requestCodePermission, String... permissions) {
+        try {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && context != null && permissions != null) {
+                if (!hasPermissions(context, permissions)) {
+                    Log.d("sbc", "==> permission:;" + permissions);
+                    ActivityCompat.requestPermissions(context, permissions, requestCodePermission);
+                    return true;
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return false;
+    }
+
+
+    /**
+     * check permission for app
+     *
+     * @param context
+     * @param permissions
+     * @return
+     */
+    public static boolean hasPermissions(Activity context, String... permissions) {
+        try {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && context != null && permissions != null) {
+                for (String permission : permissions) {
+
+                    if (ActivityCompat.checkSelfPermission(context, permission) != PackageManager.PERMISSION_GRANTED) {
+                        Log.d("abc", "==> hasPermissions::" + permission);
+                        return false;
+                    }
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return true;
+    }
+
+    /**
+     * go to setting app
+     *
+     * @param context
+     */
+    public static void goToSettingApplication(Context context) {
+        try {
+            //Open the specific App Info page:
+            Intent intent = new Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+            intent.setData(Uri.parse("package:" + context.getPackageName()));
+            context.startActivity(intent);
+        } catch (ActivityNotFoundException e) {
+            //Open the generic Apps page:
+            Intent intent = new Intent(android.provider.Settings.ACTION_MANAGE_APPLICATIONS_SETTINGS);
+            context.startActivity(intent);
+        }
+    }
+}

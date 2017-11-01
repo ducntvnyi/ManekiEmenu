@@ -1,0 +1,4 @@
+View target = findViewById(R.id.target_view);
+BadgeView badge = new BadgeView(this, target);
+badge.setText("1");
+badge.show();

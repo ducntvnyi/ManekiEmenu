@@ -1,0 +1,25 @@
+class Demo {
+        @Column("ColumnA")
+        private String a = "abc";
+        private int b;
+
+        private long c;
+        private float d;
+        private double e;
+        private Date f;
+        private short g;
+        private boolean h;
+        private Character k;
+        private byte j;
+        private byte jg;
+
+        @Ignore
+        private String ccc;
+
+        private String ddd;
+    }
+
+    Demo demo = new Demo();
+            demo.setA("a");
+
+            Map<String, String> map = ConvertClassToMap.convert(demo);

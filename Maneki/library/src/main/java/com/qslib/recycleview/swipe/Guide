@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.daimajia.swipe.SwipeLayout xmlns:swipe="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/swipe"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        swipe:leftEdgeSwipeOffset="0dp"
+        swipe:rightEdgeSwipeOffset="0dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:background="#FF5534"
+            android:gravity="center"
+            android:tag="Bottom3"
+            android:weightSum="10">
+
+            <ImageView
+                android:id="@+id/trash"
+                android:layout_width="27dp"
+                android:layout_height="30dp"
+                android:layout_weight="1"
+                android:src="@drawable/trash" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="5"
+                android:text="Delete Item?"
+                android:textColor="#fff"
+                android:textSize="17sp" />
+
+            <Button
+                android:id="@+id/delete"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_weight="4"
+                android:background="#ffffff"
+                android:text="Yes,Delete"
+                android:textColor="#FF5534" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/item_selector"
+            android:elevation="5dp"
+            android:padding="10dp">
+
+            <TextView
+                android:id="@+id/position"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/text_data"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:tag="Hover"/>
+        </LinearLayout>
+    </com.daimajia.swipe.SwipeLayout>
+</LinearLayout>
+
+
+package com.daimajia.swipedemo.adapter;
+
+import android.content.Context;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.daimajia.androidanimations.library.Techniques;
+import com.daimajia.androidanimations.library.YoYo;
+import com.daimajia.swipe.SimpleSwipeListener;
+import com.daimajia.swipe.SwipeLayout;
+import com.daimajia.swipe.adapters.RecyclerSwipeAdapter;
+import com.daimajia.swipedemo.R;
+
+import java.util.ArrayList;
+
+public class RecyclerViewAdapter extends RecyclerSwipeAdapter<RecyclerViewAdapter.SimpleViewHolder> {
+
+    public static class SimpleViewHolder extends RecyclerView.ViewHolder {
+        SwipeLayout swipeLayout;
+        TextView textViewPos;
+        TextView textViewData;
+        Button buttonDelete;
+
+        public SimpleViewHolder(View itemView) {
+            super(itemView);
+            swipeLayout = (SwipeLayout) itemView.findViewById(R.id.swipe);
+            textViewPos = (TextView) itemView.findViewById(R.id.position);
+            textViewData = (TextView) itemView.findViewById(R.id.text_data);
+            buttonDelete = (Button) itemView.findViewById(R.id.delete);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Log.d(getClass().getSimpleName(), "onItemSelected: " + textViewData.getText().toString());
+                    Toast.makeText(view.getContext(), "onItemSelected: " + textViewData.getText().toString(), Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+    }
+
+    private Context mContext;
+    private ArrayList<String> mDataset;
+
+    //protected SwipeItemRecyclerMangerImpl mItemManger = new SwipeItemRecyclerMangerImpl(this);
+
+    public RecyclerViewAdapter(Context context, ArrayList<String> objects) {
+        this.mContext = context;
+        this.mDataset = objects;
+    }
+
+    @Override
+    public SimpleViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recyclerview_item, parent, false);
+        return new SimpleViewHolder(view);
+    }
+
+    @Override
+    public void onBindViewHolder(final SimpleViewHolder viewHolder, final int position) {
+        String item = mDataset.get(position);
+        viewHolder.swipeLayout.setShowMode(SwipeLayout.ShowMode.LayDown);
+        viewHolder.swipeLayout.addSwipeListener(new SimpleSwipeListener() {
+            @Override
+            public void onOpen(SwipeLayout layout) {
+                YoYo.with(Techniques.Tada).duration(500).delay(100).playOn(layout.findViewById(R.id.trash));
+            }
+        });
+        viewHolder.swipeLayout.setOnDoubleClickListener(new SwipeLayout.DoubleClickListener() {
+            @Override
+            public void onDoubleClick(SwipeLayout layout, boolean surface) {
+                Toast.makeText(mContext, "DoubleClick", Toast.LENGTH_SHORT).show();
+            }
+        });
+        viewHolder.buttonDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mItemManger.removeShownLayouts(viewHolder.swipeLayout);
+                mDataset.remove(position);
+                notifyItemRemoved(position);
+                notifyItemRangeChanged(position, mDataset.size());
+                mItemManger.closeAllItems();
+                Toast.makeText(view.getContext(), "Deleted " + viewHolder.textViewData.getText().toString() + "!", Toast.LENGTH_SHORT).show();
+            }
+        });
+        viewHolder.textViewPos.setText((position + 1) + ".");
+        viewHolder.textViewData.setText(item);
+        mItemManger.bind(viewHolder.itemView, position);
+    }
+
+    @Override
+    public int getItemCount() {
+        return mDataset.size();
+    }
+
+    @Override
+    public int getSwipeLayoutResourceId(int position) {
+        return R.id.swipe;
+    }
+}
+
+
+ // Layout Managers:
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        // Item Decorator:
+        recyclerView.addItemDecoration(new DividerItemDecoration(getResources().getDrawable(R.drawable.divider)));
+        recyclerView.setItemAnimator(new FadeInLeftAnimator());
+
+        // Adapter:
+        String[] adapterData = new String[]{"Alabama", "Alaska", "Arizona", "Arkansas", "California", "Colorado", "Connecticut", "Delaware", "Florida", "Georgia", "Hawaii", "Idaho", "Illinois", "Indiana", "Iowa", "Kansas", "Kentucky", "Louisiana", "Maine", "Maryland", "Massachusetts", "Michigan", "Minnesota", "Mississippi", "Missouri", "Montana", "Nebraska", "Nevada", "New Hampshire", "New Jersey", "New Mexico", "New York", "North Carolina", "North Dakota", "Ohio", "Oklahoma", "Oregon", "Pennsylvania", "Rhode Island", "South Carolina", "South Dakota", "Tennessee", "Texas", "Utah", "Vermont", "Virginia", "Washington", "West Virginia", "Wisconsin", "Wyoming"};
+        mDataSet = new ArrayList<String>(Arrays.asList(adapterData));
+        mAdapter = new RecyclerViewAdapter(this, mDataSet);
+        ((RecyclerViewAdapter) mAdapter).setMode(Attributes.Mode.Single);
+        recyclerView.setAdapter(mAdapter);
+
+        /* Listeners */
+        recyclerView.setOnScrollListener(onScrollListener);
+    }
+
+    /**
+     * Substitute for our onScrollListener for RecyclerView
+     */
+    RecyclerView.OnScrollListener onScrollListener = new RecyclerView.OnScrollListener() {
+        @Override
+        public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+            super.onScrollStateChanged(recyclerView, newState);
+            Log.e("ListView", "onScrollStateChanged");
+        }
+
+        @Override
+        public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+            super.onScrolled(recyclerView, dx, dy);
+            // Could hide open views here if you wanted. //
+        }
+    };
