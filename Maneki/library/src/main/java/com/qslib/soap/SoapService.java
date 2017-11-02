@@ -120,6 +120,18 @@ public class SoapService {
         return this;
     }
 
+    public SoapService addListPropertySoapObject(List<SoapRequest> requestList) {
+        try {
+            for (int i = 0; i < requestList.size(); i++) {
+                soapObject.addProperty(requestList.get(i).getPropertyName(), requestList.get(i).getValue());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return this;
+    }
+
     /**
      * @param propertyName (BillingAddress)
      * @param clazz        Address.Class

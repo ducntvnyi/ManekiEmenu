@@ -1,3 +1,12 @@
 <resources>
     <string name="app_name">Maneki</string>
+    <string name="menu">Thực Đơn</string>
+    <string name="order">Đặt Món</string>
+    <string name="sale">Khuyến Mãi</string>
+    <string name="call_staff">Gọi Phục Vụ</string>
+    <string name="payment">Thanh Toán</string>
+    <string name="use_intro">HDSD MENU</string>
+    <string name="viet_name">Việt Nam</string>
+    <string name="english">English</string>
+
 </resources>

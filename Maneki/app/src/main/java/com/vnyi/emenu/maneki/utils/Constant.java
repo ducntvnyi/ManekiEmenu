@@ -6,12 +6,10 @@ package com.vnyi.emenu.maneki.utils;
 
 public interface Constant {
 
+
+
     // Config type :: 	ConfigType (Short):1-POS,2-Emenu (Vd:2)
     int CONFIG_TYPE = 2;
-
-
-    // customer code
-    String LANGUAGE_FRAGMENT = "language_fragment";
 
     //SharedPreferences Key
     String LANG_KEY = "LANG_KEY";

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <declare-styleable name="AutoResizeTextView">
+        <attr name="minTextSize" format="float" />
+    </declare-styleable>
+    <declare-styleable name="FontView">
+        <attr name="font" format="string" />
+    </declare-styleable>
+
+</resources>
