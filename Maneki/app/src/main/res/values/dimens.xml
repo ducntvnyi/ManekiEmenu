@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="margin_layout">16dp</dimen>
+    <dimen name="margin_content">12dp</dimen>
+    <dimen name="padding_layout">10dp</dimen>
+    <dimen name="padding_content">8dp</dimen>
+
+</resources>

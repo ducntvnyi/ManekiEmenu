@@ -1,8 +1,22 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="android:Theme.Material.Light.DarkActionBar">
+    <style name="AppTheme" parent="android:Theme.Material.Light.NoActionBar">
         <!-- Customize your theme here. -->
+        <item name="android:statusBarColor">@android:color/transparent</item>
     </style>
 
+    <!-- style textView font-->
+    <style name="tvTabHeaderStyle">
+        <item name="android:gravity">center</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">@dimen/font_size_tab_header</item>
+        <item name="android:padding">@dimen/padding_content</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:textColor">@color/holo_white</item>
+    </style>
 </resources>

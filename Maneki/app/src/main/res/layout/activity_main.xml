@@ -6,61 +6,74 @@
     android:layout_height="match_parent"
     tools:context="com.vnyi.emenu.maneki.activities.MainActivity">
 
+    <ImageView
+        android:id="@+id/ivConfigHome"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@mipmap/bg_app" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/holo_red"
-        android:orientation="horizontal" >
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="8dp"
-            android:textSize="20dp"
-            android:textColor="@color/holo_white"
-            android:text="@string/menu"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="8dp"
-            android:textSize="20dp"
-            android:textColor="@color/holo_white"
-            android:text="@string/order"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="8dp"
-            android:textSize="20dp"
-            android:textColor="@color/holo_white"
-            android:text="@string/sale"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="8dp"
-            android:textSize="20dp"
-            android:textColor="@color/holo_white"
-            android:text= "@string/call_staff"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="8dp"
-            android:textSize="20dp"
-            android:textColor="@color/holo_white"
-            android:text="@string/payment"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="8dp"
-            android:textSize="20dp"
-            android:textColor="@color/holo_white"
-            android:text="@string/use_intro"/>
+        android:orientation="horizontal"
+        android:paddingBottom="8dp"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:paddingTop="24dp">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="8dp"
-            android:textSize="20dp"
-            android:textColor="@color/holo_white"
-            android:text="@string/viet_name"/>
+        <com.qslib.customview.textview.ExtTextView
+            android:id="@+id/tvMenu"
+            style="@style/tvTabHeaderStyle"
+            android:text="@string/menu"
+            android:textColor="@color/color_black"
+            android:background="@mipmap/bg_btn_white"
+            app:textViewFontAssetName="Redsun design DE Light" />
+
+        <com.qslib.customview.textview.ExtTextView
+            android:id="@+id/tvOrder"
+            style="@style/tvTabHeaderStyle"
+            android:text="@string/order"
+            app:textViewFontAssetName="cour" />
+
+        <com.qslib.customview.textview.ExtTextView
+            android:id="@+id/tvSaleOff"
+            style="@style/tvTabHeaderStyle"
+            android:text="@string/sale"
+            app:textViewFontAssetName="Redsun  Vietnam Bold" />
+
+        <com.vnyi.emenu.maneki.customviews.TextViewFont
+            android:id="@+id/tvCallWaiter"
+            style="@style/tvTabHeaderStyle"
+            android:text="@string/call_staff"
+            app:font="cour" />
+
+        <com.vnyi.emenu.maneki.customviews.TextViewFont
+            android:id="@+id/tvPayment"
+            style="@style/tvTabHeaderStyle"
+            android:text="@string/payment"
+            app:font="cour" />
+
+        <com.vnyi.emenu.maneki.customviews.TextViewFont
+            android:id="@+id/tvUseApp"
+            style="@style/tvTabHeaderStyle"
+            android:text="@string/use_intro"
+            app:font="Redsun  Vietnam Italic" />
+
+        <com.vnyi.emenu.maneki.customviews.TextViewFont
+            android:id="@+id/tvLanguage"
+            style="@style/tvTabHeaderStyle"
+            android:text="@string/viet_name"
+            app:font="Redsun  Vietnam Italic" />
+
     </LinearLayout>
+    <ImageView
+        android:background="@drawable/bg_config_home"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="30dp"
+        android:src="@mipmap/bg_maneki" />
 
 </RelativeLayout>

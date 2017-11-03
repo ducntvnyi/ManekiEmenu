@@ -3,8 +3,8 @@ package com.qslib.customview.textview;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Paint;
+import android.support.v7.widget.AppCompatTextView;
 import android.util.AttributeSet;
-import android.widget.TextView;
 
 import com.qslib.library.R;
 import com.qslib.util.StringUtils;
@@ -13,7 +13,7 @@ import com.qslib.util.TypefacesUtils;
 /**
  * Created by user on 4/22/2015.
  */
-public class ExtTextView extends TextView {
+public class ExtTextView extends AppCompatTextView {
     public ExtTextView(Context context) {
         super(context);
     }
