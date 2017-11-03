@@ -4,7 +4,7 @@ package com.vnyi.emenu.maneki.services;
  * Created by Hungnd on 11/1/17.
  */
 
-public interface ManekiApiServices {
+public interface VnyiApiServices {
 
     // base url
     String NAME_SPACE = "http://tempuri.org/";
@@ -62,7 +62,7 @@ public interface ManekiApiServices {
     String CUSTOMER_MEN_QUANTITY = "CustomerQtyMen";
     String CUSTOMER_CHILDREN_QUANTITY = "CustomerChildren";
     String CUSTOMER_FOREIGN_QUANTITY = "CustomerForeign";
-    String CUSTOMER_VIP_CODE= "CustomerVipCode";
+    String CUSTOMER_VIP_CODE = "CustomerVipCode";
     String CUSTOMER_GROUP_ID = "CustomerGroupID";
     String CUSTOMER_TAX = "CustomerTax";
     String COMPANY_NAME = "CompanyName";
@@ -119,22 +119,22 @@ public interface ManekiApiServices {
     String STACK_ERROR = "stackError";
 
     // key params
-    String FOR_MASTER_PAGE="ForMasterPage";
-    String GET_TYPE="GetType";
-    String REA_AUTO_ID="Rea_AutoId";
-    String LIST_TYPE="ListType";
-    String IS_INVOICE="IsInvoice";
+    String FOR_MASTER_PAGE = "ForMasterPage";
+    String GET_TYPE = "GetType";
+    String REA_AUTO_ID = "Rea_AutoId";
+    String LIST_TYPE = "ListType";
+    String IS_INVOICE = "IsInvoice";
 
     // functions
     String CONFIG_VALUE_LOAD = "ConfigValue_Load";
     String POST_TICKET_UPDATE_INFO = "Ticket_UpdateInfo";
     String POST_TICKET_LOAD_INFO = "Ticket_LoadInfo";
-    String GET_LIST_TEM_CATEGORY_NO_TICKET= "ItemCategory_GetListNoTicket";
+    String GET_LIST_TEM_CATEGORY_NO_TICKET = "ItemCategory_GetListNoTicket";
     String GET_ITEM_CATEGORY_GET_DETAIL = "ItemCategory_GetDetail";
     String GET_TICKET_ITEM_ORDER = "Ticket_GetItemOrder";
     String POST_TICKET_UPDATE_ITEM = "Ticket_UpdateItem";
     String POST_TICKET_SEND_ITEM_ORDER = "Ticket_SendItemOrder";
-    String POST_TICKET_SEND_ITEM_WAITER = "Ticket_SendRequestToWaiter";
+    String POST_TICKET_SEND_REQUEST_WAITER = "Ticket_SendRequestToWaiter";
     String REQUEST_GET_LIST = "Request_GetList";
     String POST_TICKET_PROCESSING_PAYMENT_INVOICE = "Ticket_ProcessingPaymentWithInvoice";
     String POST_TICKET_PROCESSING_PAYMENT = "Ticket_ProcessingPayment";
@@ -145,11 +145,11 @@ public interface ManekiApiServices {
     String GET_TICKET_CHECK_STATUS_BILL = "Ticket_CheckStatusBill";
     String GET_CONFIG_VALUE_TABLE_NAME_BY_ID = "ConfigValue_GetTableNameById";
     String CONFIG_VALUE_GET_BRANCH = "ConfigValue_GetBranch";
-    String GET_CONFIG_VALUE_USER_ORDER= "ConfigValue_GetUserOrder";
-    String GET_LIST_TABLE= "Table_GetList";
+    String GET_CONFIG_VALUE_USER_ORDER = "ConfigValue_GetUserOrder";
+    String GET_LIST_TABLE = "Table_GetList";
     String CONFIG_VALUE_UPDATE_INFO = "ConfigValue_UpdateInfo";
 
-    // emenuorder
+    // emenuOrder
     String LOGIN_SYSTEM = "Srv_LoginSystem";
     String GET_AREA_LIST = "Area_GetList";
     String GET_ITEM_CATEGORY_GET_LIST = "ItemCategory_GetList"; // menu left

@@ -7,11 +7,11 @@ import com.qslib.sharepreferences.AppPreferences;
 /**
  * Created by hungnd on 11/02/2017.
  */
-public class ManekiPreference extends AppPreferences {
+public class VnyiPreference extends AppPreferences {
     /**
      * @param context
      */
-    public ManekiPreference(Context context) {
+    public VnyiPreference(Context context) {
         super(context);
     }
 }

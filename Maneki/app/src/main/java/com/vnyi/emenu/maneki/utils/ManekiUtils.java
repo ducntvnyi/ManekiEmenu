@@ -9,7 +9,7 @@ import com.qslib.logger.Logger;
 import com.qslib.permission.PermissionUtils;
 import com.qslib.sharepreferences.AppPreferences;
 import com.qslib.util.StringUtils;
-import com.vnyi.emenu.maneki.services.ManekiApiServices;
+import com.vnyi.emenu.maneki.services.VnyiApiServices;
 
 /**
  * Created by Hungnd on 11/1/17.
@@ -26,7 +26,7 @@ public class ManekiUtils {
      * @return
      */
     public static String getLanguageApp(Context context) {
-        int langId = AppPreferences.getInstance(context).getInt(ManekiApiServices.LANG_ID);
+        int langId = AppPreferences.getInstance(context).getInt(VnyiApiServices.LANG_ID);
         String language = getLanguage(langId);
         Log.d(TAG, "==> ManekiUtils langId::" + langId);
         Log.d(TAG, "==> ManekiUtils language::" + language);
