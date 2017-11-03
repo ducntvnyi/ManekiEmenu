@@ -1,0 +1,12 @@
+<ExtRoundedImageView
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/image"
+        android:src="@drawable/photo1"
+        android:scaleType="centerCrop"
+        app:leftTopCornerRadiusRound="16dip"
+        app:rightTopCornerRadiusRound="0dip"
+        app:leftBottomCornerRadiusRound="48dip"
+        app:rightBottomCornerRadiusRound="16dip"
+        app:borderWidthRound="2dip"
+        app:borderColorRound="#008fea"
+        app:ovalRound="true" />

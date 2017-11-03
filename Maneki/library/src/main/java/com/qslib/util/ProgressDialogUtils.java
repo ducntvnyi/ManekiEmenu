@@ -3,12 +3,14 @@ package com.qslib.util;
 import android.app.Activity;
 import android.app.ProgressDialog;
 
+import com.qslib.library.R;
+
 public class ProgressDialogUtils {
     // variable
     private static ProgressDialog progressDialog = null;
     // default style
-    private int progressStyle = android.app.ProgressDialog.STYLE_SPINNER;
-    private String message;
+    private int progressStyle = android.R.style.Widget_Material_Light_ProgressBar_Large;
+//    private String message;
 
     /**
      * get instance of progress dialog
@@ -34,7 +36,7 @@ public class ProgressDialogUtils {
      * @return
      */
     public ProgressDialogUtils setMessage(String message) {
-        this.message = message;
+//        this.message = message;
         return this;
     }
 
@@ -62,11 +64,11 @@ public class ProgressDialogUtils {
         try {
             dismiss();
             // init new instance
-            progressDialog = new ProgressDialog(context);
-            if (!StringUtils.isEmpty(message)) progressDialog.setMessage(message);
+            progressDialog = new ProgressDialog(context, R.style.DialogTheme);
+//            if (!StringUtils.isEmpty(message)) progressDialog.setMessage(message);
             progressDialog.setCancelable(false);
             progressDialog.setCanceledOnTouchOutside(false);
-            progressDialog.setProgressStyle(progressStyle);
+//            progressDialog.setProgressStyle(progressStyle);
             progressDialog.setProgress(0);
             if (!ActivityUtils.isFinish(context)) progressDialog.show();
         } catch (Exception e) {

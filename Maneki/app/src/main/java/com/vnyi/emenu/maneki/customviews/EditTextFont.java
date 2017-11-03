@@ -6,6 +6,7 @@ import android.support.v7.widget.AppCompatEditText;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 
+
 import com.vnyi.emenu.maneki.R;
 import com.vnyi.emenu.maneki.utils.FontCacheUtil;
 

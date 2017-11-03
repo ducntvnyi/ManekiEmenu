@@ -7,7 +7,10 @@ import android.util.Log;
 import org.ksoap2.HeaderProperty;
 import org.ksoap2.SoapEnvelope;
 import org.ksoap2.SoapFault;
+import org.ksoap2.serialization.MarshalBase64;
+import org.ksoap2.serialization.PropertyInfo;
 import org.ksoap2.serialization.SoapObject;
+import org.ksoap2.serialization.SoapPrimitive;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.transport.HttpTransportSE;
 import org.xmlpull.v1.XmlPullParserException;
@@ -73,7 +76,7 @@ public class SoapService {
         this.url = url;
         this.methodName = methodName;
         this.timeOut = timeOut;
-        // init value SoapEnvelope, SoapObject
+        // init value SoapEnvelope, SoapObjectEntity
         initSoapEnvelope();
         initSoapObject();
     }
@@ -83,10 +86,12 @@ public class SoapService {
      */
     private void initSoapEnvelope() {
         try {
-            soapEnvelope = new SoapSerializationEnvelope(soapEnvelopeVersion);
-            soapEnvelope.implicitTypes = true;
-            soapEnvelope.dotNet = true;
-            soapEnvelope.setAddAdornments(false);
+            this.soapEnvelope = new SoapSerializationEnvelope(soapEnvelopeVersion);
+            new MarshalBase64().register(this.soapEnvelope);   //serialization
+            this.soapEnvelope.encodingStyle = SoapEnvelope.ENC;
+            this.soapEnvelope.implicitTypes = true;
+            this.soapEnvelope.dotNet = true;
+            this.soapEnvelope.setAddAdornments(false);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -97,7 +102,7 @@ public class SoapService {
      */
     private void initSoapObject() {
         try {
-            soapObject = new SoapObject(nameSpace, methodName);
+            this.soapObject = new SoapObject(this.nameSpace, this.methodName);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -112,7 +117,7 @@ public class SoapService {
      */
     public SoapService addPropertySoapObject(String propertyName, Object value) {
         try {
-            soapObject.addProperty(propertyName, value);
+            this.soapObject.addProperty(propertyName, value);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -120,10 +125,16 @@ public class SoapService {
         return this;
     }
 
-    public SoapService addListPropertySoapObject(List<SoapRequest> requestList) {
+    public SoapService addPropertySoapObject(List<SoapObjectEntity> soapObjectEntities) {
         try {
-            for (int i = 0; i < requestList.size(); i++) {
-                soapObject.addProperty(requestList.get(i).getPropertyName(), requestList.get(i).getValue());
+            if (soapObjectEntities != null && soapObjectEntities.size() > 0) {
+                for (SoapObjectEntity soapObjectEntity : soapObjectEntities) {
+                    PropertyInfo propertyInfo = new PropertyInfo();
+                    propertyInfo.setName(soapObjectEntity.getKey());
+                    propertyInfo.setValue(soapObjectEntity.getValue());
+                    propertyInfo.setType(byte[].class);
+                    this.soapObject.addProperty(propertyInfo);
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -139,7 +150,7 @@ public class SoapService {
      */
     public SoapService addMappingSoapEnvelope(String propertyName, Class clazz) {
         try {
-            soapEnvelope.addMapping(nameSpace, propertyName, clazz);
+            this.soapEnvelope.addMapping(this.nameSpace, propertyName, clazz);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -179,7 +190,7 @@ public class SoapService {
      */
     private String getSoapAction() {
         try {
-            return nameSpace.endsWith("/") ? nameSpace + methodName : nameSpace + "/" + methodName;
+            return this.nameSpace.endsWith("/") ? this.nameSpace + this.methodName : this.nameSpace + "/" + this.methodName;
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -232,11 +243,21 @@ public class SoapService {
 
                         if (resultObject instanceof SoapFault) {
                             SoapFault soupFault = (SoapFault) resultObject;
+                            System.out.println("Fault string:: " + soupFault.faultstring);
                             Exception ex = new Exception(soupFault.faultstring);
                             if (soapListener != null) soapListener.onFail(ex);
                         } else if (resultObject instanceof SoapObject) {
-                            if (soapListener != null)
-                                soapListener.onSuccess(getResponse((SoapObject) resultObject));
+                            String result = ((SoapObject) resultObject).getInnerText();
+                            System.out.println("Result:: " + result);
+                            if (soapListener != null) {
+                                soapListener.onSuccess(result);
+                            }
+                        } else if (resultObject instanceof SoapPrimitive) {
+                            String result = ((SoapPrimitive) resultObject).getValue().toString();
+                            System.out.println("Result:: " + result);
+                            if (soapListener != null) {
+                                soapListener.onSuccess(result);
+                            }
                         } else {
                             if (soapListener != null) soapListener.onSuccess(null);
                         }
@@ -255,31 +276,5 @@ public class SoapService {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    /**
-     * get soap response from soap object
-     *
-     * @param data
-     * @return
-     */
-    private SoapResponse getResponse(SoapObject data) {
-        SoapResponse soapResponse = null;
-
-        try {
-            if (data != null && data.getPropertyCount() > 0) {
-                soapResponse = new SoapResponse();
-                soapResponse.setResult(data.getPropertySafelyAsString(SoapResponse.RESULT));
-                soapResponse.setIsError(data.getPropertySafelyAsString(SoapResponse.IS_ERROR));
-                soapResponse.setErrorMessage(data.getPropertySafelyAsString(SoapResponse.ERROR_MESSAGE));
-                soapResponse.setErrorStackTrace(data.getPropertySafelyAsString(SoapResponse.ERROR_STACK_TRACE));
-                soapResponse.setId(data.getPropertySafelyAsString(SoapResponse.ID));
-                soapResponse.setStatus(data.getPropertySafelyAsString(SoapResponse.STATUS));
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return soapResponse;
     }
 }

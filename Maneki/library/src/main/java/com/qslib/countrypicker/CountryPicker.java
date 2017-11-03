@@ -158,7 +158,7 @@ public class CountryPicker extends DialogFragment implements
         getDialog().getWindow().setSoftInputMode(
                 WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         // Inflate view
-        return inflater.inflate(R.layout.dialog_fragment_country, null);
+        return inflater.inflate(R.layout.country_dialog_fragment, null);
     }
 
     @Override

@@ -2,11 +2,11 @@ package com.vnyi.emenu.maneki.customviews;
 
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.support.v7.widget.AppCompatTextView;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 
 
+import android.support.v7.widget.AppCompatTextView;
 import com.vnyi.emenu.maneki.R;
 import com.vnyi.emenu.maneki.utils.FontCacheUtil;
 

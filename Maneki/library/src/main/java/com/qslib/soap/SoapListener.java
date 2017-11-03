@@ -3,7 +3,7 @@ package com.qslib.soap;
 public interface SoapListener {
     void onStarted();
 
-    void onSuccess(SoapResponse soapResponse);
+    void onSuccess(String result);
 
     void onFail(Exception ex);
 

@@ -4,6 +4,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 
 import java.util.List;
 
@@ -13,15 +14,15 @@ import java8.util.function.Consumer;
  * Created by Dang on 9/14/2015.
  */
 public class FragmentUtils {
-    private static int fragmentContentId = 0;
+    private static int containerViewId = 0;
 
     /**
      * set content id
      *
-     * @param fragmentContentId
+     * @param containerViewId
      */
-    public static void setFragmentContentId(int fragmentContentId) {
-        FragmentUtils.fragmentContentId = fragmentContentId;
+    public static void setContainerViewId(int containerViewId) {
+        FragmentUtils.containerViewId = containerViewId;
     }
 
     /**
@@ -29,11 +30,7 @@ public class FragmentUtils {
      * @param fragment
      */
     public static void replaceFragment(FragmentActivity fragmentActivity, Fragment fragment) {
-        try {
-            replaceFragment(fragmentActivity, fragment, null);
-        } catch (ClassCastException e) {
-            e.printStackTrace();
-        }
+        replaceFragment(fragmentActivity, fragment, null);
     }
 
     /**
@@ -42,10 +39,29 @@ public class FragmentUtils {
      * @param fragmentConsumer
      */
     public static void replaceFragment(FragmentActivity fragmentActivity, Fragment fragment, Consumer<Fragment> fragmentConsumer) {
+        replaceFragment(fragmentActivity, containerViewId, fragment, fragmentConsumer);
+    }
+
+    /**
+     * @param fragmentActivity
+     * @param containerViewId
+     * @param fragment
+     */
+    public static void replaceFragment(FragmentActivity fragmentActivity, int containerViewId, Fragment fragment) {
+        replaceFragment(fragmentActivity, containerViewId, fragment, null);
+    }
+
+    /**
+     * @param fragmentActivity
+     * @param containerViewId
+     * @param fragment
+     * @param fragmentConsumer
+     */
+    public static void replaceFragment(FragmentActivity fragmentActivity, int containerViewId, Fragment fragment, Consumer<Fragment> fragmentConsumer) {
         try {
             fragmentActivity.getSupportFragmentManager()
                     .beginTransaction()
-                    .replace(fragmentContentId, fragment)
+                    .replace(containerViewId, fragment)
                     .addToBackStack(null)
                     .commit();
             if (fragmentConsumer != null) fragmentConsumer.accept(fragment);
@@ -89,7 +105,9 @@ public class FragmentUtils {
     public static void clearCacheFragment(FragmentActivity activity, Fragment fragment) {
         try {
             // remove all cache in viewpager
+
             if (fragment != null) {
+                Log.e("clearCacheFragment","==> clearCacheFragment");
                 FragmentManager fragmentManager = activity.getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.remove(fragment);

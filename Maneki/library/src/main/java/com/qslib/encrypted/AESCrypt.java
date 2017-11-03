@@ -43,7 +43,7 @@ public class AESCrypt {
 
     public static void main() {
         try {
-            AESCrypt aesCrypt = new AESCrypt("qsoft");
+            AESCrypt aesCrypt = new AESCrypt("encryptkey");
             String encrypt = aesCrypt.encrypt("Hello world!");
             Log.e("encrypt", "AESCrypt:: encrypt:: " + encrypt);
             String decrypt = aesCrypt.decrypt(encrypt);

@@ -1,6 +1,7 @@
 package com.qslib.util;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.os.Environment;
 import android.util.Base64;
 import android.util.Base64OutputStream;
@@ -10,11 +11,27 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
 public class FileUtils {
     private static String TAG = FileUtils.class.getSimpleName();
+
+    /**
+     * @param path
+     * @return
+     */
+    public static boolean isExists(String path) {
+        try {
+            File file = new File(path);
+            return file.exists();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return false;
+    }
 
     /**
      * @param context
@@ -47,6 +64,7 @@ public class FileUtils {
 
         return null;
     }
+
 
     /**
      * get path by path and folder name
@@ -190,5 +208,33 @@ public class FileUtils {
         }
 
         return "";
+    }
+
+    /**
+     * get byte[] from path
+     *
+     * @param path
+     * @return
+     */
+    public static byte[] getByteFromPath(String path) {
+        try {
+            if (StringUtils.isEmpty(path)) return null;
+            File file = new File(path);
+            if (!file.exists())return null;
+
+            byte[] buf = new byte[(int) file.length()];
+            ByteArrayOutputStream bos = new ByteArrayOutputStream();
+            InputStream fis = new FileInputStream(file);
+            for (int readNum; (readNum = fis.read(buf)) != -1; ) {
+                bos.write(buf, 0, readNum);
+                Log.i("", "read num bytes: " + readNum);
+            }
+
+            return bos.toByteArray();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return null;
     }
 }

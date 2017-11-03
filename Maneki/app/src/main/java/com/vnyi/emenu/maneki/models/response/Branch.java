@@ -16,4 +16,46 @@ public class Branch {
     private String branchNo;
     @JsonProperty("BranchParent")
     private int branchParent;
+
+    public int getBranchId() {
+        return branchId;
+    }
+
+    public void setBranchId(int branchId) {
+        this.branchId = branchId;
+    }
+
+    public String getBranchName() {
+        return branchName;
+    }
+
+    public void setBranchName(String branchName) {
+        this.branchName = branchName;
+    }
+
+    public String getBranchNo() {
+        return branchNo;
+    }
+
+    public void setBranchNo(String branchNo) {
+        this.branchNo = branchNo;
+    }
+
+    public int getBranchParent() {
+        return branchParent;
+    }
+
+    public void setBranchParent(int branchParent) {
+        this.branchParent = branchParent;
+    }
+
+    @Override
+    public String toString() {
+        return "Branch{" +
+                "branchId=" + branchId +
+                ", branchName='" + branchName + '\'' +
+                ", branchNo='" + branchNo + '\'' +
+                ", branchParent=" + branchParent +
+                '}';
+    }
 }

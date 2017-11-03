@@ -1,20 +1,27 @@
 package com.qslib.image;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffColorFilter;
+import android.graphics.drawable.Drawable;
 import android.media.ExifInterface;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
+import android.util.Base64;
 import android.view.View;
 
 import com.qslib.util.StringUtils;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -265,5 +272,69 @@ public class ImageUtils {
         }
 
         return null;
+    }
+
+    /**
+     * convert bitmap to base 64
+     *
+     * @param bitmap
+     * @return
+     */
+    public static String encodeBitmapToBase64(Bitmap bitmap) {
+        try {
+            if (bitmap == null) return null;
+
+            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
+
+            return Base64.encodeToString(byteArrayOutputStream.toByteArray(), Base64.DEFAULT);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    /**
+     * convert base 64 to bitmap
+     *
+     * @param base64
+     * @return
+     */
+    public static Bitmap decodeBitmapFromBase64(String base64) {
+        try {
+            byte[] decodedByte = Base64.decode(base64, Base64.DEFAULT);
+            return BitmapFactory.decodeByteArray(decodedByte, 0, decodedByte.length);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    public static Drawable setColorFilterToImage(Context context, int imageId, int color) {
+        // set color filter
+        Drawable drawable = null;
+
+        try {
+            drawable = context.getResources().getDrawable(imageId);
+            drawable.setColorFilter(new PorterDuffColorFilter(color, PorterDuff.Mode.SRC_ATOP));
+        } catch (Resources.NotFoundException e) {
+            e.printStackTrace();
+        }
+
+        return drawable;
+    }
+
+    public static boolean isImage(String path) {
+        try {
+            if (StringUtils.isEmpty(path)) return false;
+            return path.toLowerCase().contains(".jpg") || path.toLowerCase().contains(".jpeg") ||
+                    path.toLowerCase().contains(".png") || path.toLowerCase().contains(".bmp") ? true : false;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return false;
     }
 }

@@ -1,5 +1,6 @@
 package com.vnyi.emenu.maneki.services;
 
+
 import com.qslib.soap.SoapListener;
 import com.qslib.soap.SoapService;
 

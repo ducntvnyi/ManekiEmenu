@@ -75,7 +75,7 @@ public class CountryAdapter extends BaseAdapter {
         try {
             if (convertView == null) {
                 convertView = inflater
-                        .inflate(R.layout.dialog_fragment_country_row, null);
+                        .inflate(R.layout.country_row_dialog_fragment, null);
                 viewHolder = new ViewHolder(convertView);
                 convertView.setTag(viewHolder);
             } else {

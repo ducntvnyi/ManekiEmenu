@@ -4,25 +4,46 @@ import android.content.Context;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.WindowManager;
 
 public class GeneralUtils {
     /**
-     * convertObjectToMapString dp to pixel
+     * convert dp to pixel
      *
      * @param context
-     * @param demenId
+     * @param dimenId
      * @return Pixel
      */
-    public static int convertDpMeansureToPixel(Context context, int demenId) {
-        Resources r;
+    public static int convertDpMeasureToPixel(Context context, int dimenId) {
         int px = 0;
 
         try {
-            r = context.getResources();
+            Resources resources = context.getResources();
             px = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
-                    r.getDimension(demenId), r.getDisplayMetrics());
+                    resources.getDimension(dimenId), resources.getDisplayMetrics());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return px;
+    }
+
+    /**
+     * convert sp to pixel
+     *
+     * @param context
+     * @param dimenId
+     * @return
+     */
+    public static int convertSpMeasureToPixel(Context context, int dimenId) {
+        int px = 0;
+
+        try {
+            Resources resources = context.getResources();
+            px = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP,
+                    resources.getDimension(dimenId), resources.getDisplayMetrics());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -93,5 +114,37 @@ public class GeneralUtils {
         }
 
         return orientation;
+    }
+
+    public static int getStatusBarHeight(Context context) {
+        int result = 0;
+
+        try {
+            int resourceId = context.getResources().getIdentifier("status_bar_height", "dimen", "android");
+            if (resourceId > 0) {
+                result = context.getResources().getDimensionPixelSize(resourceId);
+                Log.e("result", "result:: " + result);
+            }
+        } catch (Resources.NotFoundException e) {
+            e.printStackTrace();
+        }
+
+        return result;
+    }
+
+    public static int getNavigationBarHeight(Context context) {
+        int result = 0;
+
+        try {
+            int resourceId = context.getResources().getIdentifier("navigation_bar_height", "dimen", "android");
+            if (resourceId > 0) {
+                result = context.getResources().getDimensionPixelSize(resourceId);
+                Log.e("result", "result:: " + result);
+            }
+        } catch (Resources.NotFoundException e) {
+            e.printStackTrace();
+        }
+
+        return result;
     }
 }

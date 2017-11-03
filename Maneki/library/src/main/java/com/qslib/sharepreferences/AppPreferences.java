@@ -4,16 +4,19 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.util.Log;
 
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.qslib.encrypted.AESCrypt;
 import com.qslib.jackson.JacksonUtils;
 import com.qslib.util.StringUtils;
 
-import java.util.List;
-
 public class AppPreferences {
+    private static final String KEY_PASSWORD_ENCRYPT = "123456789poiuytrewq";
+
     // instance
     private static AppPreferences instance = null;
+    private static AESCrypt aesCrypt = null;
 
     // variable
     private SharedPreferences appSharedPrefs = null;
@@ -26,6 +29,13 @@ public class AppPreferences {
      */
     public static AppPreferences getInstance(Context context) {
         if (instance == null) instance = new AppPreferences(context);
+        try {
+            if (aesCrypt == null)
+                aesCrypt = new AESCrypt(KEY_PASSWORD_ENCRYPT);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         return instance;
     }
 
@@ -154,6 +164,29 @@ public class AppPreferences {
     }
 
     /**
+     * put value String
+     *
+     * @param key
+     * @param value
+     */
+    public AppPreferences putStringEncrypt(String key, String value) {
+        try {
+            String result = value;
+            if (!StringUtils.isEmpty(result)) {
+                result = aesCrypt.encrypt(result);
+            }
+
+            prefsEditor.putString(key, result);
+            prefsEditor.commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return this;
+    }
+
+
+    /**
      * get value String
      *
      * @param key
@@ -161,9 +194,28 @@ public class AppPreferences {
      */
     public String getString(String key) {
         try {
-            return appSharedPrefs.getString(key, null);
+            return appSharedPrefs.getString(key, "");
         } catch (Exception e) {
-            return null;
+            return "";
+        }
+    }
+
+    /**
+     * get value String
+     *
+     * @param key
+     * @return
+     */
+    public String getStringDecrypt(String key) {
+        try {
+            String result = appSharedPrefs.getString(key, "");
+            if (!StringUtils.isEmpty(result)) {
+                result = aesCrypt.decrypt(result);
+            }
+
+            return result;
+        } catch (Exception e) {
+            return "";
         }
     }
 
@@ -178,6 +230,28 @@ public class AppPreferences {
     public <T> AppPreferences putObject(String key, T object) {
         try {
             prefsEditor.putString(key, JacksonUtils.writeValueToString(object));
+            prefsEditor.commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return this;
+    }
+
+    /**
+     * @param key
+     * @param object
+     * @param <T>
+     * @return
+     */
+    public <T> AppPreferences putObjectEncrypt(String key, T object) {
+        try {
+            String result = JacksonUtils.writeValueToString(object);
+            if (!StringUtils.isEmpty(result)) {
+                result = aesCrypt.encrypt(result);
+            }
+
+            prefsEditor.putString(key, result);
             prefsEditor.commit();
         } catch (Exception e) {
             e.printStackTrace();
@@ -207,6 +281,20 @@ public class AppPreferences {
         return null;
     }
 
+    public <T> T getObjectDecrypt(String key, TypeReference<T> typeReference) {
+        try {
+            String result = appSharedPrefs.getString(key, null);
+            if (StringUtils.isEmpty(result)) return null;
+
+            result = aesCrypt.decrypt(result);
+            return JacksonUtils.convertJsonToObject(result, typeReference);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
     /**
      * @param key
      * @param clazz
@@ -226,36 +314,20 @@ public class AppPreferences {
         return null;
     }
 
-    /**
-     * get list object
-     *
-     * @param key
-     * @param typeReference
-     * @param <T>
-     * @return
-     */
-    public <T> List<T> getListObject(String key, TypeReference<List<T>> typeReference) {
+    public <T> T getObjectDecrypt(String key, Class<T> clazz) {
         try {
-            String value = appSharedPrefs.getString(key, null);
-            if (StringUtils.isEmpty(value)) return null;
+            String result = appSharedPrefs.getString(key, null);
+            if (StringUtils.isEmpty(result)) return null;
 
-            return JacksonUtils.convertJsonToObject(value, typeReference);
+            result = aesCrypt.decrypt(result);
+            return JacksonUtils.convertJsonToObject(result, clazz);
         } catch (Exception e) {
             e.printStackTrace();
         }
 
         return null;
     }
-    public <T> AppPreferences putListObject(String key, List<T> object) {
-        try {
-            prefsEditor.putString(key, JacksonUtils.writeValueToString(object));
-            prefsEditor.commit();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
 
-        return this;
-    }
 
     /**
      * clear all cache in SharedPreference

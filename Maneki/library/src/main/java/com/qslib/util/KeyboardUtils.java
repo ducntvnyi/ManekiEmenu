@@ -10,6 +10,8 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.qslib.customview.edittext.ExtEditText;
+
 public class KeyboardUtils {
     /**
      * don't show keyboard for activity
@@ -34,24 +36,9 @@ public class KeyboardUtils {
      */
     public static void hideKeyboard(Context context, EditText editText) {
         try {
-            InputMethodManager imm = (InputMethodManager) context
+            InputMethodManager inputMethodManager = (InputMethodManager) context
                     .getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(editText.getWindowToken(), 0);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-    /**
-     * hide keyboard for EditText
-     *
-     * @param context
-     * @param editText
-     */
-    public static void showKeyboard(Context context, EditText editText) {
-        try {
-            InputMethodManager imm = (InputMethodManager) context
-                    .getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.showSoftInput(editText, InputMethodManager.SHOW_IMPLICIT);
+            inputMethodManager.hideSoftInputFromWindow(editText.getWindowToken(), 0);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -66,7 +53,7 @@ public class KeyboardUtils {
     public static void hideKeyboard(View view, final Activity activity) {
         try {
             // Set up touch listener for non-text box views to hide keyboard.
-            if (!(view instanceof EditText)) {
+            if (!(view instanceof EditText) || !(view instanceof ExtEditText)) {
                 view.setOnTouchListener((v, event) -> {
                     hideSoftKeyboard(activity);
                     return false;
@@ -157,7 +144,7 @@ public class KeyboardUtils {
                                                 Dialog dialog, final TextView etEditText) {
         try {
             etEditText.requestFocus();
-            dialog.setOnShowListener(dialog1 -> {
+            dialog.setOnShowListener(dialogInterface -> {
                 try {
                     InputMethodManager imm = (InputMethodManager) activity
                             .getSystemService(Context.INPUT_METHOD_SERVICE);

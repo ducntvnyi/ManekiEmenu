@@ -8,11 +8,7 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.support.v4.app.ActivityCompat;
-import android.util.Log;
 
-/**
- * Created by Dang on 10/14/2015.
- */
 public class PermissionUtils {
     public static final int REQUEST_CODE_PERMISSION = 123;
 
@@ -28,7 +24,6 @@ public class PermissionUtils {
         try {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && context != null && permissions != null) {
                 if (!hasPermissions(context, permissions)) {
-                    Log.d("sbc", "==> permission:;" + permissions);
                     ActivityCompat.requestPermissions(context, permissions, requestCodePermission);
                     return true;
                 }
@@ -52,9 +47,7 @@ public class PermissionUtils {
         try {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && context != null && permissions != null) {
                 for (String permission : permissions) {
-
                     if (ActivityCompat.checkSelfPermission(context, permission) != PackageManager.PERMISSION_GRANTED) {
-                        Log.d("abc", "==> hasPermissions::" + permission);
                         return false;
                     }
                 }

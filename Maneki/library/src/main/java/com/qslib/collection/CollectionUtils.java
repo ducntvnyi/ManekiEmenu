@@ -15,12 +15,12 @@ public class CollectionUtils {
      * @param <T>
      * @return
      */
-    public static <T> List<MapEntity<T>> convertMapToList(Map<String, List<T>> maps) {
-        List<MapEntity<T>> mapEntities = new ArrayList<>();
+    public static <K, T> List<MapEntity<K, T>> convertMapToList(Map<K, List<T>> maps) {
+        List<MapEntity<K, T>> mapEntities = new ArrayList<>();
 
         try {
             if (maps != null && maps.size() > 0) {
-                for (Map.Entry<String, List<T>> entry : maps.entrySet()) {
+                for (Map.Entry<K, List<T>> entry : maps.entrySet()) {
                     mapEntities.add(new MapEntity<>(entry.getKey(), entry.getValue()));
                 }
             }

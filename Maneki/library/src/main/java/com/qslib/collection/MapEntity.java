@@ -5,39 +5,39 @@ import java.util.List;
 /**
  * Created by Dang on 5/26/2016.
  */
-public class MapEntity<T> {
-    private String key;
-    private List<T> datas;
+public class MapEntity<K, T> {
+    private K key;
+    private List<T> entities;
 
     public MapEntity() {
     }
 
-    public MapEntity(String key, List<T> datas) {
+    public MapEntity(K key, List<T> entities) {
         this.key = key;
-        this.datas = datas;
+        this.entities = entities;
     }
 
-    public String getKey() {
+    public K getKey() {
         return key;
     }
 
-    public void setKey(String key) {
+    public void setKey(K key) {
         this.key = key;
     }
 
-    public List<T> getDatas() {
-        return datas;
+    public List<T> getEntities() {
+        return entities;
     }
 
-    public void setDatas(List<T> datas) {
-        this.datas = datas;
+    public void setEntities(List<T> entities) {
+        this.entities = entities;
     }
 
     @Override
     public String toString() {
         return "MapEntity{" +
                 "key='" + key + '\'' +
-                ", datas=" + datas +
+                ", entities=" + entities +
                 '}';
     }
 }

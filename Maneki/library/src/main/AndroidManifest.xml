@@ -3,9 +3,9 @@
     package="com.qslib.library">
 
     <!-- ACCOUNT, PROFILE, CONTACTS -->
-    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
-    <uses-permission android:name="android.permission.READ_PROFILE" />
-    <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <!--<uses-permission android:name="android.permission.GET_ACCOUNTS" />-->
+    <!--<uses-permission android:name="android.permission.READ_PROFILE" />-->
+    <!--<uses-permission android:name="android.permission.READ_CONTACTS" />-->
 
     <!-- NETWORK -->
     <uses-permission android:name="android.permission.INTERNET" />
@@ -15,8 +15,8 @@
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
 
     <!-- PHONE STATE -->
-    <uses-permission android:name="android.permission.CALL_PHONE" />
-    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <!--<uses-permission android:name="android.permission.CALL_PHONE" />-->
+    <!--<uses-permission android:name="android.permission.READ_PHONE_STATE" />-->
 
     <!-- INTERNAL STORAGE -->
     <uses-permission android:name="android.permission.WRITE_INTERNAL_STORAGE" />

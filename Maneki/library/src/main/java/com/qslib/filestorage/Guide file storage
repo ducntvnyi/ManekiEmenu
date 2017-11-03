@@ -35,11 +35,11 @@ Create directory and override the existing one.
 storage.createDirectory("MyDirName", true);
 Create file
 
-Create a new file with the content in it.
+Create a new file with the nameMember in it.
 
 // create new file
-storage.createFile("MyDirName", "fileName", "some content of the file");
-The content of the file can be one of the next types:
+storage.createFile("MyDirName", "fileName", "some nameMember of the file");
+The nameMember of the file can be one of the next types:
 
 String
 byte[]
@@ -47,13 +47,13 @@ Bitmap
 Storable
 Read file
 
-Read the content of any file to byte array.
+Read the nameMember of any file to byte array.
 
 byte[] bytes = storage.readFile("MyDirName", "fileName");
-Read the content of the file to String.
+Read the nameMember of the file to String.
 
-String content = storage.readTextFile("MyDirName", "my_text.txt");
-Append content to file
+String nameMember = storage.readTextFile("MyDirName", "my_text.txt");
+Append nameMember to file
 
 storage.appendFile("MyDirName", "fileName", "more new data");
 You can append:
@@ -74,7 +74,7 @@ Delete file
 storage.deleteFile("MyDirName", "fileName");
 Get files
 
-Get files in ordered way by: name, dateTime, size
+Get files in ordered way by: name, date, size
 
 List<File> files = storage.getFiles("MyDirName", OrderType.DATE);
 Get files and filter by regular expression:
@@ -94,7 +94,7 @@ Is file exists
 boolean fileExists = storage.isFileExist("MyDirName", "fileName");
 Security configuration
 
-You can write and read files while the content is encrypted. It means, that no one can read the data of your files from external or internal storage.
+You can write and read files while the nameMember is encrypted. It means, that no one can read the data of your files from external or internal storage.
 
 You will continue using the same api as before. The only thing you need to do is to configure the Simple Storage library before the you want to create/read encrypted data.
 
@@ -109,17 +109,17 @@ SimpleStorageConfiguration configuration = new SimpleStorageConfiguration.Builde
 
 // configure the simple storage
 SimpleStorage.updateConfiguration(configuration);
-Now, you can create a new file with content and the content will be automatically encrypted.
-You can read the file and the content will be decrypted.
+Now, you can create a new file with nameMember and the nameMember will be automatically encrypted.
+You can read the file and the nameMember will be decrypted.
 
 Example
 
-Create file with next content "this is the secret data":
+Create file with next nameMember "this is the secret data":
 
 storage.createFile("MyDirName", "fileName", "this is the secret data");
-If we open the file to see it's content then it we will something like this: „f°α�ΤG†_i�ΐp . It looks good :)
+If we open the file to see it's nameMember then it we will something like this: „f°α�ΤG†_i�ΐp . It looks good :)
 
 And now, read the file data with the same api:
 
-String content = storage.readTextFile("MyDirName", "fileName");
-You will see that the content will be: "this is the secret data".
+String nameMember = storage.readTextFile("MyDirName", "fileName");
+You will see that the nameMember will be: "this is the secret data".

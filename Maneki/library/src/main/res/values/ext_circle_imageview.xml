@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="ExtCircleImageView">
+        <attr name="extBorderWidth" format="dimension" />
+        <attr name="extBorderColor" format="color" />
+        <attr name="extBorderOverlay" format="boolean" />
+        <attr name="extFillColor" format="color" />
+    </declare-styleable>
+</resources>

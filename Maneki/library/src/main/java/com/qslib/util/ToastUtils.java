@@ -5,7 +5,20 @@ import android.view.Gravity;
 import android.view.View;
 import android.widget.Toast;
 
+import com.qslib.library.R;
+
 public class ToastUtils {
+
+    public static void showToastNetworkUnAvailable(Context context) {
+        try {
+            Toast toast = Toast.makeText(context, context.getText(R.string.network_unavailable), Toast.LENGTH_LONG);
+            toast.setGravity(Gravity.CENTER, 0, 0);
+            toast.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     /**
      * @param context
      * @param message
@@ -73,6 +86,7 @@ public class ToastUtils {
             toast.setGravity(gravity, 0, 0);
             toast.setDuration(Toast.LENGTH_LONG);
             toast.setView(view);
+            toast.setMargin(0, -GeneralUtils.getStatusBarHeight(context));
             toast.show();
         } catch (Exception e) {
             e.printStackTrace();

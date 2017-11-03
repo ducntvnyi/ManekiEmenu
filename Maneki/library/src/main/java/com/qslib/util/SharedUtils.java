@@ -1,10 +1,17 @@
 package com.qslib.util;
 
+import android.app.Activity;
+import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.net.Uri;
+import android.telephony.SmsManager;
 
 import java.io.File;
+
+import java8.util.function.Consumer;
 
 /**
  * Created by Dang on 10/20/2015.
@@ -60,6 +67,67 @@ public class SharedUtils {
             context.startActivity(sendIntent);
         } catch (Exception ex) {
             ex.printStackTrace();
+        }
+    }
+
+    //---sends an SMS message to another device---
+    public static void actionSendSms(Context context, String phoneNumber, String message, Consumer<Boolean> consumer) {
+        try {
+            String SENT = "SMS_SENT";
+            String DELIVERED = "SMS_DELIVERED";
+
+            PendingIntent sentPI = PendingIntent.getBroadcast(context, 0, new Intent(SENT), 0);
+            PendingIntent deliveredPI = PendingIntent.getBroadcast(context, 0, new Intent(DELIVERED), 0);
+
+            //---when the SMS has been sent---
+            context.registerReceiver(new BroadcastReceiver() {
+                @Override
+                public void onReceive(Context context, Intent intent) {
+                    switch (getResultCode()) {
+                        case Activity.RESULT_OK:
+                            System.out.println("SendSMS:: SMS sent");
+                            break;
+                        case SmsManager.RESULT_ERROR_GENERIC_FAILURE:
+                            if (consumer != null) consumer.accept(false);
+                            System.out.println("SendSMS:: Generic failure");
+                            break;
+                        case SmsManager.RESULT_ERROR_NO_SERVICE:
+                            if (consumer != null) consumer.accept(false);
+                            System.out.println("SendSMS:: No service");
+                            break;
+                        case SmsManager.RESULT_ERROR_NULL_PDU:
+                            if (consumer != null) consumer.accept(false);
+                            System.out.println("SendSMS:: Null PDU");
+                            break;
+                        case SmsManager.RESULT_ERROR_RADIO_OFF:
+                            if (consumer != null) consumer.accept(false);
+                            System.out.println("SendSMS:: Radio off");
+                            break;
+                    }
+                }
+            }, new IntentFilter(SENT));
+
+            //---when the SMS has been delivered---
+            context.registerReceiver(new BroadcastReceiver() {
+                @Override
+                public void onReceive(Context context, Intent intent) {
+                    switch (getResultCode()) {
+                        case Activity.RESULT_OK:
+                            if (consumer != null) consumer.accept(true);
+                            System.out.println("ReceiveSMS:: SMS delivered");
+                            break;
+                        case Activity.RESULT_CANCELED:
+                            if (consumer != null) consumer.accept(false);
+                            System.out.println("ReceiveSMS:: SMS not delivered");
+                            break;
+                    }
+                }
+            }, new IntentFilter(DELIVERED));
+
+            SmsManager sms = SmsManager.getDefault();
+            sms.sendTextMessage(phoneNumber, null, message, sentPI, deliveredPI);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }

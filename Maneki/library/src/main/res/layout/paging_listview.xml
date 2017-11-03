@@ -4,15 +4,24 @@
     android:layout_height="match_parent">
 
     <android.support.v4.widget.SwipeRefreshLayout
-        android:id="@+id/swipeRefreshLayout"
+        android:id="@+id/srlSwipeRefreshLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <ListView
-            android:id="@+id/listView"
+            android:id="@+id/lvListView"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
     </android.support.v4.widget.SwipeRefreshLayout>
+
+    <com.qslib.customview.textview.ExtTextView
+        android:id="@+id/tvNotFoundData"
+        android:gravity="center"
+        android:visibility="gone"
+        android:textSize="@dimen/font_size_message"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="@string/no_data" />
 
 </FrameLayout>

@@ -11,13 +11,15 @@ import com.qslib.util.LanguageUtils;
 import com.qslib.util.ProgressDialogUtils;
 import com.qslib.util.ToastUtils;
 import com.vnyi.emenu.maneki.R;
-import com.vnyi.emenu.maneki.utils.ManekiUtils;
+import com.vnyi.emenu.maneki.utils.VyniUtils;
+
 
 /**
  * Created by Hungnd on 11/1/17.
  */
 
 public class BaseFragment extends Fragment{
+
     private static final String TAG = BaseFragment.class.getSimpleName();
     protected ProgressDialogUtils progressDialog = null;
     protected Activity mActivity;
@@ -26,7 +28,7 @@ public class BaseFragment extends Fragment{
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         try {
-            LanguageUtils.configLanguage(mActivity, ManekiUtils.getLanguageApp(mActivity));
+            LanguageUtils.configLanguage(mActivity, VyniUtils.getLanguageApp(mActivity));
         } catch (Exception e) {
 
         }

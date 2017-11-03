@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/txt_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/margin_default"
+        android:background="@drawable/bg_title"
+        android:gravity="center"
+        android:padding="@dimen/chart_title_padding"
+        android:singleLine="true"
+        android:textColor="@color/white" />
+
+    <com.qslib.customview.chart.ProgressView
+        android:id="@+id/progress_view"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:minHeight="@dimen/progress_min_size"
+        android:minWidth="@dimen/progress_min_size">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="@dimen/margin_12dp"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/txt_progress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:singleLine="true"
+                android:textSize="@dimen/text_size_large" />
+
+            <TextView
+                android:id="@+id/txt_description"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:singleLine="true"
+                android:textSize="@dimen/text_size_small" />
+        </LinearLayout>
+
+    </com.qslib.customview.chart.ProgressView>
+
+    <TextView
+        android:id="@+id/txt_percent_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="50%" />
+</LinearLayout>

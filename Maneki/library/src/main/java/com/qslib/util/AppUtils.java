@@ -8,6 +8,10 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 
+import com.qslib.logger.Logger;
+import com.qslib.network.UrlUtils;
+
+import java.io.File;
 import java.util.List;
 
 /**
@@ -107,7 +111,7 @@ public class AppUtils {
         final String appPackageName = activity.getPackageName(); // getPackageName() from Context or Activity object
         try {
             activity.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
-        } catch (android.content.ActivityNotFoundException anfe) {
+        } catch (android.content.ActivityNotFoundException ex) {
             activity.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
         }
     }
@@ -116,11 +120,69 @@ public class AppUtils {
      * @param context
      * @param uri
      */
-    public static void onpenWebView(Context context, Uri uri) {
+    public static void openActionView(Context context, Uri uri) {
         try {
             context.startActivity(new Intent(Intent.ACTION_VIEW, uri));
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
+
+    public static Uri getUriFromUrl(String url) {
+        Uri uri = null;
+
+        try {
+            if (UrlUtils.isNetworkUrl(url)) {
+                uri = Uri.parse(url);
+            } else {
+                File file = new File(url);
+                if (file.exists())
+                    uri = Uri.fromFile(file);
+            }
+
+            if (uri != null) {
+                Logger.e("GetUriFromUrl", "Uri:: " + uri.toString());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return uri;
+    }
+
+    public static void openVideo(Context context, String url) {
+        try {
+            Uri uri = getUriFromUrl(url);
+            if (uri == null) return;
+            Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+            intent.setDataAndType(uri, "video/*");
+            context.startActivity(intent);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void openImage(Context context, String url) {
+        try {
+            Uri uri = getUriFromUrl(url);
+            if (uri == null) return;
+            Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+            intent.setDataAndType(uri, "image/*");
+            context.startActivity(intent);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void openOther(Context context, String url) {
+        try {
+            Uri uri = getUriFromUrl(url);
+            if (uri == null) return;
+            Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+            context.startActivity(intent);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 }

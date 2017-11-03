@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="ExtRoundedImageView">
+        <attr name="leftTopCornerRadiusRound" format="dimension" />
+        <attr name="rightTopCornerRadiusRound" format="dimension" />
+        <attr name="leftBottomCornerRadiusRound" format="dimension" />
+        <attr name="rightBottomCornerRadiusRound" format="dimension" />
+        <attr name="borderWidthRound" format="dimension" />
+        <attr name="borderColorRound" format="color" />
+        <attr name="ovalRound" format="boolean" />
+        <attr name="android:scaleType" />
+    </declare-styleable>
+</resources>

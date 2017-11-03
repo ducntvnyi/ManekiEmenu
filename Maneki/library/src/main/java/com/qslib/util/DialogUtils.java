@@ -1,7 +1,7 @@
 package com.qslib.util;
 
+import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface.OnClickListener;
 
 @SuppressWarnings("ALL")
@@ -12,7 +12,7 @@ public class DialogUtils {
      * @param message
      * @param labelActionPosition
      */
-    public static void messageBox(Context context, String title,
+    public static void messageBox(Activity context, String title,
                                   String message, String labelActionPosition) {
         messageBox(context, 0, title, message, labelActionPosition);
     }
@@ -23,9 +23,10 @@ public class DialogUtils {
      * @param message
      * @param labelActionPosition
      */
-    public static void messageBox(Context context, int iconId, String title,
+    public static void messageBox(Activity context, int iconId, String title,
                                   String message, String labelActionPosition) {
         try {
+            if (ActivityUtils.isFinish(context)) return;
             AlertDialog.Builder builder = new AlertDialog.Builder(context)
                     .setTitle(title)
                     .setMessage(message)
@@ -49,7 +50,7 @@ public class DialogUtils {
      * @param labelActionPosition
      * @param callbackActionPosition
      */
-    public static void messageBox(Context context, String title,
+    public static void messageBox(Activity context, String title,
                                   String message, String labelActionPosition,
                                   OnClickListener callbackActionPosition) {
         messageBox(context, 0, title, message, labelActionPosition, callbackActionPosition);
@@ -62,10 +63,11 @@ public class DialogUtils {
      * @param labelActionPosition
      * @param callbackActionPosition
      */
-    public static void messageBox(Context context, int iconId, String title,
+    public static void messageBox(Activity context, int iconId, String title,
                                   String message, String labelActionPosition,
                                   OnClickListener callbackActionPosition) {
         try {
+            if (ActivityUtils.isFinish(context)) return;
             AlertDialog.Builder builder = new AlertDialog.Builder(context)
                     .setTitle(title)
                     .setMessage(message)
@@ -89,7 +91,7 @@ public class DialogUtils {
      * @param labelActionCancel
      * @param callbackActionPosition
      */
-    public static void confirmBox(Context context, String title,
+    public static void confirmBox(Activity context, String title,
                                   String message, String labelActionPosition,
                                   String labelActionCancel,
                                   OnClickListener callbackActionPosition) {
@@ -104,11 +106,12 @@ public class DialogUtils {
      * @param labelActionCancel
      * @param callbackActionPosition
      */
-    public static void confirmBox(Context context, int iconId, String title,
+    public static void confirmBox(Activity context, int iconId, String title,
                                   String message, String labelActionPosition,
                                   String labelActionCancel,
                                   OnClickListener callbackActionPosition) {
         try {
+            if (ActivityUtils.isFinish(context)) return;
             AlertDialog.Builder builder = new AlertDialog.Builder(context)
                     .setTitle(title)
                     .setMessage(message)
@@ -136,7 +139,7 @@ public class DialogUtils {
      * @param callback
      * @param cancel
      */
-    public static void confirmBox(Context context, String title,
+    public static void confirmBox(Activity context, String title,
                                   String message, String labelActionPosition,
                                   String labelActionNegative,
                                   OnClickListener callback,
@@ -153,12 +156,13 @@ public class DialogUtils {
      * @param callback
      * @param cancel
      */
-    public static void confirmBox(Context context, int iconId, String title,
+    public static void confirmBox(Activity context, int iconId, String title,
                                   String message, String labelActionPosition,
                                   String labelActionNegative,
                                   OnClickListener callback,
                                   OnClickListener cancel) {
         try {
+            if (ActivityUtils.isFinish(context)) return;
             AlertDialog.Builder builder = new AlertDialog.Builder(context)
                     .setTitle(title).setMessage(message)
                     .setPositiveButton(labelActionPosition, callback)
