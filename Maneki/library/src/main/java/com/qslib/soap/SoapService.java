@@ -117,6 +117,7 @@ public class SoapService {
      */
     public SoapService addPropertySoapObject(String propertyName, Object value) {
         try {
+
             this.soapObject.addProperty(propertyName, value);
         } catch (Exception e) {
             e.printStackTrace();

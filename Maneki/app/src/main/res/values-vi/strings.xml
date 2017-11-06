@@ -9,12 +9,11 @@
     <string name="vietnamese">Việt Nam</string>
     <string name="english">English</string>
     <string name="close">close</string>
-    <string name="view_order">Xem Đơn Hàng</string>
     <string name="double_tap_to_exit">Double tab to exit</string>
-    <string name="confirm_order">Đặt món của bạn sẽ được chuyển vào bếp sau khi bạn nhập mã code. Đồ ăn sẽ có sau 10 phút</string>
     <string name="order_code">Mã đặt món</string>
     <string name="yes">yes</string>
     <string name="no">No</string>
     <string name="call_waiter">Gọi Phục Vụ</string>
+
 
 </resources>

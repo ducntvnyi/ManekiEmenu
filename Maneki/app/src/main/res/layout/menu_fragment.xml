@@ -1,0 +1,81 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/rootView"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.vnyi.emenu.maneki.fragments.MenuFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/ivShowConfig"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:paddingTop="@dimen/margin_layout_default"
+        android:paddingLeft="@dimen/margin_layout_default"
+        android:paddingRight="@dimen/margin_layout_default"
+        android:paddingBottom="0dp">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="@dimen/margin_layout_default"
+            android:layout_marginTop="@dimen/margin_layout_default"
+            android:layout_weight="1"
+            android:background="@color/color_app"
+            android:orientation="vertical">
+
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/ivPrevious"
+            android:layout_width="@dimen/ic_next_width_default"
+            android:layout_height="@dimen/ic_next_width_default"
+            android:padding="@dimen/padding_layout"
+            android:src="@mipmap/ic_previous" />
+
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="3"
+            android:background="@color/color_blue"
+            android:gravity="center_vertical"
+            android:orientation="horizontal" />
+
+
+        <ImageView
+            android:id="@+id/ivNext"
+            android:layout_width="@dimen/ic_next_width_default"
+            android:layout_height="@dimen/ic_next_width_default"
+            android:padding="@dimen/padding_layout"
+            android:src="@mipmap/ic_next" />
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/ivShowConfig"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:padding="@dimen/padding_content"
+        android:layout_margin="@dimen/margin_layout_default"
+        android:background="@drawable/bg_config_home"
+        android:src="@mipmap/bg_maneki" />
+
+    <com.vnyi.emenu.maneki.customviews.ButtonFont
+        android:id="@+id/btnViewOrder"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_margin="@dimen/margin_layout_default"
+        android:background="@mipmap/bg_btn_red"
+        android:padding="@dimen/padding_content"
+        app:font="Redsun  Vietnam Bold"
+        android:text="@string/view_order"
+        android:textColor="@drawable/view_order_text_color"
+        android:textSize="@dimen/font_size_header" />
+
+</RelativeLayout>

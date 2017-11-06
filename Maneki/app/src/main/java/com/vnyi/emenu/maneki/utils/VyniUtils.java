@@ -11,6 +11,9 @@ import com.qslib.sharepreferences.AppPreferences;
 import com.qslib.util.StringUtils;
 import com.vnyi.emenu.maneki.services.VnyiApiServices;
 
+import java.util.Locale;
+import java.util.StringTokenizer;
+
 /**
  * Created by Hungnd on 11/1/17.
  */
@@ -45,12 +48,24 @@ public class VyniUtils {
             return Constant.LOCALE_VI;
         } else if (langId == 2) {
             return Constant.LOCALE_EN;
-        } else if (langId == 11) {
-            return Constant.LOCALE_JP;
         }
         return "";
     }
+    public static Locale stringToLocale(String s) {
+        if (s == null) return null;
+        StringTokenizer tempStringTokenizer = new StringTokenizer(s, "_");
+        String lang = null;
+        String country = null;
+        if (tempStringTokenizer.hasMoreTokens())
+            lang = (String) tempStringTokenizer.nextElement();
+        if (tempStringTokenizer.hasMoreTokens())
+            country = (String) tempStringTokenizer.nextElement();
 
+        if (country != null)
+            return new Locale(lang, country);
+        else
+            return new Locale(lang);
+    }
     /**
      * log error message to file, server
      *

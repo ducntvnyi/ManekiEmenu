@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="450dp"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <com.vnyi.emenu.maneki.customviews.TextViewFont
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/color_app"
+            android:gravity="center"
+            android:padding="@dimen/font_size_tab_header"
+            android:text="Confirmtaion for table: 01"
+            android:textColor="@color/white"
+            android:textSize="@dimen/font_size_tab_header" />
+
+        <com.vnyi.emenu.maneki.customviews.TextViewFont
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/padding_content"
+            android:text="@string/call_waiter"
+            android:textColor="@color/color_black"
+            android:textSize="@dimen/font_size_tab_header"
+            android:textStyle="bold" />
+
+        <CheckBox
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/padding_content"
+            android:text="Them khan giay"
+
+            android:textSize="@dimen/font_size_tab_header" />
+
+        <CheckBox
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/padding_content"
+            android:text="Them Dua"
+            android:textSize="@dimen/font_size_tab_header" />
+
+        <CheckBox
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/padding_content"
+            android:text="Them bat"
+            android:textSize="@dimen/font_size_tab_header" />
+
+        <CheckBox
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/padding_content"
+            android:text="Them Dua"
+            android:textSize="@dimen/font_size_tab_header" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_layout_default"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btnSendRequest"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_marginEnd="@dimen/padding_content"
+                android:layout_weight="1"
+                android:background="@drawable/bg_btn_selector"
+                android:text="@string/yes"
+                android:textColor="@color/white"
+                android:textSize="@dimen/font_size_tab_header" />
+
+            <Button
+                android:id="@+id/btnCancelRquest"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_marginStart="@dimen/padding_content"
+                android:layout_weight="1"
+                android:background="@drawable/bg_btn_selector"
+                android:text="@string/no"
+                android:textSize="@dimen/font_size_tab_header"
+                android:textColor="@color/white" />
+
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rootView"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/btnSendRequest"
+        android:layout_marginEnd="@dimen/margin_layout_default"
+        android:layout_marginStart="@dimen/margin_layout_default"
+        android:orientation="vertical"
+        android:padding="@dimen/margin_layout_default">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:drawable/screen_background_dark_transparent"
+            android:orientation="horizontal"
+
+            android:padding="@dimen/padding_layout">
+
+            <com.vnyi.emenu.maneki.customviews.TextViewFont
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="SO TIEN: "
+                android:textColor="@color/white"
+                android:textSize="@dimen/font_size_title" />
+
+            <com.vnyi.emenu.maneki.customviews.TextViewFont
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="right"
+                android:text="100.000 VND"
+                android:textColor="@color/white"
+                android:textSize="@dimen/font_size_title" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/white" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:drawable/screen_background_dark_transparent"
+            android:orientation="horizontal"
+            android:padding="@dimen/padding_layout">
+
+            <com.vnyi.emenu.maneki.customviews.TextViewFont
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="GIAM GIA: "
+                android:textColor="@color/white"
+                android:textSize="@dimen/font_size_title" />
+
+            <com.vnyi.emenu.maneki.customviews.TextViewFont
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="right"
+                android:text="100.000 VND"
+                android:textColor="@color/white"
+                android:textSize="@dimen/font_size_title" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/white" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:drawable/screen_background_dark_transparent"
+            android:orientation="horizontal"
+            android:padding="@dimen/padding_layout">
+
+            <com.vnyi.emenu.maneki.customviews.TextViewFont
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="VAT "
+                android:textColor="@color/white"
+                android:textSize="@dimen/font_size_title" />
+
+            <com.vnyi.emenu.maneki.customviews.TextViewFont
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="right"
+                android:text="100.000 VND"
+                android:textColor="@color/white"
+                android:textSize="@dimen/font_size_title" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/white" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:drawable/screen_background_dark_transparent"
+            android:orientation="horizontal"
+            android:padding="@dimen/padding_layout">
+
+            <com.vnyi.emenu.maneki.customviews.TextViewFont
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="TONG CONG: "
+                android:textColor="@color/white"
+                android:textSize="@dimen/font_size_title" />
+
+            <com.vnyi.emenu.maneki.customviews.TextViewFont
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="right"
+                android:text="100.000 VND"
+                android:textColor="@color/white"
+                android:textSize="@dimen/font_size_title" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btnSendRequest"
+        android:layout_width="300dp"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="@dimen/margin_layout_default"
+        android:background="@drawable/bg_btn_app_selector"
+        android:text="@string/payment"
+        android:textColor="@color/white"
+        android:textSize="@dimen/font_size_tab_header" />
+</RelativeLayout>

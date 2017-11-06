@@ -1,6 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+
+    <color name="colorPrimary">@color/color_app</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+
+    <color name="color_app">#ab112b</color>
+    <color name="color_app_hint">#60ab112b</color>
+    <color name="bg_notify_item">#0000ff</color>
+    <color name="bg_notify">#00bff3</color>
+    <color name="bg_app">#e1e2e6</color>
+    <color name="bg_menu_bottom_active">#959595</color>
+    <color name="bg_app_color">#000000</color>
+    <color name="color_text_content">#000000</color>
+    <color name="bg_white">#FFFFFF</color>
+    <color name="color_background">#ececec</color>
+    <color name="color_disable">#99ab112b</color>
+    <color name="bg_button_press">#ff4444</color>
+    <color name="color_yellow">#ffd700</color>
 </resources>

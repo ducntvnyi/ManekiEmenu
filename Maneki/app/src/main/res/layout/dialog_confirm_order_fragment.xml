@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="450dp"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <com.vnyi.emenu.maneki.customviews.TextViewFont
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/color_app"
+            android:gravity="center"
+            android:padding="@dimen/font_size_tab_header"
+            android:text="Confirmtaion for table: 01"
+            android:textColor="@color/white"
+            android:textSize="@dimen/font_size_tab_header" />
+
+        <com.vnyi.emenu.maneki.customviews.TextViewFont
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/padding_layout"
+            android:padding="@dimen/font_size_tab_header"
+            android:text="@string/confirm_order"
+            android:textSize="@dimen/font_size_tab_header" />
+
+        <com.vnyi.emenu.maneki.customviews.TextViewFont
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/padding_layout"
+            android:background="@color/color_app"
+            android:gravity="center"
+            android:padding="@dimen/padding_content"
+            android:text="@string/order_code"
+            android:textColor="@color/white"
+            android:textSize="@dimen/font_size_tab_header" />
+
+        <com.vnyi.emenu.maneki.customviews.EditTextFont
+            android:layout_width="250dp"
+            android:layout_height="50dp"
+            android:layout_marginBottom="@dimen/margin_layout_default"
+            android:layout_marginTop="@dimen/margin_layout_default"
+            android:background="@color/color_gray"
+            android:gravity="center"
+            android:hint="100100"
+            android:maxLength="6"
+            android:imeOptions="actionDone"
+            android:inputType="number"
+            android:maxLines="1"
+            android:padding="@dimen/padding_content"
+            android:textSize="@dimen/font_size_tab_header" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_layout_default"
+            android:orientation="horizontal">
+
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/padding_content"
+                android:layout_weight="1"
+                android:background="@color/color_app"
+                android:text="@string/yes"
+                android:textColor="@color/white" />
+
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/padding_content"
+                android:layout_weight="1"
+                android:background="@color/color_app"
+                android:text="@string/no"
+                android:textColor="@color/white" />
+
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

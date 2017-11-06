@@ -16,6 +16,7 @@ import com.qslib.library.R;
  * Created by Dang on 6/23/2016.
  */
 public abstract class BaseMainDialogFragment extends DialogFragment {
+
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -35,7 +36,8 @@ public abstract class BaseMainDialogFragment extends DialogFragment {
             Window window = getDialog().getWindow();
             WindowManager.LayoutParams attributes = window.getAttributes();
             window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-            window.setLayout(WindowManager.LayoutParams.MATCH_PARENT, attributes.height);
+//            window.setLayout(WindowManager.LayoutParams.MATCH_PARENT, attributes.height);
+            window.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
         } catch (Exception e) {
             e.printStackTrace();
         }

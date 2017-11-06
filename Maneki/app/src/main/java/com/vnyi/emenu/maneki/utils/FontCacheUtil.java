@@ -14,7 +14,8 @@ public class FontCacheUtil {
 
     public static final String TAG= FontCacheUtil.class.getSimpleName();
 
-    public static final String DEFAULT_FONT_COUR = "cour.ttf";
+//    public static final String DEFAULT_FONT_COUR = "cour.ttf";
+    public static final String DEFAULT_FONT_COUR = "Redsun  Vietnam Bold.ttf";
 
     /** The font cache. */
     private static Hashtable<String, Typeface> fontCache = new Hashtable<String, Typeface>();

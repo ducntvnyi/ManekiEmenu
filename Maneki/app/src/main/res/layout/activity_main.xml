@@ -13,9 +13,10 @@
         android:background="@mipmap/bg_app" />
 
     <LinearLayout
+        android:id="@+id/llTab"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/holo_red"
+        android:background="@color/color_app"
         android:orientation="horizontal"
         android:paddingBottom="8dp"
         android:paddingLeft="8dp"
@@ -25,9 +26,9 @@
         <com.qslib.customview.textview.ExtTextView
             android:id="@+id/tvMenu"
             style="@style/tvTabHeaderStyle"
+            android:background="@mipmap/bg_btn_white"
             android:text="@string/menu"
             android:textColor="@color/color_black"
-            android:background="@mipmap/bg_btn_white"
             app:textViewFontAssetName="Redsun design DE Light" />
 
         <com.qslib.customview.textview.ExtTextView
@@ -60,20 +61,39 @@
             android:text="@string/use_intro"
             app:font="Redsun  Vietnam Italic" />
 
-        <com.vnyi.emenu.maneki.customviews.TextViewFont
-            android:id="@+id/tvLanguage"
-            style="@style/tvTabHeaderStyle"
-            android:text="@string/viet_name"
-            app:font="Redsun  Vietnam Italic" />
+        <LinearLayout
+            android:id="@+id/llChangeLanguage"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
 
+            <com.vnyi.emenu.maneki.customviews.TextViewFont
+                style="@style/tvTitleStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="0dp"
+                android:text="@string/english"
+                android:textColor="@color/white"
+                app:font="Redsun  Vietnam Italic" />
+
+            <com.vnyi.emenu.maneki.customviews.TextViewFont
+                style="@style/tvTitleStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="0dp"
+                android:text="@string/vietnamese"
+                android:textColor="@color/white"
+                app:font="Redsun  Vietnam Italic" />
+        </LinearLayout>
     </LinearLayout>
-    <ImageView
-        android:background="@drawable/bg_config_home"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="30dp"
-        android:src="@mipmap/bg_maneki" />
+
+
+    <FrameLayout
+        android:id="@+id/flMainContent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/llTab" />
 
 </RelativeLayout>

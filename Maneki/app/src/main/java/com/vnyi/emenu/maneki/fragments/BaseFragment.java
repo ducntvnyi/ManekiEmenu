@@ -1,54 +1,85 @@
 package com.vnyi.emenu.maneki.fragments;
 
-import android.app.Activity;
-import android.app.Fragment;
+
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
-import com.qslib.util.KeyboardUtils;
-import com.qslib.util.LanguageUtils;
 import com.qslib.util.ProgressDialogUtils;
 import com.qslib.util.ToastUtils;
 import com.vnyi.emenu.maneki.R;
+import com.vnyi.emenu.maneki.activities.MainActivity;
 import com.vnyi.emenu.maneki.utils.VyniUtils;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 
 /**
  * Created by Hungnd on 11/1/17.
  */
 
-public class BaseFragment extends Fragment{
+public abstract class BaseFragment extends Fragment {
 
-    private static final String TAG = BaseFragment.class.getSimpleName();
+    protected static final String TAG = BaseFragment.class.getSimpleName();
     protected ProgressDialogUtils progressDialog = null;
-    protected Activity mActivity;
+    protected MainActivity mActivity;
+    protected Context mContext;
+
+    @Nullable
+    @BindView(R.id.rootView)
+    View rootView;
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         try {
-            LanguageUtils.configLanguage(mActivity, VyniUtils.getLanguageApp(mActivity));
+//            LanguageUtils.configLanguage(mActivity, VyniUtils.getLanguageApp(mActivity));
         } catch (Exception e) {
-
+            VyniUtils.LogException(TAG, e);
         }
     }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+        this.mContext = context;
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
+
+        rootView = inflater.inflate(getFragmentLayoutId(), container, false);
+        ButterKnife.bind(this, this.rootView);
+        initViews();
+        return rootView;
 
     }
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
         try {
-            this.mActivity = activity;
-            KeyboardUtils.hideSoftKeyboard(mActivity);
-        } catch (Exception e) {
+            this.mActivity = (MainActivity) getActivity();
 
+//            final InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+//            imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
+
+        } catch (Exception e) {
+            VyniUtils.LogException(TAG, e);
         }
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        initData();
     }
 
     /**
@@ -61,8 +92,8 @@ public class BaseFragment extends Fragment{
             progressDialog = new ProgressDialogUtils();
             progressDialog.setMessage(getString(R.string.loading));
             progressDialog.show(mActivity);
-        } catch (Exception ex) {
-
+        } catch (Exception e) {
+            VyniUtils.LogException(TAG, e);
         }
     }
 
@@ -75,8 +106,8 @@ public class BaseFragment extends Fragment{
                 progressDialog.dismiss();
                 progressDialog = null;
             }
-        } catch (Exception ex) {
-
+        } catch (Exception e) {
+            VyniUtils.LogException(TAG, e);
         }
     }
 
@@ -88,4 +119,11 @@ public class BaseFragment extends Fragment{
     protected void showToast(String msg) {
         ToastUtils.showToast(mActivity, msg);
     }
+
+    public abstract int getFragmentLayoutId();
+
+    public abstract void initViews();
+
+    public abstract void initData();
+
 }

@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">Maneki</string>
+    <string name="menu">Menu</string>
+    <string name="order">Order</string>
+    <string name="sale">Sale Off</string>
+    <string name="call_staff">Call Waiter</string>
+    <string name="payment">Payment</string>
+    <string name="use_intro">Use App</string>
+    <string name="vietnamese">Việt Nam</string>
+    <string name="english">English</string>
+    <string name="close">close</string>
+    <string name="double_tap_to_exit">Double tab to exit</string>
+    <string name="order_code">Mã đặt món</string>
+    <string name="yes">yes</string>
+    <string name="no">No</string>
+    <string name="call_waiter">Gọi Phục Vụ</string>
+
+
+</resources>

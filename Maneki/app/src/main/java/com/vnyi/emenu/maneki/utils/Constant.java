@@ -8,6 +8,17 @@ public interface Constant {
 
 
 
+    // index tab screen
+    String KEY_INDEX = "index tab";
+    int INDEX_MENU = 100;
+    int INDEX_ORDER = INDEX_MENU >> 1;
+    int INDEX_SALE_OFF = INDEX_MENU >> 2;
+    int INDEX_CALL_WAITER = INDEX_MENU >> 3;
+    int INDEX_CALL_PAYMENT = INDEX_MENU >> 4;
+    int INDEX_USE_APP = INDEX_MENU >> 5;
+    int INDEX_LANGUAGE = INDEX_MENU >> 6;
+    int INDEX_CONFIG = INDEX_MENU >> 7;
+
     // Config type :: 	ConfigType (Short):1-POS,2-Emenu (Vd:2)
     int CONFIG_TYPE = 2;
 
