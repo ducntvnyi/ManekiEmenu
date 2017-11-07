@@ -111,7 +111,7 @@ public class MainActivity extends FragmentActivity {
 
     }
 
-    protected int getColorResource(int color) {
+    public int getColorResource(int color) {
         return ContextCompat.getColor(getApplicationContext(), color);
     }
 

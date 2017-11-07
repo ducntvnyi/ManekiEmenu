@@ -16,5 +16,17 @@
     <string name="yes">yes</string>
     <string name="no">No</string>
     <string name="call_waiter">Gọi Phục Vụ</string>
+    <!--fonts -->
+    <string name="font_cour">cour</string>
+    <string name="font_courbd">courbd</string>
+    <string name="font_courbi">courbi</string>
+    <string name="font_couri">couri</string>
+    <string name="font_redsun_desgin_de_light">Redsun design DE Light</string>
+    <string name="font_redsun_desgin_de">Redsun design DE</string>
+    <string name="font_redsun_desgin_deblod">Redsun design DEBold</string>
+    <string name="font_edsun_vn_bold_italic">Redsun Vietnam Bold Italic</string>
+    <string name="font_edsun_vn_bold">Redsun  Vietnam Bold</string>
+    <string name="font_edsun_vn_italic">Redsun  Vietnam Italic</string>
+    <string name="font_redsun_vn">Redsun  Vietnam</string>
 
 </resources>

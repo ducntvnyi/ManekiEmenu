@@ -17,6 +17,26 @@ public class Branch {
     @JsonProperty("BranchParent")
     private int branchParent;
 
+    private int position;
+
+    public Branch() {
+    }
+
+    public Branch(int branchId, String branchName) {
+        this.branchName = branchName;
+        this.branchId = branchId;
+    }
+
+    public int getPosition() {
+        return position;
+    }
+
+    public void setPosition(int position) {
+        this.position = position;
+    }
+
+    private boolean isSelected;
+
     public int getBranchId() {
         return branchId;
     }
@@ -49,6 +69,14 @@ public class Branch {
         this.branchParent = branchParent;
     }
 
+    public boolean isSelected() {
+        return isSelected;
+    }
+
+    public void setSelected(boolean selected) {
+        isSelected = selected;
+    }
+
     @Override
     public String toString() {
         return "Branch{" +
@@ -56,6 +84,7 @@ public class Branch {
                 ", branchName='" + branchName + '\'' +
                 ", branchNo='" + branchNo + '\'' +
                 ", branchParent=" + branchParent +
+                ", isSelected=" + isSelected +
                 '}';
     }
 }

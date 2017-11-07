@@ -6,21 +6,20 @@
     android:orientation="vertical">
 
 
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@id/btnSendRequest"
-        android:layout_marginEnd="@dimen/margin_layout_default"
-        android:layout_marginStart="@dimen/margin_layout_default"
-        android:orientation="vertical"
-        android:padding="@dimen/margin_layout_default">
+        android:layout_marginEnd="@dimen/margin_payment"
+        android:layout_marginStart="@dimen/margin_payment"
+        android:background="@color/color_transparent"
+        android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@android:drawable/screen_background_dark_transparent"
             android:orientation="horizontal"
-
             android:padding="@dimen/padding_layout">
 
             <com.vnyi.emenu.maneki.customviews.TextViewFont
@@ -29,7 +28,7 @@
                 android:layout_weight="1"
                 android:text="SO TIEN: "
                 android:textColor="@color/white"
-                android:textSize="@dimen/font_size_title" />
+                android:textSize="@dimen/font_size_content" />
 
             <com.vnyi.emenu.maneki.customviews.TextViewFont
                 android:layout_width="0dp"
@@ -38,7 +37,7 @@
                 android:gravity="right"
                 android:text="100.000 VND"
                 android:textColor="@color/white"
-                android:textSize="@dimen/font_size_title" />
+                android:textSize="@dimen/font_size_content" />
         </LinearLayout>
 
         <View
@@ -49,7 +48,6 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@android:drawable/screen_background_dark_transparent"
             android:orientation="horizontal"
             android:padding="@dimen/padding_layout">
 
@@ -59,7 +57,7 @@
                 android:layout_weight="1"
                 android:text="GIAM GIA: "
                 android:textColor="@color/white"
-                android:textSize="@dimen/font_size_title" />
+                android:textSize="@dimen/font_size_content" />
 
             <com.vnyi.emenu.maneki.customviews.TextViewFont
                 android:layout_width="0dp"
@@ -68,7 +66,7 @@
                 android:gravity="right"
                 android:text="100.000 VND"
                 android:textColor="@color/white"
-                android:textSize="@dimen/font_size_title" />
+                android:textSize="@dimen/font_size_content" />
         </LinearLayout>
 
         <View
@@ -79,7 +77,6 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@android:drawable/screen_background_dark_transparent"
             android:orientation="horizontal"
             android:padding="@dimen/padding_layout">
 
@@ -89,7 +86,7 @@
                 android:layout_weight="1"
                 android:text="VAT "
                 android:textColor="@color/white"
-                android:textSize="@dimen/font_size_title" />
+                android:textSize="@dimen/font_size_content" />
 
             <com.vnyi.emenu.maneki.customviews.TextViewFont
                 android:layout_width="0dp"
@@ -98,7 +95,7 @@
                 android:gravity="right"
                 android:text="100.000 VND"
                 android:textColor="@color/white"
-                android:textSize="@dimen/font_size_title" />
+                android:textSize="@dimen/font_size_content" />
         </LinearLayout>
 
         <View
@@ -109,7 +106,6 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@android:drawable/screen_background_dark_transparent"
             android:orientation="horizontal"
             android:padding="@dimen/padding_layout">
 
@@ -119,7 +115,7 @@
                 android:layout_weight="1"
                 android:text="TONG CONG: "
                 android:textColor="@color/white"
-                android:textSize="@dimen/font_size_title" />
+                android:textSize="@dimen/font_size_content" />
 
             <com.vnyi.emenu.maneki.customviews.TextViewFont
                 android:layout_width="0dp"
@@ -128,7 +124,7 @@
                 android:gravity="right"
                 android:text="100.000 VND"
                 android:textColor="@color/white"
-                android:textSize="@dimen/font_size_title" />
+                android:textSize="@dimen/font_size_content" />
         </LinearLayout>
     </LinearLayout>
 
@@ -138,8 +134,9 @@
         android:layout_height="50dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/margin_layout"
         android:layout_marginBottom="@dimen/margin_layout_default"
-        android:background="@drawable/bg_btn_app_selector"
+        android:background="@drawable/bg_btn_selector"
         android:text="@string/payment"
         android:textColor="@color/white"
         android:textSize="@dimen/font_size_tab_header" />
