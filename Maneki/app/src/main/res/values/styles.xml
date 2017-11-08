@@ -32,4 +32,42 @@
         <item name="android:textSize">@dimen/font_size_content</item>
     </style>
 
+    <style name="tvLabelStyle" parent="tvContentStyle">
+        <item name="android:maxLines">1</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">1</item>
+    </style>
+
+    <style name="tvLabelValueStyle" parent="tvContentStyle">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:drawableRight">@mipmap/ic_down_active</item>
+        <item name="android:drawablePadding">@dimen/padding_content</item>
+        <item name="android:gravity">right</item>
+        <item name="android:textColor">@color/half_black</item>
+        <item name="android:maxLines">1</item>
+    </style>
+
+    <style name="lineHorizontalStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">1dp</item>
+        <item name="android:background">@color/color_gray</item>
+    </style>
+    <style name="lineHorizontalBlackStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">1dp</item>
+        <item name="android:background">@color/color_black</item>
+    </style>
+
+
+    <style name="tableRowConfigStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">@dimen/padding_content</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:background">@drawable/bg_tbl_confirm_selector</item>
+    </style>
 </resources>

@@ -3,13 +3,15 @@ package com.vnyi.emenu.maneki.activities;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.View;
 
 import com.qslib.customview.textview.ExtTextView;
 import com.qslib.fragment.FragmentUtils;
+import com.qslib.sharepreferences.AppPreferences;
+import com.qslib.soap.SoapListenerVyni;
+import com.qslib.soap.SoapResponse;
 import com.qslib.util.BackUtils;
 import com.qslib.util.KeyboardUtils;
 import com.vnyi.emenu.maneki.R;
@@ -22,10 +24,15 @@ import com.vnyi.emenu.maneki.fragments.OrderFragment;
 import com.vnyi.emenu.maneki.fragments.PaymentFragment;
 import com.vnyi.emenu.maneki.fragments.SaleOffFragment;
 import com.vnyi.emenu.maneki.fragments.UseAppFragment;
+import com.vnyi.emenu.maneki.services.VnyiApiServices;
+import com.vnyi.emenu.maneki.services.VnyiServices;
 import com.vnyi.emenu.maneki.utils.Constant;
 import com.vnyi.emenu.maneki.utils.LanguageUtil;
 import com.vnyi.emenu.maneki.utils.VnyiContextWrapper;
 import com.vnyi.emenu.maneki.utils.VyniUtils;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.Locale;
 import java.util.Stack;
@@ -34,7 +41,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class MainActivity extends FragmentActivity {
+public class MainActivity extends BaseActivity {
 
     private static String TAG = MainActivity.class.getSimpleName();
 
@@ -74,6 +81,7 @@ public class MainActivity extends FragmentActivity {
 //        currentFragmentConstant.INDEX = VnyiPreference.getInstance(this).getInt(KEY_Constant.INDEX);
         changeTab(currentFragmentIndex);
     }
+
     @Override
     public void onBackPressed() {
         if (fragments != null && fragments.size() > 0) {
@@ -109,6 +117,49 @@ public class MainActivity extends FragmentActivity {
 
     private void loadData() {
 
+        String machineId = AppPreferences.getInstance(getApplicationContext()).getString(VnyiApiServices.MACHINE_ID);
+        String machineName = AppPreferences.getInstance(getApplicationContext()).getString(VnyiApiServices.MACHINE_NAME);
+        String url = VnyiServices.URL_CONFIG;
+
+        VnyiServices.requestGetConfigValue(url, VnyiApiServices.CONFIG_TYPE_VALUE, "584357E3-02BE-406A-962B-51B2D03D1703", "Duong Van Chien’s iPad", "", new SoapListenerVyni() {
+
+            @Override
+            public void onStarted() {
+                VyniUtils.LogException(TAG, "==> ConfigValue onStarted ");
+                showProgressDialog();
+            }
+
+            @Override
+            public void onSuccess(SoapResponse soapResponse) {
+                hideProgressDialog();
+                VyniUtils.LogException(TAG, "==> ConfigValue onSuccess:: " + soapResponse.toString());
+                if (soapResponse.getStatus().toLowerCase().equals("true")) {
+                    if (soapResponse.getResult() != null) {
+                        try {
+                            JSONObject configValueObject = new JSONObject(soapResponse.getResult());
+                            // save to local
+                            saveConfigValueLoad(configValueObject, false);
+
+                        } catch (JSONException e) {
+                            VyniUtils.LogException(TAG, "==> jsonObject passed error:  " + e.getMessage());
+                        }
+
+                    }
+                }
+            }
+
+            @Override
+            public void onFail(Exception ex) {
+                hideProgressDialog();
+                VyniUtils.LogException(TAG, "==> ConfigValue onFail " + ex.getMessage());
+            }
+
+            @Override
+            public void onFinished() {
+                hideProgressDialog();
+                VyniUtils.LogException(TAG, "==> ConfigValue onFinished ");
+            }
+        });
     }
 
     public int getColorResource(int color) {
@@ -396,4 +447,8 @@ public class MainActivity extends FragmentActivity {
 
     }
 
+    @Override
+    public void initFragmentDefault() {
+
+    }
 }

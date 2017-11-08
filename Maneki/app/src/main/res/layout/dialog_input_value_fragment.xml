@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="500dp"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <com.vnyi.emenu.maneki.customviews.TextViewFont
+            android:id="@+id/tvTitle"
+            style="@style/tvTitleStyle"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginBottom="@dimen/activity_horizontal_margin"
+            android:background="@color/color_app"
+            android:gravity="center"
+            android:maxLines="1"
+            android:padding="@dimen/padding_layout"
+            android:text="@string/input_value"
+            android:textColor="@color/white"
+            android:textSize="@dimen/font_size_tab_header"
+            app:font="@string/font_cour" />
+
+
+        <com.vnyi.emenu.maneki.customviews.EditTextFont
+            android:id="@+id/edtValueInt"
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:layout_marginEnd="@dimen/margin_layout_default"
+            android:layout_marginStart="@dimen/margin_layout_default"
+            android:layout_marginTop="@dimen/activity_horizontal_margin"
+            android:background="@drawable/bg_edt_default"
+            android:gravity="center"
+            android:hint="input number"
+            android:imeOptions="actionDone"
+            android:inputType="number"
+            android:maxLines="1"
+            android:textSize="@dimen/font_size_tab_header"
+            android:visibility="visible" />
+
+        <com.vnyi.emenu.maneki.customviews.EditTextFont
+            android:id="@+id/edtValueString"
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:layout_marginEnd="@dimen/margin_layout_default"
+            android:layout_marginStart="@dimen/margin_layout_default"
+            android:layout_marginTop="@dimen/activity_horizontal_margin"
+            android:background="@drawable/bg_edt_default"
+            android:gravity="center"
+            android:hint="int value"
+            android:imeOptions="actionDone"
+            android:inputType="text"
+            android:maxLines="1"
+            android:text="http://"
+            android:textSize="@dimen/font_size_tab_header"
+            android:visibility="gone" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/padding_layout"
+            android:layout_marginEnd="@dimen/margin_layout_default"
+            android:layout_marginStart="@dimen/margin_layout_default"
+            android:layout_marginTop="@dimen/margin_layout_default"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btnYes"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_marginEnd="@dimen/padding_content"
+                android:layout_weight="1"
+                android:background="@drawable/bg_btn_selector"
+                android:text="@string/yes"
+                android:textColor="@color/white"
+                android:textSize="@dimen/font_size_tab_header" />
+
+            <Button
+                android:id="@+id/btnCancel"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_marginStart="@dimen/padding_content"
+                android:layout_weight="1"
+                android:background="@drawable/bg_btn_selector"
+                android:text="@string/no"
+                android:textColor="@color/white"
+                android:textSize="@dimen/font_size_tab_header" />
+
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

@@ -10,7 +10,7 @@ public interface VnyiApiServices {
     String NAME_SPACE = "http://tempuri.org/";
     String BASE_URL = "/TranferData/Emenu.asmx";
     String URL_CONFIG = "http://shctest.ezitouch.com:6868/";
-
+    int CONFIG_TYPE_VALUE = 5;
     String KEY_MESSAGE = "KeyMessage";
 
     /* KEY CONFIG */
@@ -18,6 +18,7 @@ public interface VnyiApiServices {
     String KEY_ORG_AUTOID = "I_ORG_AUTOID"; // chi nhánh
     String KEY_COUNTER = "I_COUNTER"; // quầy
     String KEY_AREA = "I_AREA"; // quầy
+    String AREA_CURRENT = "area_current";
     String KEY_USER_ID = "T_USERORDER"; // User ID
     String KEY_LANG_ID = "I_LANGID";
     String USER_ID = "UserId";

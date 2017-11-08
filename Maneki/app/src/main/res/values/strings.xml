@@ -28,5 +28,21 @@
     <string name="font_edsun_vn_bold">Redsun  Vietnam Bold</string>
     <string name="font_edsun_vn_italic">Redsun  Vietnam Italic</string>
     <string name="font_redsun_vn">Redsun  Vietnam</string>
+    <string name="config_server">Vui lòng nhập đường dẫn kết nối tới server</string>
+    <string name="setting_config">Thiếtt lập cấu hình</string>
+    <string name="confirm">Xác Nhận</string>
+    <string name="branch">Chi Nhánh</string>
+    <string name="table_name_device">Tên bàn cho thiết bị</string>
+    <string name="name_user">Tên User để Order</string>
+    <string name="load_list_group_parent">Load danh sách nhóm cha</string>
+    <string name="link_sale_off">Link Thông Tin Khuyến Mãi</string>
+    <string name="link_use_app">Link Hướng Dẫn Order</string>
+    <string name="choose_branch">Chọn Khu</string>
+    <string name="change_table">Chọn thay đổi bàn</string>
+    <string name="num_table_show">Số lượng bàn theo số cột</string>
+    <string name="choose_table">Chọn Bàn</string>
+    <string name="choose_user_order">Chọn user để order</string>
+    <string name="ok">Ok</string>
+    <string name="input_value">Nhập giá trị</string>
 
 </resources>

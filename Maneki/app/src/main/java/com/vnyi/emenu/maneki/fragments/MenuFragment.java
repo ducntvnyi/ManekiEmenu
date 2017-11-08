@@ -28,6 +28,7 @@ import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import io.reactivex.Observable;
 import io.reactivex.schedulers.Schedulers;
 import java8.util.stream.StreamSupport;
 
@@ -237,6 +238,7 @@ public class MenuFragment extends BaseFragment {
         try {
             if (branchSelected == null) return;
             StreamSupport.stream(mBranches).forEach(branch -> branch.setSelected(branch.getBranchId() == branchSelected.getBranchId()));
+//            Observable.just(mBranches).concatMap(Observable::fromArray).forEach(branches -> branches.forEach(branch -> branch.setSelected(branch.getBranchId() == branchSelected.getBranchId())));
             mMenuAdapter.notifyDataSetChanged();
             rvMenu.smoothScrollToPosition(position);
         } catch (Exception e) {

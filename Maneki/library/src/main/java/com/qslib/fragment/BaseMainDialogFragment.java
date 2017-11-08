@@ -23,6 +23,7 @@ public abstract class BaseMainDialogFragment extends DialogFragment {
         try {
             getDialog().getWindow().setGravity(Gravity.CENTER);
             getDialog().getWindow().setWindowAnimations(R.style.DialogAnimation);
+
             getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
         } catch (Exception e) {
             e.printStackTrace();

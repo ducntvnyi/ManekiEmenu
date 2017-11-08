@@ -11,6 +11,8 @@ import com.qslib.encrypted.AESCrypt;
 import com.qslib.jackson.JacksonUtils;
 import com.qslib.util.StringUtils;
 
+import java.util.List;
+
 public class AppPreferences {
     private static final String KEY_PASSWORD_ENCRYPT = "123456789poiuytrewq";
 
@@ -335,6 +337,37 @@ public class AppPreferences {
     public AppPreferences clearCache() {
         try {
             prefsEditor.clear().commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return this;
+    }
+
+    /**
+     * get list object
+     *
+     * @param key
+     * @param typeReference
+     * @param <T>
+     * @return
+     */
+    public <T> List<T> getListObject(String key, TypeReference<List<T>> typeReference) {
+        try {
+            String value = appSharedPrefs.getString(key, null);
+            if (StringUtils.isEmpty(value)) return null;
+
+            return JacksonUtils.convertJsonToObject(value, typeReference);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+    public <T> AppPreferences putListObject(String key, List<T> object) {
+        try {
+            prefsEditor.putString(key, JacksonUtils.writeValueToString(object));
+            prefsEditor.commit();
         } catch (Exception e) {
             e.printStackTrace();
         }
