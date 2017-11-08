@@ -30,5 +30,8 @@
     <string name="choose_user_order">Chọn user để order</string>
     <string name="ok">Ok</string>
     <string name="input_value">Nhập giá trị</string>
+    <string name="table">Bàn</string>
+    <string name="vnd">VND</string>
+    <string name="sl">SL</string>
 
 </resources>

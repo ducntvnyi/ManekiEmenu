@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:padding="@dimen/padding_content">
+
+    <ImageView
+        android:id="@+id/ivItem"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:src="@mipmap/bg_app" />
+
+    <com.vnyi.emenu.maneki.customviews.TextViewFont
+        android:id="@+id/tvItemName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="2"
+        android:maxLines="1"
+        android:padding="@dimen/padding_content"
+        android:text="Sashimi ca trich xanh - 3 mieng"
+        android:textColor="@color/white"
+        android:textSize="@dimen/font_size_title" />
+
+    <com.vnyi.emenu.maneki.customviews.TextViewFont
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/sl"
+        android:textAllCaps="true"
+        android:textColor="@color/white"
+        android:textSize="@dimen/font_size_title" />
+
+    <com.vnyi.emenu.maneki.customviews.TextViewFont
+        android:id="@+id/tvQuantity"
+        android:layout_width="70dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/padding_content"
+        android:background="@color/color_app"
+        android:gravity="center"
+        android:maxLines="1"
+        android:padding="@dimen/padding_content"
+        android:text="1.0"
+        android:textColor="@color/white"
+        android:textSize="@dimen/font_size_title" />
+
+    <LinearLayout
+        android:id="@+id/llChangeQuantity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/padding_content"
+        android:orientation="vertical">
+
+        <com.vnyi.emenu.maneki.customviews.TextViewFont
+            android:id="@+id/tvAddQuantity"
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_btn_selector"
+            android:gravity="center"
+            android:maxLines="1"
+            android:padding="@dimen/padding_content"
+            android:text="+"
+            android:textColor="@color/white"
+            android:textSize="@dimen/font_size_title" />
+
+        <com.vnyi.emenu.maneki.customviews.TextViewFont
+            android:id="@+id/tvReduceQuantity"
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/padding_content"
+            android:background="@drawable/bg_btn_selector"
+            android:gravity="center"
+            android:maxLines="1"
+            android:padding="@dimen/padding_content"
+            android:text="-"
+            android:textColor="@color/white"
+            android:textSize="@dimen/font_size_title" />
+    </LinearLayout>
+
+    <com.vnyi.emenu.maneki.customviews.TextViewFont
+        android:id="@+id/tvTotalMoney"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="right"
+        android:maxLines="1"
+        android:padding="@dimen/padding_content"
+        android:text="79,000 VND"
+        android:textColor="@color/white"
+        android:textSize="@dimen/font_size_title" />
+
+</LinearLayout>

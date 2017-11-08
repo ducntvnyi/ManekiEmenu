@@ -4,6 +4,7 @@ package com.vnyi.emenu.maneki.fragments;
 import android.animation.Animator;
 import android.graphics.drawable.BitmapDrawable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -14,11 +15,14 @@ import android.widget.Toast;
 
 import com.jakewharton.rxbinding2.widget.RxTextView;
 import com.vnyi.emenu.maneki.R;
+import com.vnyi.emenu.maneki.adapters.ItemAdapter;
 import com.vnyi.emenu.maneki.adapters.MenuAdapter;
 import com.vnyi.emenu.maneki.customviews.ButtonFont;
 import com.vnyi.emenu.maneki.customviews.CartAnimationUtil;
 import com.vnyi.emenu.maneki.models.AnimationView;
+import com.vnyi.emenu.maneki.models.ItemModel;
 import com.vnyi.emenu.maneki.models.response.Branch;
+import com.vnyi.emenu.maneki.utils.Constant;
 import com.vnyi.emenu.maneki.utils.ViewUtils;
 import com.vnyi.emenu.maneki.utils.VyniUtils;
 
@@ -28,7 +32,9 @@ import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-import io.reactivex.Observable;
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 import java8.util.stream.StreamSupport;
 
@@ -45,6 +51,8 @@ public class MenuFragment extends BaseFragment {
     TextView tvCart;
     @BindView(R.id.rvMenu)
     RecyclerView rvMenu;
+    @BindView(R.id.rvItem)
+    RecyclerView rvItem;
     @BindView(R.id.ivPrevious)
     ImageView ivPrevious;
     @BindView(R.id.ivNext)
@@ -53,8 +61,13 @@ public class MenuFragment extends BaseFragment {
     private int itemCounter = 0;
     private MenuAdapter mMenuAdapter;
     private List<Branch> mBranches;
+
+    private ItemAdapter mItemAdapter;
+    private List<ItemModel> mItemModels;
+
     private AnimationView mAnimationView;
-    LinearLayoutManager mLayoutManager;
+    private LinearLayoutManager mLayoutManager;
+    private GridLayoutManager mGridLayoutManager;
     private int position;
 
     public static Fragment newInstance() {
@@ -70,14 +83,32 @@ public class MenuFragment extends BaseFragment {
     @Override
     public void initViews() {
         try {
-            RxTextView.textChanges(tvCart)
-                    .debounce(5, TimeUnit.SECONDS)
-                    .observeOn(Schedulers.io())
-                    .subscribe(charSequence -> {
-                        // call api
-                        Log.e(TAG, "==> Cart:: " + charSequence);
-                    });
 
+            RxTextView.textChanges(tvCart)
+                    .debounce(5, TimeUnit.SECONDS, AndroidSchedulers.mainThread())
+                    .observeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new Observer<CharSequence>() {
+                        @Override
+                        public void onSubscribe(Disposable d) {
+
+                        }
+
+                        @Override
+                        public void onNext(CharSequence value) {
+                            updateItem(value);
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+
+                        }
+
+                        @Override
+                        public void onComplete() {
+
+                        }
+                    });
             // init menu adapter
             mBranches = new ArrayList<>();
             mMenuAdapter = new MenuAdapter(mContext, mBranches, branchConsumer -> {
@@ -88,6 +119,16 @@ public class MenuFragment extends BaseFragment {
             LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
             rvMenu.setAdapter(mMenuAdapter);
             rvMenu.setLayoutManager(layoutManager);
+
+            // init item adapter
+            mItemModels = new ArrayList<>();
+            mItemAdapter = new ItemAdapter(mContext, mItemModels, animationView -> {
+                onClickAddToCart(animationView.getImageView(), animationView.getView());
+
+            });
+            mGridLayoutManager = new GridLayoutManager(mContext, 4);
+            rvItem.setAdapter(mItemAdapter);
+            rvItem.setLayoutManager(mGridLayoutManager);
 
         } catch (Exception e) {
             VyniUtils.LogException(TAG, e);
@@ -115,6 +156,29 @@ public class MenuFragment extends BaseFragment {
             rvMenu.setAdapter(mMenuAdapter);
             position = 0;
             selectMenu(mBranches.get(position));
+
+            mItemModels.add(new ItemModel(1, "Hai san", "69.000 Vnd"));
+            mItemModels.add(new ItemModel(2, "Sushi ca ngu", "100.000 Vnd"));
+            mItemModels.add(new ItemModel(3, "Sushi ca ngu Hai san 1223", "111.000 Vnd"));
+            mItemModels.add(new ItemModel(4, "Hai san", "90.000 Vnd"));
+            mItemModels.add(new ItemModel(5, "Hai san", "60.000 Vnd"));
+            mItemModels.add(new ItemModel(6, "Hai san", "50.000 Vnd"));
+            mItemModels.add(new ItemModel(7, "Hai san", "120.000 Vnd"));
+            mItemModels.add(new ItemModel(8, "Hai san", "104.000 Vnd"));
+            mItemModels.add(new ItemModel(9, "Hai san", "200.000 Vnd"));
+            mItemModels.add(new ItemModel(10, "Hai san", "99.000 Vnd"));
+            mItemModels.add(new ItemModel(11, "Hai san", "69.000 Vnd"));
+            mItemModels.add(new ItemModel(12, "Sushi ca ngu", "100.000 Vnd"));
+            mItemModels.add(new ItemModel(13, "Sushi ca ngu", "222.000 Vnd"));
+            mItemModels.add(new ItemModel(14, "Hai san", "90.000 Vnd"));
+            mItemModels.add(new ItemModel(15, "Hai san", "60.000 Vnd"));
+            mItemModels.add(new ItemModel(16, "Hai san", "50.000 Vnd"));
+            mItemModels.add(new ItemModel(17, "Hai san", "120.000 Vnd"));
+            mItemModels.add(new ItemModel(18, "Hai san", "104.000 Vnd"));
+            mItemModels.add(new ItemModel(19, "Hai san", "200.000 Vnd"));
+            mItemModels.add(new ItemModel(20, "Hai san", "99.000 Vnd"));
+            mItemAdapter.setItemModelList(mItemModels);
+
         } catch (Exception e) {
             VyniUtils.LogException(TAG, e);
         }
@@ -122,8 +186,7 @@ public class MenuFragment extends BaseFragment {
 
     @OnClick(R.id.ivShowConfig)
     void onClickShowConfig() {
-//        mActivity.changeTab(Constant.INDEX_CONFIG);
-        makeFlyAnimation(ivShowConfig);
+        mActivity.changeTab(Constant.INDEX_CONFIG);
     }
 
     /**
@@ -139,7 +202,7 @@ public class MenuFragment extends BaseFragment {
                 BitmapDrawable bitmapDrawable = new BitmapDrawable(getResources(), ViewUtils.getBitmapFromView(view));
                 imageView.setBackground(bitmapDrawable);
                 makeFlyAnimation(imageView);
-                imageView.setBackgroundColor(mActivity.getColorResource(R.color.color_transparent));
+                imageView.setVisibility(View.GONE);
             }, 100);
         } catch (Exception e) {
             VyniUtils.LogException(TAG, e);
@@ -203,7 +266,7 @@ public class MenuFragment extends BaseFragment {
     private void makeFlyAnimation(ImageView targetView) {
 
         try {
-            new CartAnimationUtil().attachActivity(mActivity).setTargetView(targetView).setMoveDuration(700).setDestView(btnViewOrder).setAnimationListener(new Animator.AnimatorListener() {
+            new CartAnimationUtil().attachActivity(mActivity).setTargetView(targetView).setMoveDuration(500).setDestView(btnViewOrder).setAnimationListener(new Animator.AnimatorListener() {
                 @Override
                 public void onAnimationStart(Animator animation) {
 
@@ -246,5 +309,10 @@ public class MenuFragment extends BaseFragment {
         }
     }
 
+    private void updateItem(CharSequence charSequence) {
+        if (itemCounter == 0) return;
+        Log.e(TAG, "==> updateItem:: " + charSequence);
+        Toast.makeText(mContext, "Order item successfully", Toast.LENGTH_SHORT).show();
+    }
 
 }

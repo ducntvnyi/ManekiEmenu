@@ -39,6 +39,11 @@
                 android:textSize="@dimen/font_size_tab_header"
                 app:font="@string/font_cour" />
 
+            <View
+                style="@style/lineHorizontalStyle"
+                android:layout_below="@+id/tvMenu"
+                android:background="@color/white" />
+
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/rvMenu"
                 android:layout_width="match_parent"
@@ -64,14 +69,11 @@
             android:padding="@dimen/padding_layout"
             android:src="@mipmap/ic_previous" />
 
-
-        <RelativeLayout
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rvItem"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="3"
-            android:background="@color/color_blue"
-            android:gravity="center_vertical"
-            android:orientation="horizontal" />
+            android:layout_weight="3" />
 
 
         <ImageView
