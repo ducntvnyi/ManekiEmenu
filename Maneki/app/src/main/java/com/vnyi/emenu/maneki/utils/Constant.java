@@ -7,7 +7,6 @@ package com.vnyi.emenu.maneki.utils;
 public interface Constant {
 
 
-
     // index tab screen
     String KEY_INDEX = "index tab";
     int INDEX_MENU = 100;
@@ -49,4 +48,18 @@ public interface Constant {
     // key ACTION
     String NEW_REQUEST = "new_request";
     String IS_APP_RUNNING = "is_app_running";
+
+    // keys config
+    String KEY_I_ORG_AUTOID = "I_ORG_AUTOID";
+    String KEY_I_LEVELGROUP = "I_LEVELGROUP";
+    String KEY_S_LINKDIRECTION = "S_LINKDIRECTION";
+    String KEY_S_LINKPROMOTION = "S_LINKPROMOTION";
+    String KEY_T_TABLENAME = "T_TABLENAME";
+    String KEY_T_USERORDER = "T_USERORDER";
+    String KEY_B_USECHOOSETABLE = "B_USECHOOSETABLE";
+    String KEY_I_COLUMNTABLE = "I_COLUMNTABLE";
+    String KEY_CONFIG_VALUE = "CONFIG_VALUE";
+
+
+
 }

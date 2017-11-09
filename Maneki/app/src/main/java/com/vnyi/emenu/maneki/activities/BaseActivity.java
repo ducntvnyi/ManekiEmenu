@@ -14,19 +14,30 @@ import android.support.v4.content.ContextCompat;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.qslib.jackson.JacksonUtils;
 import com.qslib.logger.Logger;
+import com.qslib.network.NetworkUtils;
 import com.qslib.permission.PermissionUtils;
+import com.qslib.soap.SoapListenerVyni;
+import com.qslib.soap.SoapResponse;
 import com.qslib.util.ProgressDialogUtils;
 import com.vnyi.emenu.maneki.applications.VnyiPreference;
+import com.vnyi.emenu.maneki.models.ConfigValueModel;
 import com.vnyi.emenu.maneki.models.response.config.ConfigModel;
 import com.vnyi.emenu.maneki.models.response.config.PostIdModel;
 import com.vnyi.emenu.maneki.services.VnyiApiServices;
+import com.vnyi.emenu.maneki.services.VnyiServices;
+import com.vnyi.emenu.maneki.utils.Constant;
 import com.vnyi.emenu.maneki.utils.VyniUtils;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
+
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 import static com.qslib.permission.PermissionUtils.REQUEST_CODE_PERMISSION;
 
@@ -90,8 +101,7 @@ public abstract class BaseActivity extends FragmentActivity {
 
 
     public static boolean requestPermission(Activity activity) {
-        String[] perms = {
-                android.Manifest.permission.INTERNET,
+        String[] perms = {android.Manifest.permission.INTERNET,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE};
         return PermissionUtils.requestPermission(activity, REQUEST_CODE_PERMISSION, perms);
     }
@@ -100,6 +110,7 @@ public abstract class BaseActivity extends FragmentActivity {
     protected void saveConfigValueLoad(JSONObject configValueObject, boolean isConfirm) {
         try {
             if (configValueObject == null) return;
+            ConfigValueModel configValueModel = new ConfigValueModel();
 
             List<PostIdModel> postIdModels = JacksonUtils.convertJsonToObject(configValueObject.getString(VnyiApiServices.TABLE), new TypeReference<List<PostIdModel>>() {
             });
@@ -117,55 +128,43 @@ public abstract class BaseActivity extends FragmentActivity {
                 VyniUtils.LogException(TAG, "==> configModels::" + configModels.toString());
                 VnyiPreference.getInstance(this).putListObject(VnyiApiServices.CONFIG_VALUE_LOAD, configModels); // test
 
+
                 // save config value load
                 for (ConfigModel configModel : configModels) {
+                    int typeValue = configModel.getTypeValue();
 
-                    VyniUtils.LogException(TAG, "==> configModels::" + configModel.toString());
-
-                    if (configModel.getConfigCode().toUpperCase().equals(VnyiApiServices.KEY_ORG_AUTOID)) { // branch
-                        if (configModel.getConfigValue() == null || configModel.getConfigValue().equals("")) {
-                            if (configModel.getConfigDefaultValue() == null || configModel.getConfigDefaultValue().equals("")) {
-                                VyniUtils.LogException(TAG, "==> branchId error");
-                            } else {
-                                VnyiPreference.getInstance(this).putInt(VnyiApiServices.BRANCH_ID, Integer.parseInt(configModel.getConfigDefaultValue()));
-                                VyniUtils.LogException(TAG, "==> branchId default::" + configModel.getConfigDefaultValue());
-                            }
-                        } else {
-                            VyniUtils.LogException(TAG, "==> branchId::" + configModel.getConfigValue());
-                            VnyiPreference.getInstance(this).putInt(VnyiApiServices.BRANCH_ID, Integer.parseInt(configModel.getConfigValue()));
-                        }
+                    switch (typeValue) {
+                        case 0:
+                            configValueModel.setBranch(configModel);
+                            break;
+                        case 1:
+                            configValueModel.setLoadListParent(configModel);
+                            break;
+                        case 2:
+                            configValueModel.setLinkSaleOff(configModel);
+                            break;
+                        case 3:
+                            configValueModel.setTableName(configModel);
+                            break;
+                        case 4:
+                            configValueModel.setUserOrder(configModel);
+                            break;
+                        case 5:
+                            configValueModel.setLinkUserApp(configModel);
+                            break;
+                        case 6:
+                            configValueModel.setChangeTable(configModel);
+                            break;
+                        case 7:
+                            configValueModel.setNumbTableShow(configModel);
+                            break;
+                        default:
+                            break;
                     }
-                    if (configModel.getConfigCode().toUpperCase().equals(VnyiApiServices.KEY_COUNTER)) { // QUẦY
 
-                        if (configModel.getConfigValue() == null || configModel.getConfigValue().equals("")) {
-                            if (configModel.getConfigDefaultValue() == null || configModel.getConfigDefaultValue().equals("")) {
-                                VyniUtils.LogException(TAG, "==> counter error");
-                            } else {
-                                VyniUtils.LogException(TAG, "==> default counter::" + configModel.getConfigDefaultValue());
-                                VnyiPreference.getInstance(this).putInt(VnyiApiServices.KEY_STALL, Integer.parseInt(configModel.getConfigDefaultValue()));
-                            }
-                        } else {
-                            VyniUtils.LogException(TAG, "==> counter::" + configModel.getConfigValue());
-                            VnyiPreference.getInstance(this).putInt(VnyiApiServices.KEY_STALL, Integer.parseInt(configModel.getConfigValue()));
-                        }
-                    }
-                    if (configModel.getConfigCode().toUpperCase().equals(VnyiApiServices.KEY_AREA)) { // KHU
-
-                        if (configModel.getConfigValue() == null || configModel.getConfigValue().equals("")) {
-                            if (configModel.getConfigDefaultValue() == null || configModel.getConfigDefaultValue().equals("")) {
-                                VyniUtils.LogException(TAG, "==> area error");
-
-                            } else {
-                                VyniUtils.LogException(TAG, "==> area default::" + configModel.getConfigDefaultValue());
-                                VnyiPreference.getInstance(this).putInt(VnyiApiServices.AREA_CURRENT, Integer.parseInt(configModel.getConfigDefaultValue()));
-                            }
-                        } else {
-                            VyniUtils.LogException(TAG, "==> area::" + configModel.getConfigValue());
-                            VnyiPreference.getInstance(this).putInt(VnyiApiServices.AREA_CURRENT, Integer.parseInt(configModel.getConfigValue()));
-                        }
-                    }
 
                 }
+                VnyiPreference.getInstance(getApplicationContext()).putObject(Constant.KEY_CONFIG_VALUE, configValueModel);
 
 
                 if (isConfirm) {
@@ -177,6 +176,102 @@ public abstract class BaseActivity extends FragmentActivity {
 
         } catch (JSONException e) {
             VyniUtils.LogException(TAG, e.getMessage());
+        }
+    }
+
+    protected void loadConfigValue() {
+
+        if (!NetworkUtils.isNetworkAvailable(getApplicationContext())) return;
+
+        String machineId = "584357E3-02BE-406A-962B-51B2D03D1703";  //AppPreferences.getInstance(getApplicationContext()).getString(VnyiApiServices.MACHINE_ID);
+        String machineName = "Duong Van Chien’s iPad";              //AppPreferences.getInstance(getApplicationContext()).getString(VnyiApiServices.MACHINE_NAME);
+        String url = VnyiServices.URL_CONFIG;
+
+        VnyiServices.requestGetConfigValue(url, VnyiApiServices.CONFIG_TYPE_VALUE, machineId, machineName, "", new SoapListenerVyni() {
+
+            @Override
+            public void onStarted() {
+                VyniUtils.LogException(TAG, "==> ConfigValue onStarted ");
+                showProgressDialog();
+            }
+
+            @Override
+            public void onSuccess(SoapResponse soapResponse) {
+                hideProgressDialog();
+                VyniUtils.LogException(TAG, "==> ConfigValue onSuccess ");
+                if (soapResponse == null) return;
+
+                if (soapResponse.getStatus().toLowerCase().equals("true")) {
+                    if (soapResponse.getResult() != null) {
+                        VyniUtils.LogException(TAG, "==> ConfigValue onSuccess:: " + soapResponse.toString());
+                        try {
+                            JSONObject configValueObject = new JSONObject(soapResponse.getResult());
+                            // save to local
+                            saveConfigValueLoad(configValueObject, false);
+
+                        } catch (JSONException e) {
+                            VyniUtils.LogException(TAG, "==> jsonObject passed error:  " + e.getMessage());
+                        }
+
+                    }
+                }
+
+            }
+
+            @Override
+            public void onFail(Exception ex) {
+                hideProgressDialog();
+                VyniUtils.LogException(TAG, "==> ConfigValue onFail " + ex.getMessage());
+            }
+
+            @Override
+            public void onFinished() {
+                hideProgressDialog();
+                VyniUtils.LogException(TAG, "==> ConfigValue onFinished ");
+            }
+        });
+    }
+
+
+
+    private void confirm() {
+
+    }
+
+    protected void updateConfirm(int postId, int langId, String keyCode, String keyValue) {
+
+
+        VyniUtils.LogException(TAG, "==> updateConfirm:: keyCode:: " + keyCode + " keyValue::" + keyValue);
+        try {
+            String url = VnyiPreference.getInstance(getApplicationContext()).getString(Constant.KEY_CONFIG_URL);
+
+            if (!NetworkUtils.isNetworkAvailable(getApplicationContext())) return;
+
+            VnyiServices.requestConfigValueUpdateInfo(url, postId, keyCode, keyValue, langId, new SoapListenerVyni() {
+
+                        @Override
+                        public void onStarted() {
+                            VyniUtils.LogException(TAG, "==> updateConfirm onStarted ");
+                        }
+
+                        @Override
+                        public void onSuccess(SoapResponse soapResponse) {
+
+                        }
+
+                        @Override
+                        public void onFail(Exception ex) {
+                            VyniUtils.LogException(TAG, "==> updateConfirm onFail ");
+                        }
+
+                        @Override
+                        public void onFinished() {
+                            VyniUtils.LogException(TAG, "==> updateConfirm onFinished ");
+                        }
+                    }
+            );
+        } catch (Exception e) {
+            VyniUtils.LogException(TAG, e);
         }
     }
 }

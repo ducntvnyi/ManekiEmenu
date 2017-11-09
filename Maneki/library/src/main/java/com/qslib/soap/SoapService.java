@@ -248,7 +248,7 @@ public class SoapService {
                             Exception ex = new Exception(soupFault.faultstring);
                             if (soapListener != null) soapListener.onFail(ex);
                         } else if (resultObject instanceof SoapObject) {
-                            String result = ((SoapObject) resultObject).getInnerText();
+                            String result = (String) ((SoapObject) resultObject).getInnerText();
                             System.out.println("Result:: " + result);
                             if (soapListener != null) {
                                 soapListener.onSuccess(result);

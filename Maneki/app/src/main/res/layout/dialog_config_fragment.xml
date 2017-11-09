@@ -90,6 +90,7 @@
                     style="@style/tableRowConfigStyle">
 
                     <com.vnyi.emenu.maneki.customviews.TextViewFont
+                        android:id="@+id/tvBranchLabel"
                         style="@style/tvLabelStyle"
                         android:text="@string/branch" />
 
@@ -107,6 +108,7 @@
                     style="@style/tableRowConfigStyle">
 
                     <com.vnyi.emenu.maneki.customviews.TextViewFont
+                        android:id="@+id/tvTableNameLabel"
                         style="@style/tvLabelStyle"
                         android:text="@string/table_name_device" />
 
@@ -124,6 +126,7 @@
                     style="@style/tableRowConfigStyle">
 
                     <com.vnyi.emenu.maneki.customviews.TextViewFont
+                        android:id="@+id/tvTableNameUserLabel"
                         style="@style/tvLabelStyle"
                         android:text="@string/name_user" />
 
@@ -141,6 +144,7 @@
                     style="@style/tableRowConfigStyle">
 
                     <com.vnyi.emenu.maneki.customviews.TextViewFont
+                        android:id="@+id/tvLoadListParentLabel"
                         style="@style/tvLabelStyle"
                         android:text="@string/load_list_group_parent" />
 
@@ -158,6 +162,7 @@
                     style="@style/tableRowConfigStyle">
 
                     <com.vnyi.emenu.maneki.customviews.TextViewFont
+                        android:id="@+id/tvLinkSaleOffLabel"
                         style="@style/tvLabelStyle"
                         android:text="@string/link_sale_off" />
 
@@ -175,6 +180,7 @@
                     style="@style/tableRowConfigStyle">
 
                     <com.vnyi.emenu.maneki.customviews.TextViewFont
+                        android:id="@+id/tvLinkUseAppLabel"
                         style="@style/tvLabelStyle"
                         android:text="@string/link_use_app" />
 
@@ -192,6 +198,7 @@
                     style="@style/tableRowConfigStyle">
 
                     <com.vnyi.emenu.maneki.customviews.TextViewFont
+                        android:id="@+id/tvChangeTableLabel"
                         style="@style/tvLabelStyle"
                         android:text="@string/change_table" />
 
@@ -209,6 +216,7 @@
                     style="@style/tableRowConfigStyle">
 
                     <com.vnyi.emenu.maneki.customviews.TextViewFont
+                        android:id="@+id/tvNumTableShowLabel"
                         style="@style/tvLabelStyle"
                         android:text="@string/num_table_show" />
 

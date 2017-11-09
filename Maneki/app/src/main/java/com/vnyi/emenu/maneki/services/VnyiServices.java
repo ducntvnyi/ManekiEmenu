@@ -13,7 +13,8 @@ public class VnyiServices {
 
     public static final String NAME_SPACE = "http://tempuri.org/";
     /* URL */
-    public static final String URL_CONFIG = "http://prj.vnyi.com:81"; // fix url
+//    public static final String URL_CONFIG = "http://prj.vnyi.com:81"; // fix url
+    public static final String URL_CONFIG = "http://shctest.ezitouch.com:6868"; // fix url
     public static final String URL = "/TranferData/Emenu.asmx";
 
     private static final String TAG = "VnyiServices";
@@ -370,7 +371,7 @@ public class VnyiServices {
                     .addPropertySoapObject(VnyiApiServices.MACHINE_ID, machineId)
                     .addPropertySoapObject(VnyiApiServices.MACHINE_NAME, machineName)
                     .addPropertySoapObject(VnyiApiServices.LANG_ID, 1)
-                    .addPropertySoapObject(VnyiApiServices.USER_ID, userId)
+                    .addPropertySoapObject(VnyiApiServices.CUSTOMER_CODE, userId)
                     .execute();
 
         } catch (Exception e) {

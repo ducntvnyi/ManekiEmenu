@@ -22,6 +22,7 @@ public class SoapServiceVnyi {
     //    private static final int DEFAULT_TIMEOUT = 200 * 1000; // 200 seconds
     private static final int DEFAULT_TIMEOUT = 120 * 1000; // 200 seconds
     // SoapEnvelope version
+//    private static int soapEnvelopeVersion = SoapEnvelope.VER12;
     private static int soapEnvelopeVersion = SoapEnvelope.VER12;
 
     private String nameSpace = "";

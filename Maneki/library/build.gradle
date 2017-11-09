@@ -63,5 +63,6 @@ dependencies {
     compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'
     compile 'com.squareup.retrofit2:retrofit:2.1.0'
     compile 'com.squareup.retrofit2:converter-jackson:2.1.0'
+    compile 'com.google.code.ksoap2-android:ksoap2-android:3.6.0'
 
 }

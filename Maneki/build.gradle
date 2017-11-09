@@ -18,6 +18,10 @@ allprojects {
     repositories {
         jcenter()
     }
+
+    repositories {
+        maven { url 'https://oss.sonatype.org/content/repositories/ksoap2-android-releases/' }
+    }
 }
 
 task clean(type: Delete) {

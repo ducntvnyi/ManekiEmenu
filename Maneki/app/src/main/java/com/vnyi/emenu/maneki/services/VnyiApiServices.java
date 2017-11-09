@@ -10,7 +10,7 @@ public interface VnyiApiServices {
     String NAME_SPACE = "http://tempuri.org/";
     String BASE_URL = "/TranferData/Emenu.asmx";
     String URL_CONFIG = "http://shctest.ezitouch.com:6868/";
-    int CONFIG_TYPE_VALUE = 5;
+    int CONFIG_TYPE_VALUE = 6;
     String KEY_MESSAGE = "KeyMessage";
 
     /* KEY CONFIG */
@@ -129,35 +129,36 @@ public interface VnyiApiServices {
     // functions
     String CONFIG_VALUE_LOAD = "ConfigValue_Load";
     String POST_TICKET_UPDATE_INFO = "Ticket_UpdateInfo";
-    String POST_TICKET_LOAD_INFO = "Ticket_LoadInfo";
-    String GET_LIST_TEM_CATEGORY_NO_TICKET = "ItemCategory_GetListNoTicket";
-    String GET_ITEM_CATEGORY_GET_DETAIL = "ItemCategory_GetDetail";
-    String GET_TICKET_ITEM_ORDER = "Ticket_GetItemOrder";
-    String POST_TICKET_UPDATE_ITEM = "Ticket_UpdateItem";
+    String POST_TICKET_LOAD_INFO = "Ticket_LoadInfo"; // ticketId =0;
+    String GET_LIST_TEM_CATEGORY_NO_TICKET = "ItemCategory_GetListNoTicket"; // menuLeft
+    String GET_ITEM_CATEGORY_GET_DETAIL = "ItemCategory_GetDetail"; // menuRight
+    String GET_TICKET_ITEM_ORDER = "Ticket_GetItemOrder"; // man hinh order:
+    String POST_TICKET_UPDATE_ITEM = "Ticket_UpdateItem";// add - reduce - or update Item
     String POST_TICKET_SEND_ITEM_ORDER = "Ticket_SendItemOrder";
-    String POST_TICKET_SEND_REQUEST_WAITER = "Ticket_SendRequestToWaiter";
-    String REQUEST_GET_LIST = "Request_GetList";
+    String REQUEST_GET_LIST = "Request_GetList"; // goi phuc vu
+    String POST_TICKET_SEND_REQUEST_WAITER = "Ticket_SendRequestToWaiter";// goi phuc vu
     String POST_TICKET_PROCESSING_PAYMENT_INVOICE = "Ticket_ProcessingPaymentWithInvoice";
-    String POST_TICKET_PROCESSING_PAYMENT = "Ticket_ProcessingPayment";
-    String POST_TICKET_CANCEL_ITEM = "Ticket_CancelItem";
-    String GET_LOAD_INFO_TICKET_PAYMENT = "Ticket_LoadInfoForPayment";
+    String POST_TICKET_PROCESSING_PAYMENT = "Ticket_ProcessingPayment"; // payment screen
+    String GET_LOAD_INFO_TICKET_PAYMENT = "Ticket_LoadInfoForPayment";// payment screen
+    String GET_LIST_MAP_TABLE = "Table_GetList"; // SƠ ĐỒ BÀN - update ten ban cho thiet bi.( load lai man hinh menu )
+    String GET_TICKET_CHECK_STATUS_BILL = "Ticket_CheckStatusBill"; // chay ngam
     String POST_UPDATE_ITEM_STATUS_ORDERED = "Ticket_UpdateItemStatusOrdered";
-    String POST_TICKET_CANCEL_ALL_ITEM_ORDERING = "Ticket_CancelAllItemOrdering";
-    String GET_TICKET_CHECK_STATUS_BILL = "Ticket_CheckStatusBill";
     String GET_CONFIG_VALUE_TABLE_NAME_BY_ID = "ConfigValue_GetTableNameById";
     String CONFIG_VALUE_GET_BRANCH = "ConfigValue_GetBranch";
     String GET_CONFIG_VALUE_USER_ORDER = "ConfigValue_GetUserOrder";
-    String GET_LIST_TABLE = "Table_GetList";
     String CONFIG_VALUE_UPDATE_INFO = "ConfigValue_UpdateInfo";
+
+    String POST_TICKET_CANCEL_ITEM = "Ticket_CancelItem";
+    String POST_TICKET_CANCEL_ALL_ITEM_ORDERING = "Ticket_CancelAllItemOrdering"; // huy order
+    String POST_SYS_LOG_ERROR_CLIENT = "Sys_LogErrorClient";
 
     // emenuOrder
     String LOGIN_SYSTEM = "Srv_LoginSystem";
     String GET_AREA_LIST = "Area_GetList";
-    String GET_ITEM_CATEGORY_GET_LIST = "ItemCategory_GetList"; // menu left
+    String GET_ITEM_CATEGORY_GET_LIST = "ItemCategory_GetList"; // k su dung
     String POST_USER_UPDATE_PASSWORD = "User_UpdatePassword";
     String CHECK_SECURITY_CHECK_ROLE = "Security_CheckRole";
     String POST_TICKET_UPDATE_ITEM_STATUS = "Ticket_UpdateItemStatus";
-    String POST_SYS_LOG_ERROR_CLIENT = "Sys_LogErrorClient";
 
 }
 

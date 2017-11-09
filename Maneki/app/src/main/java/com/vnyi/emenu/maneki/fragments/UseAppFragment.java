@@ -5,6 +5,9 @@ import android.view.View;
 import android.webkit.WebView;
 
 import com.vnyi.emenu.maneki.R;
+import com.vnyi.emenu.maneki.applications.VnyiPreference;
+import com.vnyi.emenu.maneki.models.ConfigValueModel;
+import com.vnyi.emenu.maneki.utils.Constant;
 
 import butterknife.BindView;
 
@@ -20,6 +23,8 @@ public class UseAppFragment extends BaseFragment {
     @BindView(R.id.webView)
     WebView webView;
 
+    private ConfigValueModel mConfigValueModel;
+
     public static Fragment newInstance() {
         Fragment fragment = new UseAppFragment();
         return fragment;
@@ -33,16 +38,19 @@ public class UseAppFragment extends BaseFragment {
 
     @Override
     public void initViews() {
+        mConfigValueModel = VnyiPreference.getInstance(getContext()).getObject(Constant.KEY_CONFIG_VALUE, ConfigValueModel.class);
+
         // onListener
         webView.getSettings().setLoadsImagesAutomatically(true);
         webView.getSettings().setJavaScriptEnabled(true);
         webView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
-        webView.loadUrl(URL);
+        if (mConfigValueModel == null) return;
+        webView.loadUrl(mConfigValueModel.getLinkUserApp().getConfigDefaultValue());
 
     }
 
     @Override
     public void initData() {
-        // new ArrayList<>
+        // new ArrayList<>130M tiễn lãi 60Tháng + (2% lãi gốc)
     }
 }

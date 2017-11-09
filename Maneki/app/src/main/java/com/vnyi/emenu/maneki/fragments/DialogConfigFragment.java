@@ -14,8 +14,11 @@ import android.widget.TableRow;
 import com.qslib.fragment.BaseMainDialogFragment;
 import com.qslib.util.KeyboardUtils;
 import com.vnyi.emenu.maneki.R;
+import com.vnyi.emenu.maneki.applications.VnyiPreference;
 import com.vnyi.emenu.maneki.customviews.ButtonFont;
 import com.vnyi.emenu.maneki.customviews.TextViewFont;
+import com.vnyi.emenu.maneki.models.ConfigValueModel;
+import com.vnyi.emenu.maneki.utils.Constant;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -72,6 +75,27 @@ public class DialogConfigFragment extends BaseMainDialogFragment {
     @BindView(R.id.btnConfirmConfig)
     ButtonFont btnConfirmConfig;
 
+    // views label
+    @BindView(R.id.tvBranchLabel)
+    TextViewFont tvBranchLabel;
+    @BindView(R.id.tvTableNameLabel)
+    TextViewFont tvTableNameLabel;
+    @BindView(R.id.tvTableNameUserLabel)
+    TextViewFont tvTableNameUserLabel;
+    @BindView(R.id.tvLoadListParentLabel)
+    TextViewFont tvLoadListParentLabel;
+    @BindView(R.id.tvLinkSaleOffLabel)
+    TextViewFont tvLinkSaleOffLabel;
+    @BindView(R.id.tvLinkUseAppLabel)
+    TextViewFont tvLinkUseAppLabel;
+    @BindView(R.id.tvChangeTableLabel)
+    TextViewFont tvChangeTableLabel;
+    @BindView(R.id.tvNumTableShowLabel)
+    TextViewFont tvNumTableShowLabel;
+
+
+    private ConfigValueModel mConfigValueModel;
+
     public static DialogConfigFragment newInstance() {
         DialogConfigFragment fragment = new DialogConfigFragment();
         return fragment;
@@ -90,7 +114,7 @@ public class DialogConfigFragment extends BaseMainDialogFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        mConfigValueModel = VnyiPreference.getInstance(getContext()).getObject(Constant.KEY_CONFIG_VALUE, ConfigValueModel.class);
     }
 
     @Override
@@ -107,6 +131,36 @@ public class DialogConfigFragment extends BaseMainDialogFragment {
             }
             KeyboardUtils.hideSoftKeyboard(getActivity());
         });
+        loadData();
+    }
+
+    private void loadData() {
+
+        if (mConfigValueModel != null) {
+            tvBranchLabel.setText(mConfigValueModel.getBranch().getConfigName());
+            tvBranch.setText(mConfigValueModel.getBranch().getConfigDefaultValue());
+
+            tvTableNameLabel.setText(mConfigValueModel.getTableName().getConfigName());
+            tvTableName.setText(mConfigValueModel.getTableName().getConfigDefaultValue());
+
+            tvTableNameUserLabel.setText(mConfigValueModel.getUserOrder().getConfigName());
+            tvTableNameUser.setText(mConfigValueModel.getUserOrder().getConfigDefaultValue());
+
+            tvLoadListParentLabel.setText(mConfigValueModel.getLoadListParent().getConfigName());
+            tvLoadListParent.setText(mConfigValueModel.getLoadListParent().getConfigDefaultValue());
+
+            tvLinkSaleOffLabel.setText(mConfigValueModel.getLinkSaleOff().getConfigName());
+            tvLinkSaleOff.setText(mConfigValueModel.getLinkSaleOff().getConfigDefaultValue());
+
+            tvLinkUseAppLabel.setText(mConfigValueModel.getLinkUserApp().getConfigName());
+            tvLinkUseApp.setText(mConfigValueModel.getLinkUserApp().getConfigDefaultValue());
+
+            tvChangeTableLabel.setText(mConfigValueModel.getChangeTable().getConfigName());
+            tvChangeTable.setText(mConfigValueModel.getChangeTable().getConfigDefaultValue());
+
+            tvNumTableShowLabel.setText(mConfigValueModel.getNumbTableShow().getConfigName());
+            tvNumTableShow.setText(mConfigValueModel.getNumbTableShow().getConfigDefaultValue());
+        }
     }
 
     @OnClick(R.id.ivDismiss)

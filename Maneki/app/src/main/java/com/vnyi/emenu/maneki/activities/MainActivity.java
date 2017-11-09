@@ -132,9 +132,12 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onSuccess(SoapResponse soapResponse) {
                 hideProgressDialog();
-                VyniUtils.LogException(TAG, "==> ConfigValue onSuccess:: " + soapResponse.toString());
+                VyniUtils.LogException(TAG, "==> ConfigValue onSuccess ");
+                if (soapResponse == null) return;
+
                 if (soapResponse.getStatus().toLowerCase().equals("true")) {
                     if (soapResponse.getResult() != null) {
+                        VyniUtils.LogException(TAG, "==> ConfigValue onSuccess:: " + soapResponse.toString());
                         try {
                             JSONObject configValueObject = new JSONObject(soapResponse.getResult());
                             // save to local
