@@ -40,6 +40,7 @@
             app:font="@string/font_cour" />
 
         <com.vnyi.emenu.maneki.customviews.EditTextFont
+            android:id="@+id/edtLinkServer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_layout_default"
@@ -74,9 +75,9 @@
         <ScrollView
             android:id="@+id/scrollViewConfig"
             android:layout_width="match_parent"
-            android:layout_height="300dp"
+            android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/padding_content"
-            android:visibility="gone">
+            android:visibility="visible">
 
             <LinearLayout
                 android:id="@+id/llConfig"
@@ -104,7 +105,7 @@
                 <View style="@style/lineHorizontalStyle" />
 
                 <TableRow
-                    android:id="@+id/tbrTableName"
+                    android:id="@+id/tbrDevice"
                     style="@style/tableRowConfigStyle">
 
                     <com.vnyi.emenu.maneki.customviews.TextViewFont
@@ -158,7 +159,7 @@
                 <View style="@style/lineHorizontalStyle" />
 
                 <TableRow
-                    android:id="@+id/tbrLinkSaleOff"
+                    android:id="@+id/tbrLinkSaleOff1111"
                     style="@style/tableRowConfigStyle">
 
                     <com.vnyi.emenu.maneki.customviews.TextViewFont

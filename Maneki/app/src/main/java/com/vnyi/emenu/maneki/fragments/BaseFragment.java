@@ -13,7 +13,7 @@ import com.qslib.util.ProgressDialogUtils;
 import com.qslib.util.ToastUtils;
 import com.vnyi.emenu.maneki.R;
 import com.vnyi.emenu.maneki.activities.MainActivity;
-import com.vnyi.emenu.maneki.utils.VyniUtils;
+import com.vnyi.emenu.maneki.utils.VnyiUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -39,9 +39,9 @@ public abstract class BaseFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         try {
-//            LanguageUtils.configLanguage(mActivity, VyniUtils.getLanguageApp(mActivity));
+//            LanguageUtils.configLanguage(mActivity, VnyiUtils.getLanguageApp(mActivity));
         } catch (Exception e) {
-            VyniUtils.LogException(TAG, e);
+            VnyiUtils.LogException(TAG, e);
         }
     }
 
@@ -72,7 +72,7 @@ public abstract class BaseFragment extends Fragment {
 //            imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
 
         } catch (Exception e) {
-            VyniUtils.LogException(TAG, e);
+            VnyiUtils.LogException(TAG, e);
         }
     }
 
@@ -93,7 +93,7 @@ public abstract class BaseFragment extends Fragment {
             progressDialog.setMessage(getString(R.string.loading));
             progressDialog.show(mActivity);
         } catch (Exception e) {
-            VyniUtils.LogException(TAG, e);
+            VnyiUtils.LogException(TAG, e);
         }
     }
 
@@ -107,7 +107,7 @@ public abstract class BaseFragment extends Fragment {
                 progressDialog = null;
             }
         } catch (Exception e) {
-            VyniUtils.LogException(TAG, e);
+            VnyiUtils.LogException(TAG, e);
         }
     }
 

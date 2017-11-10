@@ -8,6 +8,7 @@ import com.vnyi.emenu.maneki.models.response.config.ConfigModel;
 
 public class ConfigValueModel {
 
+    private String linkServer;
     private ConfigModel branch;
     private ConfigModel tableName;
     private ConfigModel userOrder;
@@ -16,6 +17,14 @@ public class ConfigValueModel {
     private ConfigModel linkUserApp;
     private ConfigModel changeTable;
     private ConfigModel numbTableShow;
+
+    public String getLinkServer() {
+        return linkServer;
+    }
+
+    public void setLinkServer(String linkServer) {
+        this.linkServer = linkServer;
+    }
 
     public ConfigModel getBranch() {
         return branch;
@@ -79,5 +88,20 @@ public class ConfigValueModel {
 
     public void setNumbTableShow(ConfigModel numbTableShow) {
         this.numbTableShow = numbTableShow;
+    }
+
+    @Override
+    public String toString() {
+        return "ConfigValueModel{" +
+                "linkServer='" + linkServer + '\'' +
+                ", branch=" + branch.toString() +
+                ", tableName=" + tableName.toString() +
+                ", userOrder=" + userOrder.toString() +
+                ", loadListParent=" + loadListParent.toString() +
+                ", linkSaleOff=" + linkSaleOff.toString() +
+                ", linkUserApp=" + linkUserApp.toString() +
+                ", changeTable=" + changeTable.toString() +
+                ", numbTableShow=" + numbTableShow.toString() +
+                '}';
     }
 }

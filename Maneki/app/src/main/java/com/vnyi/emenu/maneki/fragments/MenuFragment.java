@@ -24,7 +24,7 @@ import com.vnyi.emenu.maneki.models.ItemModel;
 import com.vnyi.emenu.maneki.models.response.Branch;
 import com.vnyi.emenu.maneki.utils.Constant;
 import com.vnyi.emenu.maneki.utils.ViewUtils;
-import com.vnyi.emenu.maneki.utils.VyniUtils;
+import com.vnyi.emenu.maneki.utils.VnyiUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -84,6 +84,37 @@ public class MenuFragment extends BaseFragment {
     public void initViews() {
         try {
 
+            debounceOrderItem();
+            // init menu adapter
+            mBranches = new ArrayList<>();
+            mMenuAdapter = new MenuAdapter(mContext, mBranches, branchConsumer -> {
+                position = branchConsumer.getPosition();
+                selectMenu(branchConsumer);
+
+            });
+            LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
+            rvMenu.setAdapter(mMenuAdapter);
+            rvMenu.setLayoutManager(layoutManager);
+
+            // init item adapter
+            mItemModels = new ArrayList<>();
+            mItemAdapter = new ItemAdapter(mContext, mItemModels, animationView -> {
+                onClickAddToCart(animationView.getImageView(), animationView.getView());
+
+            });
+            mGridLayoutManager = new GridLayoutManager(mContext, 4);
+            rvItem.setAdapter(mItemAdapter);
+            rvItem.setLayoutManager(mGridLayoutManager);
+
+        } catch (Exception e) {
+            VnyiUtils.LogException(TAG, e);
+        }
+
+
+    }
+
+    private void debounceOrderItem() {
+        try {
             RxTextView.textChanges(tvCart)
                     .debounce(5, TimeUnit.SECONDS, AndroidSchedulers.mainThread())
                     .observeOn(Schedulers.io())
@@ -109,33 +140,11 @@ public class MenuFragment extends BaseFragment {
 
                         }
                     });
-            // init menu adapter
-            mBranches = new ArrayList<>();
-            mMenuAdapter = new MenuAdapter(mContext, mBranches, branchConsumer -> {
-                position = branchConsumer.getPosition();
-                selectMenu(branchConsumer);
-
-            });
-            LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
-            rvMenu.setAdapter(mMenuAdapter);
-            rvMenu.setLayoutManager(layoutManager);
-
-            // init item adapter
-            mItemModels = new ArrayList<>();
-            mItemAdapter = new ItemAdapter(mContext, mItemModels, animationView -> {
-                onClickAddToCart(animationView.getImageView(), animationView.getView());
-
-            });
-            mGridLayoutManager = new GridLayoutManager(mContext, 4);
-            rvItem.setAdapter(mItemAdapter);
-            rvItem.setLayoutManager(mGridLayoutManager);
-
         } catch (Exception e) {
-            VyniUtils.LogException(TAG, e);
+            VnyiUtils.LogException(TAG, e);
         }
-
-
     }
+
 
     @Override
     public void initData() {
@@ -180,7 +189,7 @@ public class MenuFragment extends BaseFragment {
             mItemAdapter.setItemModelList(mItemModels);
 
         } catch (Exception e) {
-            VyniUtils.LogException(TAG, e);
+            VnyiUtils.LogException(TAG, e);
         }
     }
 
@@ -205,7 +214,7 @@ public class MenuFragment extends BaseFragment {
                 imageView.setVisibility(View.GONE);
             }, 100);
         } catch (Exception e) {
-            VyniUtils.LogException(TAG, e);
+            VnyiUtils.LogException(TAG, e);
         }
 
 
@@ -216,7 +225,7 @@ public class MenuFragment extends BaseFragment {
         try {
             DialogConfirmOrderFragment.newInstance().show(getFragmentManager(), "");
         } catch (Exception e) {
-            VyniUtils.LogException(TAG, e);
+            VnyiUtils.LogException(TAG, e);
         }
     }
 
@@ -234,7 +243,7 @@ public class MenuFragment extends BaseFragment {
             }
             selectMenu(branch);
         } catch (Exception e) {
-            VyniUtils.LogException(TAG, e);
+            VnyiUtils.LogException(TAG, e);
         }
 
     }
@@ -252,7 +261,7 @@ public class MenuFragment extends BaseFragment {
             }
             selectMenu(branch);
         } catch (Exception e) {
-            VyniUtils.LogException(TAG, e);
+            VnyiUtils.LogException(TAG, e);
         }
 
     }
@@ -291,7 +300,7 @@ public class MenuFragment extends BaseFragment {
                 }
             }).startAnimation();
         } catch (Exception e) {
-            VyniUtils.LogException(TAG, e);
+            VnyiUtils.LogException(TAG, e);
         }
 
 
@@ -305,7 +314,7 @@ public class MenuFragment extends BaseFragment {
             mMenuAdapter.notifyDataSetChanged();
             rvMenu.smoothScrollToPosition(position);
         } catch (Exception e) {
-            VyniUtils.LogException(TAG, e);
+            VnyiUtils.LogException(TAG, e);
         }
     }
 

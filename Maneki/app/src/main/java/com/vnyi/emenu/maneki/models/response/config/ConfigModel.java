@@ -75,7 +75,7 @@ public class ConfigModel implements Serializable {
     public void setControlType(int controlType) {
         this.controlType = controlType;
     }
-
+    // 0 : chi nhanh, 1: load danh sach nhom cha
     public int getTypeValue() {
         String configCode = getConfigCode().toUpperCase();
 

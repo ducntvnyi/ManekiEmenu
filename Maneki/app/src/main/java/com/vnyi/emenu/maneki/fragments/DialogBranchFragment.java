@@ -2,17 +2,24 @@ package com.vnyi.emenu.maneki.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.qslib.fragment.BaseMainDialogFragment;
 import com.vnyi.emenu.maneki.R;
+import com.vnyi.emenu.maneki.adapters.BranchAdapter;
+import com.vnyi.emenu.maneki.customviews.DividerItemDecoration;
+import com.vnyi.emenu.maneki.customviews.TextViewFont;
 import com.vnyi.emenu.maneki.models.response.Branch;
 
 import java.util.List;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
+import java8.util.function.Consumer;
 
 /**
  * Created by Hungnd on 11/8/17. 
@@ -20,7 +27,14 @@ import butterknife.ButterKnife;
 
 public class DialogBranchFragment extends BaseMainDialogFragment {
 
+    @BindView(R.id.tvTitle)
+    TextViewFont tvTitle;
+    @BindView(R.id.rvBranchList)
+    RecyclerView rvBranchList;
+
     private List<Branch> mBranches;
+    private Consumer<Branch> mConsumer;
+    private BranchAdapter mBranchAdapter;
 
     public static DialogBranchFragment newInstance() {
         DialogBranchFragment fragment = new DialogBranchFragment();
@@ -52,13 +66,28 @@ public class DialogBranchFragment extends BaseMainDialogFragment {
 
     private void initViews() {
 
+        mBranchAdapter = new BranchAdapter(getContext(), mBranches, branch -> {
+            mConsumer.accept(branch);
+            dismiss();
+        });
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
+        rvBranchList.setAdapter(mBranchAdapter);
+        rvBranchList.setLayoutManager(layoutManager);
+        rvBranchList.addItemDecoration(new DividerItemDecoration(getContext()));
     }
 
     private void loadData() {
+        mBranchAdapter.notifyDataSetChanged();
     }
 
     public DialogBranchFragment setListBranch(List<Branch> branches) {
         this.mBranches = branches;
         return this;
     }
+
+    public DialogBranchFragment setConsumer(Consumer<Branch> branchConsumer) {
+        this.mConsumer = branchConsumer;
+        return this;
+    }
+
 }

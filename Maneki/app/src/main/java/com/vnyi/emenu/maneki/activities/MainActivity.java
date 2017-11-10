@@ -9,9 +9,6 @@ import android.view.View;
 
 import com.qslib.customview.textview.ExtTextView;
 import com.qslib.fragment.FragmentUtils;
-import com.qslib.sharepreferences.AppPreferences;
-import com.qslib.soap.SoapListenerVyni;
-import com.qslib.soap.SoapResponse;
 import com.qslib.util.BackUtils;
 import com.qslib.util.KeyboardUtils;
 import com.vnyi.emenu.maneki.R;
@@ -24,15 +21,10 @@ import com.vnyi.emenu.maneki.fragments.OrderFragment;
 import com.vnyi.emenu.maneki.fragments.PaymentFragment;
 import com.vnyi.emenu.maneki.fragments.SaleOffFragment;
 import com.vnyi.emenu.maneki.fragments.UseAppFragment;
-import com.vnyi.emenu.maneki.services.VnyiApiServices;
-import com.vnyi.emenu.maneki.services.VnyiServices;
 import com.vnyi.emenu.maneki.utils.Constant;
 import com.vnyi.emenu.maneki.utils.LanguageUtil;
 import com.vnyi.emenu.maneki.utils.VnyiContextWrapper;
-import com.vnyi.emenu.maneki.utils.VyniUtils;
-
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.vnyi.emenu.maneki.utils.VnyiUtils;
 
 import java.util.Locale;
 import java.util.Stack;
@@ -103,7 +95,7 @@ public class MainActivity extends BaseActivity {
 //                    this.changeTabBottom(currentFragmentIndex, true);
                 }
             } catch (Exception e) {
-                VyniUtils.LogException(TAG, e);
+                VnyiUtils.LogException(TAG, e);
             }
         } else {
             BackUtils.onClickExit(this, getString(R.string.double_tap_to_exit));
@@ -116,53 +108,7 @@ public class MainActivity extends BaseActivity {
     }
 
     private void loadData() {
-
-        String machineId = AppPreferences.getInstance(getApplicationContext()).getString(VnyiApiServices.MACHINE_ID);
-        String machineName = AppPreferences.getInstance(getApplicationContext()).getString(VnyiApiServices.MACHINE_NAME);
-        String url = VnyiServices.URL_CONFIG;
-
-        VnyiServices.requestGetConfigValue(url, VnyiApiServices.CONFIG_TYPE_VALUE, "584357E3-02BE-406A-962B-51B2D03D1703", "Duong Van Chien’s iPad", "", new SoapListenerVyni() {
-
-            @Override
-            public void onStarted() {
-                VyniUtils.LogException(TAG, "==> ConfigValue onStarted ");
-                showProgressDialog();
-            }
-
-            @Override
-            public void onSuccess(SoapResponse soapResponse) {
-                hideProgressDialog();
-                VyniUtils.LogException(TAG, "==> ConfigValue onSuccess ");
-                if (soapResponse == null) return;
-
-                if (soapResponse.getStatus().toLowerCase().equals("true")) {
-                    if (soapResponse.getResult() != null) {
-                        VyniUtils.LogException(TAG, "==> ConfigValue onSuccess:: " + soapResponse.toString());
-                        try {
-                            JSONObject configValueObject = new JSONObject(soapResponse.getResult());
-                            // save to local
-                            saveConfigValueLoad(configValueObject, false);
-
-                        } catch (JSONException e) {
-                            VyniUtils.LogException(TAG, "==> jsonObject passed error:  " + e.getMessage());
-                        }
-
-                    }
-                }
-            }
-
-            @Override
-            public void onFail(Exception ex) {
-                hideProgressDialog();
-                VyniUtils.LogException(TAG, "==> ConfigValue onFail " + ex.getMessage());
-            }
-
-            @Override
-            public void onFinished() {
-                hideProgressDialog();
-                VyniUtils.LogException(TAG, "==> ConfigValue onFinished ");
-            }
-        });
+        loadConfigValue();
     }
 
     public int getColorResource(int color) {
@@ -390,7 +336,7 @@ public class MainActivity extends BaseActivity {
             this.currentFragmentIndex = index;
             this.fragments.clear();
         } catch (Exception e) {
-            VyniUtils.LogException(TAG, e);
+            VnyiUtils.LogException(TAG, e);
         }
     }
 
@@ -437,15 +383,15 @@ public class MainActivity extends BaseActivity {
         try {
             if (VnyiPreference.getInstance(this).getString(KEY_LANGUAGE).equals(VIETNAMESE)) {
                 VnyiPreference.getInstance(this).putString(KEY_LANGUAGE, ENGLISH);
-                LanguageUtil.changeLanguageType(this, VyniUtils.stringToLocale(ENGLISH));
+                LanguageUtil.changeLanguageType(this, VnyiUtils.stringToLocale(ENGLISH));
 
             } else {
                 VnyiPreference.getInstance(getApplicationContext()).putString(KEY_LANGUAGE, VIETNAMESE);
-                LanguageUtil.changeLanguageType(this, VyniUtils.stringToLocale(VIETNAMESE));
+                LanguageUtil.changeLanguageType(this, VnyiUtils.stringToLocale(VIETNAMESE));
             }
 
         } catch (Exception e) {
-            VyniUtils.LogException(TAG, e);
+            VnyiUtils.LogException(TAG, e);
         }
 
     }

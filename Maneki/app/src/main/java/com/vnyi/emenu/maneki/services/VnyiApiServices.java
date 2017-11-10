@@ -140,7 +140,7 @@ public interface VnyiApiServices {
     String POST_TICKET_PROCESSING_PAYMENT_INVOICE = "Ticket_ProcessingPaymentWithInvoice";
     String POST_TICKET_PROCESSING_PAYMENT = "Ticket_ProcessingPayment"; // payment screen
     String GET_LOAD_INFO_TICKET_PAYMENT = "Ticket_LoadInfoForPayment";// payment screen
-    String GET_LIST_MAP_TABLE = "Table_GetList"; // SƠ ĐỒ BÀN - update ten ban cho thiet bi.( load lai man hinh menu )
+    String GET_LIST_TABLE = "Table_GetList"; // SƠ ĐỒ BÀN - update ten ban cho thiet bi.( load lai man hinh menu )
     String GET_TICKET_CHECK_STATUS_BILL = "Ticket_CheckStatusBill"; // chay ngam
     String POST_UPDATE_ITEM_STATUS_ORDERED = "Ticket_UpdateItemStatusOrdered";
     String GET_CONFIG_VALUE_TABLE_NAME_BY_ID = "ConfigValue_GetTableNameById";

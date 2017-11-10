@@ -59,7 +59,7 @@ public interface Constant {
     String KEY_B_USECHOOSETABLE = "B_USECHOOSETABLE";
     String KEY_I_COLUMNTABLE = "I_COLUMNTABLE";
     String KEY_CONFIG_VALUE = "CONFIG_VALUE";
-
-
-
+    String KEY_LINK_SERVER = "LINK_SERVER";
+    String KEY_LIST_BRANCH = "list branch";
+    String KEY_LIST_USER_ORDER = "list user order";
 }

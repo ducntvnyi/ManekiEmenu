@@ -3,7 +3,7 @@ package com.vnyi.emenu.maneki.services;
 
 import com.qslib.soap.SoapListenerVyni;
 import com.qslib.soap.SoapServiceVnyi;
-import com.vnyi.emenu.maneki.utils.VyniUtils;
+import com.vnyi.emenu.maneki.utils.VnyiUtils;
 
 /**
  * Created by Hungnd on 11/1/17.
@@ -58,7 +58,7 @@ public class VnyiServices {
                     .execute();
 
         } catch (Exception e) {
-            VyniUtils.LogException(TAG, e);
+            VnyiUtils.LogException(TAG, e);
         }
     }
 
@@ -85,7 +85,7 @@ public class VnyiServices {
                     .execute();
 
         } catch (Exception e) {
-            VyniUtils.LogException(TAG, e);
+            VnyiUtils.LogException(TAG, e);
         }
     }
 
@@ -115,7 +115,7 @@ public class VnyiServices {
                     .execute();
 
         } catch (Exception e) {
-            VyniUtils.LogException(TAG, e);
+            VnyiUtils.LogException(TAG, e);
         }
     }
 
@@ -139,7 +139,7 @@ public class VnyiServices {
                     .execute();
 
         } catch (Exception e) {
-            VyniUtils.LogException(TAG, e);
+            VnyiUtils.LogException(TAG, e);
         }
     }
 
@@ -161,7 +161,7 @@ public class VnyiServices {
                     .execute();
 
         } catch (Exception e) {
-            VyniUtils.LogException(TAG, e);
+            VnyiUtils.LogException(TAG, e);
         }
     }
 
@@ -185,7 +185,7 @@ public class VnyiServices {
                     .execute();
 
         } catch (Exception e) {
-            VyniUtils.LogException(TAG, e);
+            VnyiUtils.LogException(TAG, e);
         }
     }
 
@@ -207,7 +207,7 @@ public class VnyiServices {
                     .execute();
 
         } catch (Exception e) {
-            VyniUtils.LogException(TAG, e);
+            VnyiUtils.LogException(TAG, e);
         }
     }
 
@@ -248,7 +248,7 @@ public class VnyiServices {
                     .execute();
 
         } catch (Exception e) {
-            VyniUtils.LogException(TAG, e);
+            VnyiUtils.LogException(TAG, e);
         }
     }
 
@@ -271,7 +271,7 @@ public class VnyiServices {
                     .execute();
 
         } catch (Exception e) {
-            VyniUtils.LogException(TAG, e);
+            VnyiUtils.LogException(TAG, e);
         }
     }
 
@@ -294,7 +294,7 @@ public class VnyiServices {
                     .execute();
 
         } catch (Exception e) {
-            VyniUtils.LogException(TAG, e);
+            VnyiUtils.LogException(TAG, e);
         }
     }
 
@@ -323,7 +323,7 @@ public class VnyiServices {
                     .execute();
 
         } catch (Exception e) {
-            VyniUtils.LogException(TAG, e);
+            VnyiUtils.LogException(TAG, e);
         }
     }
 
@@ -349,7 +349,7 @@ public class VnyiServices {
                     .execute();
 
         } catch (Exception e) {
-            VyniUtils.LogException(TAG, e);
+            VnyiUtils.LogException(TAG, e);
         }
     }
 
@@ -375,7 +375,7 @@ public class VnyiServices {
                     .execute();
 
         } catch (Exception e) {
-            VyniUtils.LogException(TAG, e);
+            VnyiUtils.LogException(TAG, e);
         }
     }
 
@@ -411,7 +411,7 @@ public class VnyiServices {
                     .execute();
 
         } catch (Exception e) {
-            VyniUtils.LogException(TAG, e);
+            VnyiUtils.LogException(TAG, e);
         }
     }
 
@@ -428,7 +428,7 @@ public class VnyiServices {
                     .execute();
 
         } catch (Exception e) {
-            VyniUtils.LogException(TAG, e);
+            VnyiUtils.LogException(TAG, e);
         }
     }
 
@@ -453,7 +453,7 @@ public class VnyiServices {
                     .execute();
 
         } catch (Exception e) {
-            VyniUtils.LogException(TAG, e);
+            VnyiUtils.LogException(TAG, e);
         }
     }
 
@@ -479,7 +479,7 @@ public class VnyiServices {
                     .execute();
 
         } catch (Exception e) {
-            VyniUtils.LogException(TAG, e);
+            VnyiUtils.LogException(TAG, e);
         }
     }
 
@@ -507,7 +507,7 @@ public class VnyiServices {
                     .execute();
 
         } catch (Exception e) {
-            VyniUtils.LogException(TAG, e);
+            VnyiUtils.LogException(TAG, e);
         }
     }
 
@@ -535,7 +535,7 @@ public class VnyiServices {
                     .execute();
 
         } catch (Exception e) {
-            VyniUtils.LogException(TAG, e);
+            VnyiUtils.LogException(TAG, e);
         }
     }
 
@@ -559,7 +559,7 @@ public class VnyiServices {
                     .execute();
 
         } catch (Exception e) {
-            VyniUtils.LogException(TAG, e);
+            VnyiUtils.LogException(TAG, e);
         }
     }
 
@@ -583,7 +583,7 @@ public class VnyiServices {
                     .execute();
 
         } catch (Exception e) {
-            VyniUtils.LogException(TAG, e);
+            VnyiUtils.LogException(TAG, e);
         }
     }
 
@@ -604,7 +604,7 @@ public class VnyiServices {
                     .execute();
 
         } catch (Exception e) {
-            VyniUtils.LogException(TAG, e);
+            VnyiUtils.LogException(TAG, e);
         }
     }
 
@@ -628,7 +628,7 @@ public class VnyiServices {
                     .execute();
 
         } catch (Exception e) {
-            VyniUtils.LogException(TAG, e);
+            VnyiUtils.LogException(TAG, e);
         }
     }
 
@@ -649,7 +649,7 @@ public class VnyiServices {
                     .execute();
 
         } catch (Exception e) {
-            VyniUtils.LogException(TAG, e);
+            VnyiUtils.LogException(TAG, e);
         }
     }
 
@@ -676,7 +676,7 @@ public class VnyiServices {
                     .execute();
 
         } catch (Exception e) {
-            VyniUtils.LogException(TAG, e);
+            VnyiUtils.LogException(TAG, e);
         }
     }
 
@@ -695,7 +695,7 @@ public class VnyiServices {
                     .execute();
 
         } catch (Exception e) {
-            VyniUtils.LogException(TAG, e);
+            VnyiUtils.LogException(TAG, e);
         }
     }
 
@@ -716,7 +716,33 @@ public class VnyiServices {
                     .execute();
 
         } catch (Exception e) {
-            VyniUtils.LogException(TAG, e);
+            VnyiUtils.LogException(TAG, e);
+        }
+    }
+
+    /**
+     * get table list for config
+     *
+     * @param url_config
+     * @param reaAutoId
+     * @param listType
+     * @param branchId
+     * @param langId
+     * @param soapListener
+     */
+
+    public static void requestGetTableList(String url_config, int reaAutoId, int listType, int branchId, int langId, SoapListenerVyni soapListener) {
+        try {
+            String url = url_config + URL;
+            SoapServiceVnyi.getInstance(NAME_SPACE, url, VnyiApiServices.GET_LIST_TABLE).setSoapListener(soapListener)
+                    .addPropertySoapObject(VnyiApiServices.REA_AUTO_ID, reaAutoId)
+                    .addPropertySoapObject(VnyiApiServices.LIST_TYPE, listType)
+                    .addPropertySoapObject(VnyiApiServices.BRANCH_ID, branchId)
+                    .addPropertySoapObject(VnyiApiServices.LANG_ID, langId)
+                    .execute();
+
+        } catch (Exception e) {
+            VnyiUtils.LogException(TAG, e);
         }
     }
 
@@ -741,7 +767,7 @@ public class VnyiServices {
                     .execute();
 
         } catch (Exception e) {
-            VyniUtils.LogException(TAG, e);
+            VnyiUtils.LogException(TAG, e);
         }
     }
 }

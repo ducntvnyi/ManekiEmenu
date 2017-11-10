@@ -11,7 +11,7 @@ import com.vnyi.emenu.maneki.R;
 import com.vnyi.emenu.maneki.customviews.TextViewFont;
 import com.vnyi.emenu.maneki.models.AnimationView;
 import com.vnyi.emenu.maneki.models.ItemModel;
-import com.vnyi.emenu.maneki.utils.VyniUtils;
+import com.vnyi.emenu.maneki.utils.VnyiUtils;
 
 import java.util.List;
 
@@ -54,7 +54,7 @@ public class ItemAdapter extends BaseRecycleAdapter<ItemModel, ItemAdapter.ViewH
 
         holder.view.setOnClickListener(view -> {
             AnimationView animationView = new AnimationView(itemModel, holder.ivCartItem, holder.view);
-            VyniUtils.LogException(TAG, "==> itemModel:: " + itemModel.toString());
+            VnyiUtils.LogException(TAG, "==> itemModel:: " + itemModel.toString());
             mConsumer.accept(animationView);
         });
     }

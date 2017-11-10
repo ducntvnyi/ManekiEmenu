@@ -12,16 +12,16 @@
         android:background="@color/white"
         android:orientation="vertical">
 
-
         <com.vnyi.emenu.maneki.customviews.TextViewFont
             android:id="@+id/tvTitle"
             style="@style/tvTitleStyle"
             android:layout_width="match_parent"
-            android:layout_marginTop="@dimen/padding_layout"
+            android:background="@color/color_app"
             android:gravity="center"
             android:maxLines="1"
-            android:padding="@dimen/padding_layout"
+            android:padding="@dimen/margin_layout"
             android:text="@string/choose_table"
+            android:textColor="@color/white"
             android:textSize="@dimen/font_size_tab_header"
             app:font="@string/font_cour" />
 

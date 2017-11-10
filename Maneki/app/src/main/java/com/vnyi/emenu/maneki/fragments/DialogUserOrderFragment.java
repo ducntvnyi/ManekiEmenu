@@ -2,17 +2,37 @@ package com.vnyi.emenu.maneki.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.qslib.fragment.BaseMainDialogFragment;
+import com.qslib.jackson.JacksonUtils;
+import com.qslib.network.NetworkUtils;
+import com.qslib.soap.SoapListenerVyni;
+import com.qslib.soap.SoapResponse;
 import com.vnyi.emenu.maneki.R;
-import com.vnyi.emenu.maneki.models.response.Branch;
+import com.vnyi.emenu.maneki.adapters.UserAdapter;
+import com.vnyi.emenu.maneki.customviews.DividerItemDecoration;
+import com.vnyi.emenu.maneki.customviews.TextViewFont;
+import com.vnyi.emenu.maneki.models.response.UserOrder;
+import com.vnyi.emenu.maneki.services.VnyiApiServices;
+import com.vnyi.emenu.maneki.services.VnyiServices;
+import com.vnyi.emenu.maneki.utils.VnyiUtils;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
+import java8.util.function.Consumer;
 
 /**
  * Created by Hungnd on 11/8/17. 
@@ -20,12 +40,23 @@ import butterknife.ButterKnife;
 
 public class DialogUserOrderFragment extends BaseMainDialogFragment {
 
-    private List<Branch> mBranches;
+
+    private static final String TAG = DialogUserOrderFragment.class.getSimpleName();
+
+    @BindView(R.id.tvTitle)
+    TextViewFont tvTitle;
+    @BindView(R.id.rvUserOrderList)
+    RecyclerView rvUserOrderList;
+
+    private List<UserOrder> mUserOrders = new ArrayList<>();
+    private Consumer<UserOrder> mConsumer;
+    private UserAdapter mUserOrderAdapter;
+
+    private int mBranchId;
+    private String linkSerVer;
 
     public static DialogUserOrderFragment newInstance() {
-        DialogUserOrderFragment fragment = new DialogUserOrderFragment();
-        return fragment;
-
+        return new DialogUserOrderFragment();
     }
 
 
@@ -51,14 +82,94 @@ public class DialogUserOrderFragment extends BaseMainDialogFragment {
     }
 
     private void initViews() {
-
+        mUserOrderAdapter = new UserAdapter(getContext(), mUserOrders, branch -> {
+            mConsumer.accept(branch);
+            dismiss();
+        });
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
+        rvUserOrderList.setAdapter(mUserOrderAdapter);
+        rvUserOrderList.setLayoutManager(layoutManager);
+        rvUserOrderList.addItemDecoration(new DividerItemDecoration(getContext()));
     }
+
 
     private void loadData() {
+        Log.e(TAG, "==> loadData:: " + mUserOrders.size());
+        if (mUserOrders.size() == 0) {
+            loadTables();
+        }
     }
 
-    public DialogUserOrderFragment setListBranch(List<Branch> branches) {
-        this.mBranches = branches;
+    public DialogUserOrderFragment setBranchId(int branchId) {
+        this.mBranchId = branchId;
         return this;
+    }
+
+    public DialogUserOrderFragment setListUser(List<UserOrder> listUser) {
+        this.mUserOrders = listUser;
+        return this;
+    }
+
+    public DialogUserOrderFragment setLinkServer(String url) {
+        this.linkSerVer = url;
+        return this;
+    }
+
+    public DialogUserOrderFragment setConsumer(Consumer<UserOrder> consumer) {
+        this.mConsumer = consumer;
+        return this;
+    }
+
+    protected void loadTables() {
+
+        if (!NetworkUtils.isNetworkAvailable(getContext())) return;
+
+        VnyiServices.requestConfigValueUserOrder(linkSerVer, this.mBranchId, 1, new SoapListenerVyni() {
+
+            @Override
+            public void onStarted() {
+                VnyiUtils.LogException(TAG, "==> loadTables onStarted ");
+                showDialog();
+            }
+
+            @Override
+            public void onSuccess(SoapResponse soapResponse) {
+                dismissDialog();
+                VnyiUtils.LogException(TAG, "==> loadTables onSuccess ");
+                if (soapResponse == null) return;
+
+                if (soapResponse.getStatus().toLowerCase().equals("true")) {
+                    if (soapResponse.getResult() != null) {
+                        VnyiUtils.LogException(TAG, "==> loadTables onSuccess:: " + soapResponse.toString());
+                        try {
+                            JSONObject configValueObject = new JSONObject(soapResponse.getResult());
+
+                            mUserOrders = JacksonUtils.convertJsonToObject(configValueObject.getString(VnyiApiServices.TABLE), new TypeReference<List<UserOrder>>() {
+                            });
+                            mUserOrderAdapter.setTableList(mUserOrders);
+                            // save to local
+                            VnyiUtils.LogException(TAG, "==> mUserOrders" + mUserOrders.toString());
+
+                        } catch (JSONException e) {
+                            VnyiUtils.LogException(TAG, "==> jsonObject passed error:  " + e.getMessage());
+                        }
+
+                    }
+                }
+
+            }
+
+            @Override
+            public void onFail(Exception ex) {
+                dismissDialog();
+                VnyiUtils.LogException(TAG, "==> loadTables onFail " + ex.getMessage());
+            }
+
+            @Override
+            public void onFinished() {
+                dismissDialog();
+                VnyiUtils.LogException(TAG, "==> loadBloadTablesranch onFinished ");
+            }
+        });
     }
 }

@@ -11,7 +11,7 @@ import android.widget.ImageView;
 import com.vnyi.emenu.maneki.R;
 import com.vnyi.emenu.maneki.customviews.TextViewFont;
 import com.vnyi.emenu.maneki.models.response.Branch;
-import com.vnyi.emenu.maneki.utils.VyniUtils;
+import com.vnyi.emenu.maneki.utils.VnyiUtils;
 
 import java.util.List;
 
@@ -53,7 +53,7 @@ public class MenuAdapter extends BaseRecycleAdapter<Branch, MenuAdapter.ViewHold
         holder.binData(mContext, branch);
 
         holder.view.setOnClickListener(view -> {
-            VyniUtils.LogException(TAG, "==> branch:: " + branch.toString());
+            VnyiUtils.LogException(TAG, "==> branch:: " + branch.toString());
             mConsumer.accept(branch);
         });
     }

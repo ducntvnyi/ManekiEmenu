@@ -11,7 +11,7 @@ import android.widget.LinearLayout;
 import com.vnyi.emenu.maneki.R;
 import com.vnyi.emenu.maneki.customviews.TextViewFont;
 import com.vnyi.emenu.maneki.models.response.OrderItemModel;
-import com.vnyi.emenu.maneki.utils.VyniUtils;
+import com.vnyi.emenu.maneki.utils.VnyiUtils;
 
 import java.util.List;
 
@@ -60,7 +60,7 @@ public class OrderAdapter extends BaseRecycleAdapter<OrderItemModel, OrderAdapte
             holder.binData(mContext, itemModel);
 
             holder.view.setOnClickListener(view -> {
-                VyniUtils.LogException(TAG, "==> itemModel:: " + itemModel.toString());
+                VnyiUtils.LogException(TAG, "==> itemModel:: " + itemModel.toString());
                 mConsumer.accept(itemModel);
             });
             holder.tvAddQuantity.setOnClickListener(view -> {
@@ -74,7 +74,7 @@ public class OrderAdapter extends BaseRecycleAdapter<OrderItemModel, OrderAdapte
                 mConsumerReduce.accept(itemModel);
             });
         } catch (Exception e) {
-            VyniUtils.LogException(TAG, e);
+            VnyiUtils.LogException(TAG, e);
         }
     }
 
@@ -119,7 +119,7 @@ public class OrderAdapter extends BaseRecycleAdapter<OrderItemModel, OrderAdapte
                 tvQuantity.setText("" + itemModel.getQuantity() + "");
                 tvTotalMoney.setText("" + itemModel.getTotalMoney() + " VND");
             } catch (Exception e) {
-                VyniUtils.LogException(TAG, e);
+                VnyiUtils.LogException(TAG, e);
             }
 
         }
