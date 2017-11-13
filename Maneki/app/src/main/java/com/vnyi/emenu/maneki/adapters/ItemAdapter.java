@@ -7,10 +7,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
 import com.vnyi.emenu.maneki.R;
 import com.vnyi.emenu.maneki.customviews.TextViewFont;
 import com.vnyi.emenu.maneki.models.AnimationView;
 import com.vnyi.emenu.maneki.models.ItemModel;
+import com.vnyi.emenu.maneki.models.response.ItemCategoryDetail;
 import com.vnyi.emenu.maneki.utils.VnyiUtils;
 
 import java.util.List;
@@ -28,13 +30,13 @@ public class ItemAdapter extends BaseRecycleAdapter<ItemModel, ItemAdapter.ViewH
 
     private static final String TAG = ItemAdapter.class.getSimpleName();
     private Context mContext;
-    private List<ItemModel> mItemModelList;
+    private List<ItemCategoryDetail> mItemModelList;
 
     private Consumer<AnimationView> mConsumer;
 
-    public ItemAdapter(Context context, List<ItemModel> branches, Consumer<AnimationView> consumer) {
+    public ItemAdapter(Context context, List<ItemCategoryDetail> categoryDetails, Consumer<AnimationView> consumer) {
         this.mContext = context;
-        this.mItemModelList = branches;
+        this.mItemModelList = categoryDetails;
         this.mConsumer = consumer;
     }
 
@@ -47,13 +49,13 @@ public class ItemAdapter extends BaseRecycleAdapter<ItemModel, ItemAdapter.ViewH
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         if (getItemCount() < 1) return;
-        ItemModel itemModel = mItemModelList.get(position);
+        ItemCategoryDetail itemModel = mItemModelList.get(position);
         if (itemModel == null) return;
 
         holder.binData(mContext, itemModel);
 
         holder.view.setOnClickListener(view -> {
-            AnimationView animationView = new AnimationView(itemModel, holder.ivCartItem, holder.view);
+            AnimationView animationView = new AnimationView(itemModel, holder.ivCartItemTemp, holder.view);
             VnyiUtils.LogException(TAG, "==> itemModel:: " + itemModel.toString());
             mConsumer.accept(animationView);
         });
@@ -64,7 +66,7 @@ public class ItemAdapter extends BaseRecycleAdapter<ItemModel, ItemAdapter.ViewH
         return mItemModelList == null ? 0 : mItemModelList.size();
     }
 
-    public void setItemModelList(List<ItemModel> branchList) {
+    public void setItemModelList(List<ItemCategoryDetail> branchList) {
         this.mItemModelList = branchList;
         notifyDataSetChanged();
     }
@@ -72,6 +74,8 @@ public class ItemAdapter extends BaseRecycleAdapter<ItemModel, ItemAdapter.ViewH
     class ViewHolder extends RecyclerView.ViewHolder {
 
 
+        @BindView(R.id.ivCartItemTemp)
+        ImageView ivCartItemTemp;
         @BindView(R.id.ivCartItem)
         ImageView ivCartItem;
         @BindView(R.id.tvItemName)
@@ -86,9 +90,15 @@ public class ItemAdapter extends BaseRecycleAdapter<ItemModel, ItemAdapter.ViewH
             ButterKnife.bind(this, view);
         }
 
-        private void binData(Context context, ItemModel itemModel) {
-            tvItemName.setText(itemModel.getItemName());
-            tvPrice.setText(itemModel.getPrice());
+        private void binData(Context context, ItemCategoryDetail itemModel) {
+            tvItemName.setText(itemModel.getItemNameLang());
+            tvPrice.setText("" + itemModel.getItemPrice() + "");
+            Glide.with(context)
+                    .load("http://via.placeholder.com/300.png")
+                    .placeholder(R.mipmap.ic_placehoder)
+                    .fitCenter()
+                    .centerCrop()
+                    .into(ivCartItem);
 
         }
     }

@@ -8,19 +8,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.qslib.jackson.JacksonUtils;
-import com.qslib.network.NetworkUtils;
-import com.qslib.soap.SoapListenerVyni;
-import com.qslib.soap.SoapResponse;
 import com.vnyi.emenu.maneki.R;
 import com.vnyi.emenu.maneki.adapters.TableListAdapter;
 import com.vnyi.emenu.maneki.customviews.DividerItemDecoration;
 import com.vnyi.emenu.maneki.customviews.TextViewFont;
 import com.vnyi.emenu.maneki.models.response.Table;
-import com.vnyi.emenu.maneki.services.VnyiServices;
-import com.vnyi.emenu.maneki.utils.VnyiUtils;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -74,7 +67,7 @@ public class DialogTableFragment extends BaseDialogFragment {
     }
 
     private void initViews() {
-        mTableList = new ArrayList<>();
+
         mTableListAdapter = new TableListAdapter(getContext(), mTableList, branch -> {
             mConsumer.accept(branch);
             dismiss();
@@ -86,7 +79,7 @@ public class DialogTableFragment extends BaseDialogFragment {
     }
 
     private void loadData() {
-        loadTables();
+       mTableListAdapter.notifyDataSetChanged();
     }
 
     public DialogTableFragment setListTable(List<Table> tableNames) {
@@ -104,54 +97,4 @@ public class DialogTableFragment extends BaseDialogFragment {
         return this;
     }
 
-    protected void loadTables() {
-
-        int reaAutoId = 4;
-        int listType = 1;
-        int branchId = 1942;
-        int langId = 1;
-
-        if (!NetworkUtils.isNetworkAvailable(getContext())) return;
-
-        VnyiServices.requestGetTableList(linkSerVer, reaAutoId, listType, branchId, langId, new SoapListenerVyni() {
-
-            @Override
-            public void onStarted() {
-                showDialog();
-                VnyiUtils.LogException(TAG, "==> loadTables onStarted ");
-            }
-
-            @Override
-            public void onSuccess(SoapResponse soapResponse) {
-                dismissDialog();
-                VnyiUtils.LogException(TAG, "==> loadTables onSuccess ");
-                if (soapResponse == null) return;
-
-                if (soapResponse.getStatus().toLowerCase().equals("true")) {
-                    if (soapResponse.getResult() != null) {
-                        VnyiUtils.LogException(TAG, "==> loadTables onSuccess:: " + soapResponse.toString());
-
-                        mTableList = JacksonUtils.convertJsonToListObject(soapResponse.getResult(), Table.class);
-                        mTableListAdapter.setTableList(mTableList);
-                        // save to local
-                        VnyiUtils.LogException(TAG, "==> mTableList" + mTableList.toString());
-
-                    }
-                }
-
-            }
-
-            @Override
-            public void onFail(Exception ex) {
-                dismissDialog();
-                VnyiUtils.LogException(TAG, "==> loadTables onFail " + ex.getMessage());
-            }
-
-            @Override
-            public void onFinished() {
-                dismissDialog();
-                VnyiUtils.LogException(TAG, "==> loadBloadTablesranch onFinished ");
-            }
-        });
-    }
 }

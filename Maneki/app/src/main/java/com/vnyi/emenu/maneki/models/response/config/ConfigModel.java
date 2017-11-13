@@ -34,6 +34,7 @@ public class ConfigModel implements Serializable {
     private int controlType;
 
     private int typeValue;
+    private String name;
 
 
     public String getConfigCode() {
@@ -99,6 +100,14 @@ public class ConfigModel implements Serializable {
         return typeValue;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
     @Override
     public String toString() {
         return "ConfigModel{" +
@@ -107,6 +116,8 @@ public class ConfigModel implements Serializable {
                 ", configName='" + configName + '\'' +
                 ", configValue='" + configValue + '\'' +
                 ", controlType=" + controlType +
+                ", typeValue=" + typeValue +
+                ", name='" + name + '\'' +
                 '}';
     }
 }

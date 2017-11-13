@@ -18,6 +18,7 @@ public class Branch {
     private int branchParent;
 
     private int position;
+    private boolean isSelected;
 
     public Branch() {
     }
@@ -35,7 +36,6 @@ public class Branch {
         this.position = position;
     }
 
-    private boolean isSelected;
 
     public int getBranchId() {
         return branchId;

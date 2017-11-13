@@ -3,6 +3,8 @@ package com.vnyi.emenu.maneki.models;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.vnyi.emenu.maneki.models.response.ItemCategoryDetail;
+
 /**
  * Created by Hungnd on 11/7/17.
  */
@@ -10,7 +12,7 @@ import android.widget.ImageView;
 public class AnimationView {
 
     private int position;
-    private ItemModel itemModel;
+    private ItemCategoryDetail categoryDetail;
     private ImageView imageView;
     private View view;
 
@@ -19,8 +21,8 @@ public class AnimationView {
         this.view = view;
     }
 
-    public AnimationView(ItemModel itemModel, ImageView imageView, View view) {
-        this.itemModel = itemModel;
+    public AnimationView(ItemCategoryDetail itemModel, ImageView imageView, View view) {
+        this.categoryDetail = itemModel;
         this.imageView = imageView;
         this.view = view;
     }
@@ -33,12 +35,12 @@ public class AnimationView {
         this.position = position;
     }
 
-    public ItemModel getItemModel() {
-        return itemModel;
+    public ItemCategoryDetail getCategoryDetail() {
+        return categoryDetail;
     }
 
-    public void setItemModel(ItemModel itemModel) {
-        this.itemModel = itemModel;
+    public void setCategoryDetail(ItemCategoryDetail categoryDetail) {
+        this.categoryDetail = categoryDetail;
     }
 
     public ImageView getImageView() {

@@ -3,6 +3,7 @@ package com.vnyi.emenu.maneki.activities;
 import android.Manifest;
 import android.app.Activity;
 import android.content.pm.PackageManager;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.PersistableBundle;
@@ -10,6 +11,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.qslib.jackson.JacksonUtils;
@@ -22,8 +24,17 @@ import com.qslib.util.ProgressDialogUtils;
 import com.vnyi.emenu.maneki.applications.VnyiPreference;
 import com.vnyi.emenu.maneki.models.BranchModel;
 import com.vnyi.emenu.maneki.models.ConfigValueModel;
+import com.vnyi.emenu.maneki.models.ItemCategoryDetailModel;
+import com.vnyi.emenu.maneki.models.NoTicketModel;
+import com.vnyi.emenu.maneki.models.TableModel;
+import com.vnyi.emenu.maneki.models.TicketModel;
 import com.vnyi.emenu.maneki.models.UserModel;
 import com.vnyi.emenu.maneki.models.response.Branch;
+import com.vnyi.emenu.maneki.models.response.ItemCategoryDetail;
+import com.vnyi.emenu.maneki.models.response.ItemCategoryNoListNote;
+import com.vnyi.emenu.maneki.models.response.Table;
+import com.vnyi.emenu.maneki.models.response.TableName;
+import com.vnyi.emenu.maneki.models.response.TicketLoadInfo;
 import com.vnyi.emenu.maneki.models.response.UserOrder;
 import com.vnyi.emenu.maneki.models.response.config.ConfigModel;
 import com.vnyi.emenu.maneki.models.response.config.PostIdModel;
@@ -37,6 +48,8 @@ import org.json.JSONObject;
 
 import java.util.List;
 import java.util.Stack;
+
+import java8.util.function.Consumer;
 
 import static com.qslib.permission.PermissionUtils.REQUEST_CODE_PERMISSION;
 
@@ -164,8 +177,7 @@ public abstract class BaseActivity extends FragmentActivity {
 
                 }
                 VnyiPreference.getInstance(getApplicationContext()).putObject(Constant.KEY_CONFIG_VALUE, configValueModel);
-                loadBranch(configValueModel.getLinkServer());
-                loadListUser(configValueModel);
+                new LoadDataConfigTask().execute(configValueModel);
 
             } else {
                 VnyiUtils.LogException(TAG, "==> configModels null");
@@ -176,7 +188,8 @@ public abstract class BaseActivity extends FragmentActivity {
         }
     }
 
-    protected void loadConfigValue() {
+    public void loadConfigValue() {
+
 
         if (!NetworkUtils.isNetworkAvailable(getApplicationContext())) return;
 
@@ -184,6 +197,12 @@ public abstract class BaseActivity extends FragmentActivity {
         String machineName = "Duong Van Chien’s iPad";              //AppPreferences.getInstance(getApplicationContext()).getString(VnyiApiServices.MACHINE_NAME);
         String url = VnyiServices.URL_CONFIG;
 
+        ConfigValueModel configValueModel = VnyiPreference.getInstance(getApplicationContext()).getObject(Constant.KEY_CONFIG_VALUE, ConfigValueModel.class);
+
+        if (configValueModel != null && !configValueModel.getLinkServer().equals(""))
+            url = configValueModel.getLinkServer();
+
+        Log.d(TAG, "==> url:: " + url);
         VnyiServices.requestGetConfigValue(url, VnyiApiServices.CONFIG_TYPE_VALUE, machineId, machineName, "", new SoapListenerVyni() {
 
             @Override
@@ -266,9 +285,7 @@ public abstract class BaseActivity extends FragmentActivity {
         }
     }
 
-
     protected void loadBranch(String url) {
-//        String url = VnyiUtils.getLinkServer(getApplicationContext());
 
         if (!NetworkUtils.isNetworkAvailable(getApplicationContext())) return;
 
@@ -379,6 +396,381 @@ public abstract class BaseActivity extends FragmentActivity {
             public void onFinished() {
                 hideProgressDialog();
                 VnyiUtils.LogException(TAG, "==> loadBloadTablesranch onFinished ");
+            }
+        });
+    }
+
+    protected void loadTables(ConfigValueModel configValueModel) {
+
+        int reaAutoId = 4;
+        int listType = 1;
+        int branchId = Integer.parseInt(configValueModel.getBranch().getConfigValue());
+        int langId = 1;
+
+        if (!NetworkUtils.isNetworkAvailable(getApplicationContext())) return;
+
+        VnyiServices.requestGetTableList(configValueModel.getLinkServer(), reaAutoId, listType, branchId, langId, new SoapListenerVyni() {
+
+            @Override
+            public void onStarted() {
+                showProgressDialog();
+                VnyiUtils.LogException(TAG, "==> loadTables onStarted ");
+            }
+
+            @Override
+            public void onSuccess(SoapResponse soapResponse) {
+                hideProgressDialog();
+                VnyiUtils.LogException(TAG, "==> loadTables onSuccess ");
+                if (soapResponse == null) return;
+
+                if (soapResponse.getStatus().toLowerCase().equals("true")) {
+                    if (soapResponse.getResult() != null) {
+                        VnyiUtils.LogException(TAG, "==> loadTables onSuccess:: " + soapResponse.toString());
+
+                        List<Table> tables = JacksonUtils.convertJsonToListObject(soapResponse.getResult(), Table.class);
+                        if (tables == null) return;
+                        TableModel tableModel = new TableModel();
+                        tableModel.setTables(tables);
+                        VnyiPreference.getInstance(getApplicationContext()).putObject(Constant.KEY_LIST_TABLE, tableModel);
+                        // save to local
+                        VnyiUtils.LogException(TAG, "==> tables" + tables.toString());
+
+                    }
+                }
+
+            }
+
+            @Override
+            public void onFail(Exception ex) {
+                hideProgressDialog();
+                VnyiUtils.LogException(TAG, "==> loadTables onFail " + ex.getMessage());
+            }
+
+            @Override
+            public void onFinished() {
+                hideProgressDialog();
+                VnyiUtils.LogException(TAG, "==> loadBloadTablesranch onFinished ");
+            }
+        });
+    }
+
+    private class LoadDataConfigTask extends AsyncTask<ConfigValueModel, Void, Void> {
+
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            VnyiUtils.LogException("LoadDataConfigTask", "==> onPostExecute");
+            showProgressDialog();
+
+        }
+
+        @Override
+        protected Void doInBackground(ConfigValueModel... configValueModels) {
+            VnyiUtils.LogException("LoadDataConfigTask", "==> doInBackground");
+            ConfigValueModel configValueModel = configValueModels[0];
+            loadBranch(configValueModel.getLinkServer());
+            loadListUser(configValueModel);
+            loadTables(configValueModel);
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void result) {
+            super.onPostExecute(result);
+            hideProgressDialog();
+            VnyiUtils.LogException("ConfirmConfigTask", "==> onPostExecute");
+        }
+    }
+
+    protected void getTableName(int tableId, Consumer<TableName> consumer) {
+
+        if (!NetworkUtils.isNetworkAvailable(getApplicationContext())) return;
+
+        String url = VnyiServices.URL_CONFIG;
+
+        ConfigValueModel configValueModel = VnyiPreference.getInstance(getApplicationContext()).getObject(Constant.KEY_CONFIG_VALUE, ConfigValueModel.class);
+
+        if (configValueModel != null && !configValueModel.getLinkServer().equals(""))
+            url = configValueModel.getLinkServer();
+
+        VnyiServices.requestConfigValueTableNameById(url, tableId, new SoapListenerVyni() {
+
+            @Override
+            public void onStarted() {
+                VnyiUtils.LogException(TAG, "==> getTableName onStarted ");
+                showProgressDialog();
+            }
+
+            @Override
+            public void onSuccess(SoapResponse soapResponse) {
+                hideProgressDialog();
+                VnyiUtils.LogException(TAG, "==> getTableName onSuccess ");
+                if (soapResponse == null) return;
+
+                if (soapResponse.getStatus().toLowerCase().equals("true")) {
+                    if (soapResponse.getResult() != null) {
+                        VnyiUtils.LogException(TAG, "==> getTableName onSuccess:: " + soapResponse.toString());
+                        try {
+                            JSONObject configValueObject = new JSONObject(soapResponse.getResult());
+
+                            List<TableName> tableNames = JacksonUtils.convertJsonToObject(configValueObject.getString(VnyiApiServices.TABLE), new TypeReference<List<TableName>>() {
+                            });
+
+                            if (tableNames == null || tableNames.size() == 0) {
+                                consumer.accept(null);
+                            } else {
+                                VnyiUtils.LogException(TAG, "==> tableNames" + tableNames.toString());
+                                TableName tableName = tableNames.get(0);
+                                consumer.accept(tableName);
+                            }
+                        } catch (JSONException e) {
+                            VnyiUtils.LogException(TAG, "==> jsonObject passed error:  " + e.getMessage());
+                        }
+
+                    }
+                }
+
+            }
+
+            @Override
+            public void onFail(Exception ex) {
+                hideProgressDialog();
+                VnyiUtils.LogException(TAG, "==> getTableName onFail " + ex.getMessage());
+            }
+
+            @Override
+            public void onFinished() {
+                hideProgressDialog();
+                VnyiUtils.LogException(TAG, "==> getTableName onFinished ");
+            }
+        });
+    }
+
+    /**
+     * menu
+     * create bill or get bill
+     *
+     * @param configValueModel
+     * @param ticketId
+     * @param userId
+     * @param langId
+     * @paramconsumer
+     */
+    public void ticketLoadInfo(ConfigValueModel configValueModel, int ticketId, int userId, int langId) {
+
+        if (!NetworkUtils.isNetworkAvailable(getApplicationContext())) return;
+
+        String url = VnyiServices.URL_CONFIG;
+        int tableId = 0;
+
+        if (configValueModel != null && !configValueModel.getLinkServer().equals("")) {
+            url = configValueModel.getLinkServer();
+            tableId = Integer.parseInt(configValueModel.getTableName().getConfigValue());
+        }
+
+        VnyiServices.requestTicketLoadInfo(url, ticketId, tableId, userId, langId, new SoapListenerVyni() {
+
+            @Override
+            public void onStarted() {
+                VnyiUtils.LogException(TAG, "==> ticketLoadInfo onStarted ");
+                showProgressDialog();
+            }
+
+            @Override
+            public void onSuccess(SoapResponse soapResponse) {
+                hideProgressDialog();
+                VnyiUtils.LogException(TAG, "==> ticketLoadInfo onSuccess ");
+                if (soapResponse == null) return;
+
+                if (soapResponse.getStatus().toLowerCase().equals("true")) {
+                    if (soapResponse.getResult() != null) {
+                        VnyiUtils.LogException(TAG, "==> ticketLoadInfo onSuccess:: " + soapResponse.toString());
+                        try {
+                            JSONObject configValueObject = new JSONObject(soapResponse.getResult());
+
+                            List<TicketLoadInfo> ticketLoadInfoList = JacksonUtils.convertJsonToObject(configValueObject.getString(VnyiApiServices.TABLE), new TypeReference<List<TicketLoadInfo>>() {
+                            });
+                            if (ticketLoadInfoList != null && ticketLoadInfoList.size() > 0) {
+
+                                TicketModel ticketModel = new TicketModel();
+                                ticketModel.setLangId(langId);
+                                ticketModel.setTicketId(ticketId);
+                                ticketModel.setUserId(userId);
+                                ticketModel.setTableId(ticketLoadInfoList.get(0).getTableID());
+                                VnyiPreference.getInstance(getApplicationContext()).putObject(Constant.KEY_TICKET, ticketModel);
+
+//                                consumer.accept(ticketLoadInfoList.get(0));
+                            }
+                        } catch (JSONException e) {
+                            VnyiUtils.LogException(TAG, "==> jsonObject passed error:  " + e.getMessage());
+                        }
+
+                    }
+                }
+
+            }
+
+            @Override
+            public void onFail(Exception ex) {
+                hideProgressDialog();
+                VnyiUtils.LogException(TAG, "==> ticketLoadInfo onFail " + ex.getMessage());
+            }
+
+            @Override
+            public void onFinished() {
+                hideProgressDialog();
+                VnyiUtils.LogException(TAG, "==> ticketLoadInfo onFinished ");
+            }
+        });
+    }
+
+    /**
+     * Load Menu Left
+     *
+     * @param configValueModel
+     * @param ticketId
+     * @param posId
+     * @param langId
+     * @param consumer
+     */
+    public void getListItemCategoryNoTicket(ConfigValueModel configValueModel, int ticketId, int posId, int langId, Consumer<NoTicketModel> consumer) {
+
+        if (!NetworkUtils.isNetworkAvailable(getApplicationContext())) return;
+
+        String url = VnyiServices.URL_CONFIG;
+        int tableId = 0;
+        int branchId = 0;
+
+        if (configValueModel != null && !configValueModel.getLinkServer().equals("")) {
+            url = configValueModel.getLinkServer();
+            tableId = Integer.parseInt(configValueModel.getTableName().getConfigValue());
+            branchId = Integer.parseInt(configValueModel.getBranch().getConfigValue());
+        }
+
+        VnyiServices.requestGetListItemCategoryNoTicket(url, ticketId, tableId, posId, langId, branchId, new SoapListenerVyni() {
+
+            @Override
+            public void onStarted() {
+                VnyiUtils.LogException(TAG, "==> ticketLoadInfo onStarted ");
+                showProgressDialog();
+            }
+
+            @Override
+            public void onSuccess(SoapResponse soapResponse) {
+                hideProgressDialog();
+                VnyiUtils.LogException(TAG, "==> ticketLoadInfo onSuccess ");
+                if (soapResponse == null) return;
+
+                if (soapResponse.getStatus().toLowerCase().equals("true")) {
+                    if (soapResponse.getResult() != null) {
+                        VnyiUtils.LogException(TAG, "==> ticketLoadInfo onSuccess:: " + soapResponse.toString());
+                        try {
+                            JSONObject configValueObject = new JSONObject(soapResponse.getResult());
+
+                            List<ItemCategoryNoListNote> categoryNoListNotes = JacksonUtils.convertJsonToObject(configValueObject.getString(VnyiApiServices.TABLE), new TypeReference<List<ItemCategoryNoListNote>>() {
+                            });
+
+                            if (categoryNoListNotes != null) {
+                                NoTicketModel noTicketModel = new NoTicketModel();
+                                noTicketModel.setItemCategoryNoListNotes(categoryNoListNotes);
+                                consumer.accept(noTicketModel);
+                            }
+                        } catch (JSONException e) {
+                            VnyiUtils.LogException(TAG, "==> jsonObject passed error:  " + e.getMessage());
+                        }
+
+                    }
+                }
+
+            }
+
+            @Override
+            public void onFail(Exception ex) {
+                hideProgressDialog();
+                VnyiUtils.LogException(TAG, "==> ticketLoadInfo onFail " + ex.getMessage());
+            }
+
+            @Override
+            public void onFinished() {
+                hideProgressDialog();
+                VnyiUtils.LogException(TAG, "==> ticketLoadInfo onFinished ");
+            }
+        });
+    }
+
+    /**
+     *
+     * load Menu right
+     *
+     * @param configValueModel
+     * @param postMasterPage
+     * @param categoryId
+     * @param ticketId
+     * @param langId
+     * @param objId
+     * @param posId
+     * @param consumer
+     */
+    public void getListItemCategoryDetail(ConfigValueModel configValueModel, boolean postMasterPage, int categoryId,
+                                          int ticketId, int langId, int objId, int posId, Consumer<ItemCategoryDetailModel> consumer) {
+
+        if (!NetworkUtils.isNetworkAvailable(getApplicationContext())) return;
+
+        String url = VnyiServices.URL_CONFIG;
+
+
+        if (configValueModel != null && !configValueModel.getLinkServer().equals("")) {
+            url = configValueModel.getLinkServer();
+        }
+
+        VnyiServices.requestGetItemCategoryDetail(url, postMasterPage, categoryId, ticketId, langId, objId, posId, new SoapListenerVyni() {
+
+            @Override
+            public void onStarted() {
+                VnyiUtils.LogException(TAG, "==> ticketLoadInfo onStarted ");
+                showProgressDialog();
+            }
+
+            @Override
+            public void onSuccess(SoapResponse soapResponse) {
+                hideProgressDialog();
+                VnyiUtils.LogException(TAG, "==> ticketLoadInfo onSuccess ");
+                if (soapResponse == null) return;
+
+                if (soapResponse.getStatus().toLowerCase().equals("true")) {
+                    if (soapResponse.getResult() != null) {
+                        VnyiUtils.LogException(TAG, "==> ticketLoadInfo onSuccess:: " + soapResponse.toString());
+                        try {
+                            JSONObject configValueObject = new JSONObject(soapResponse.getResult());
+
+                            List<ItemCategoryDetail> itemCategoryDetails = JacksonUtils.convertJsonToObject(configValueObject.getString(VnyiApiServices.TABLE), new TypeReference<List<ItemCategoryDetail>>() {
+                            });
+
+                            if (itemCategoryDetails != null) {
+                                ItemCategoryDetailModel categoryDetailModel = new ItemCategoryDetailModel();
+                                categoryDetailModel.setItemCategoryDetails(itemCategoryDetails);
+                                consumer.accept(categoryDetailModel);
+                            }
+                        } catch (JSONException e) {
+                            VnyiUtils.LogException(TAG, "==> jsonObject passed error:  " + e.getMessage());
+                        }
+
+                    }
+                }
+
+            }
+
+            @Override
+            public void onFail(Exception ex) {
+                hideProgressDialog();
+                VnyiUtils.LogException(TAG, "==> ticketLoadInfo onFail " + ex.getMessage());
+            }
+
+            @Override
+            public void onFinished() {
+                hideProgressDialog();
+                VnyiUtils.LogException(TAG, "==> ticketLoadInfo onFinished ");
             }
         });
     }

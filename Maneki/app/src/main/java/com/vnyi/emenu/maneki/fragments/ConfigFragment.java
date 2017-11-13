@@ -1,6 +1,7 @@
 package com.vnyi.emenu.maneki.fragments;
 
 import android.support.v4.app.Fragment;
+import android.util.Log;
 
 import com.vnyi.emenu.maneki.R;
 
@@ -42,6 +43,11 @@ public class ConfigFragment extends BaseFragment {
     @OnClick(R.id.ivShowConfig)
     void onClickConfigHome() {
         // check config: true => go to.. : false: go to configScreen
-        DialogConfigFragment.newInstance().show(getFragmentManager(), "");
+        DialogConfigFragment.newInstance()
+                .setConsumerConfigValue(isConfigValue -> {
+                    Log.e(TAG, "==> onClickConfigHome:: " + isConfigValue);
+                    mActivity.loadConfigValue();
+                })
+                .show(getFragmentManager(), "");
     }
 }

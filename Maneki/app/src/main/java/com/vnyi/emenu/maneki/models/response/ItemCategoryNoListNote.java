@@ -52,6 +52,25 @@ public class ItemCategoryNoListNote {
     @JsonProperty("BorderThick")
     private String borderThick;
 
+    private int position;
+    private boolean isSelected;
+
+    public int getPosition() {
+        return position;
+    }
+
+    public void setPosition(int position) {
+        this.position = position;
+    }
+
+    public boolean isSelected() {
+        return isSelected;
+    }
+
+    public void setSelected(boolean selected) {
+        isSelected = selected;
+    }
+
     public int getGroupID() {
         return groupID;
     }
@@ -253,6 +272,8 @@ public class ItemCategoryNoListNote {
                 ", isShadow='" + isShadow + '\'' +
                 ", isOutLine='" + isOutLine + '\'' +
                 ", borderThick='" + borderThick + '\'' +
+                ", position=" + position +
+                ", isSelected=" + isSelected +
                 '}';
     }
 }

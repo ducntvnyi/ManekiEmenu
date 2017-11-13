@@ -107,7 +107,7 @@ public class MainActivity extends BaseActivity {
 
     }
 
-    private void loadData() {
+    public void loadData() {
         loadConfigValue();
     }
 

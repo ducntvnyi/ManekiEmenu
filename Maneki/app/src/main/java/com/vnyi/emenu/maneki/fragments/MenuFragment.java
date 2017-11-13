@@ -3,6 +3,7 @@ package com.vnyi.emenu.maneki.fragments;
 
 import android.animation.Animator;
 import android.graphics.drawable.BitmapDrawable;
+import android.os.AsyncTask;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -17,11 +18,15 @@ import com.jakewharton.rxbinding2.widget.RxTextView;
 import com.vnyi.emenu.maneki.R;
 import com.vnyi.emenu.maneki.adapters.ItemAdapter;
 import com.vnyi.emenu.maneki.adapters.MenuAdapter;
+import com.vnyi.emenu.maneki.applications.VnyiPreference;
 import com.vnyi.emenu.maneki.customviews.ButtonFont;
 import com.vnyi.emenu.maneki.customviews.CartAnimationUtil;
 import com.vnyi.emenu.maneki.models.AnimationView;
-import com.vnyi.emenu.maneki.models.ItemModel;
-import com.vnyi.emenu.maneki.models.response.Branch;
+import com.vnyi.emenu.maneki.models.ConfigValueModel;
+import com.vnyi.emenu.maneki.models.response.ItemCategoryDetail;
+import com.vnyi.emenu.maneki.models.response.ItemCategoryNoListNote;
+import com.vnyi.emenu.maneki.models.response.TicketLoadInfo;
+import com.vnyi.emenu.maneki.services.VnyiApiServices;
 import com.vnyi.emenu.maneki.utils.Constant;
 import com.vnyi.emenu.maneki.utils.ViewUtils;
 import com.vnyi.emenu.maneki.utils.VnyiUtils;
@@ -60,15 +65,19 @@ public class MenuFragment extends BaseFragment {
 
     private int itemCounter = 0;
     private MenuAdapter mMenuAdapter;
-    private List<Branch> mBranches;
+    private List<ItemCategoryNoListNote> mItemCategoryNoListNotes;
 
     private ItemAdapter mItemAdapter;
-    private List<ItemModel> mItemModels;
+    private List<ItemCategoryDetail> mItemModels;
+    private ItemCategoryDetail mItemCategoryDetail;
+
 
     private AnimationView mAnimationView;
     private LinearLayoutManager mLayoutManager;
     private GridLayoutManager mGridLayoutManager;
-    private int position;
+    private int position = 0;
+
+    private ConfigValueModel mConfigValueModel;
 
     public static Fragment newInstance() {
         Fragment fragment = new MenuFragment();
@@ -80,27 +89,33 @@ public class MenuFragment extends BaseFragment {
         return R.layout.menu_fragment;
     }
 
+
     @Override
     public void initViews() {
         try {
 
+            mConfigValueModel = VnyiPreference.getInstance(getContext()).getObject(Constant.KEY_CONFIG_VALUE, ConfigValueModel.class);
             debounceOrderItem();
             // init menu adapter
-            mBranches = new ArrayList<>();
-            mMenuAdapter = new MenuAdapter(mContext, mBranches, branchConsumer -> {
+            mItemCategoryNoListNotes = new ArrayList<>();
+            mMenuAdapter = new MenuAdapter(mContext, mItemCategoryNoListNotes, branchConsumer -> {
                 position = branchConsumer.getPosition();
                 selectMenu(branchConsumer);
 
             });
-            LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
+            mLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
             rvMenu.setAdapter(mMenuAdapter);
-            rvMenu.setLayoutManager(layoutManager);
+            rvMenu.setLayoutManager(mLayoutManager);
 
             // init item adapter
             mItemModels = new ArrayList<>();
             mItemAdapter = new ItemAdapter(mContext, mItemModels, animationView -> {
                 onClickAddToCart(animationView.getImageView(), animationView.getView());
-
+                if (itemCounter == 0) {
+                    mItemCategoryDetail = animationView.getCategoryDetail();
+                } else {
+                    categoryDetailsOrder.add(animationView.getCategoryDetail());
+                }
             });
             mGridLayoutManager = new GridLayoutManager(mContext, 4);
             rvItem.setAdapter(mItemAdapter);
@@ -148,50 +163,14 @@ public class MenuFragment extends BaseFragment {
 
     @Override
     public void initData() {
-
         try {
-            mBranches.add(new Branch(0, "Combo"));
-            mBranches.add(new Branch(1, "Combo"));
-            mBranches.add(new Branch(2, "Ga"));
-            mBranches.add(new Branch(3, "Bo"));
-            mBranches.add(new Branch(4, "hai san"));
-            mBranches.add(new Branch(5, "Ga nam"));
-            mBranches.add(new Branch(6, "Lon quan"));
-            mBranches.add(new Branch(7, "Vit Hap"));
-            mBranches.add(new Branch(8, "Bo Nam"));
-            mBranches.add(new Branch(9, "Hai San 3 mien"));
-            mBranches.add(new Branch(10, "Ruou vang"));
-            mMenuAdapter.setBranchList(mBranches);
-            rvMenu.setAdapter(mMenuAdapter);
-            position = 0;
-            selectMenu(mBranches.get(position));
-
-            mItemModels.add(new ItemModel(1, "Hai san", "69.000 Vnd"));
-            mItemModels.add(new ItemModel(2, "Sushi ca ngu", "100.000 Vnd"));
-            mItemModels.add(new ItemModel(3, "Sushi ca ngu Hai san 1223", "111.000 Vnd"));
-            mItemModels.add(new ItemModel(4, "Hai san", "90.000 Vnd"));
-            mItemModels.add(new ItemModel(5, "Hai san", "60.000 Vnd"));
-            mItemModels.add(new ItemModel(6, "Hai san", "50.000 Vnd"));
-            mItemModels.add(new ItemModel(7, "Hai san", "120.000 Vnd"));
-            mItemModels.add(new ItemModel(8, "Hai san", "104.000 Vnd"));
-            mItemModels.add(new ItemModel(9, "Hai san", "200.000 Vnd"));
-            mItemModels.add(new ItemModel(10, "Hai san", "99.000 Vnd"));
-            mItemModels.add(new ItemModel(11, "Hai san", "69.000 Vnd"));
-            mItemModels.add(new ItemModel(12, "Sushi ca ngu", "100.000 Vnd"));
-            mItemModels.add(new ItemModel(13, "Sushi ca ngu", "222.000 Vnd"));
-            mItemModels.add(new ItemModel(14, "Hai san", "90.000 Vnd"));
-            mItemModels.add(new ItemModel(15, "Hai san", "60.000 Vnd"));
-            mItemModels.add(new ItemModel(16, "Hai san", "50.000 Vnd"));
-            mItemModels.add(new ItemModel(17, "Hai san", "120.000 Vnd"));
-            mItemModels.add(new ItemModel(18, "Hai san", "104.000 Vnd"));
-            mItemModels.add(new ItemModel(19, "Hai san", "200.000 Vnd"));
-            mItemModels.add(new ItemModel(20, "Hai san", "99.000 Vnd"));
-            mItemAdapter.setItemModelList(mItemModels);
+            loadData();
 
         } catch (Exception e) {
             VnyiUtils.LogException(TAG, e);
         }
     }
+    // orderDetailId su dung
 
     @OnClick(R.id.ivShowConfig)
     void onClickShowConfig() {
@@ -233,15 +212,15 @@ public class MenuFragment extends BaseFragment {
     void onPreviousMenu() {
 
         try {
-            Branch branch = null;
+            ItemCategoryNoListNote categoryNoListNote = null;
             if (position == 0) {
-                branch = mBranches.get(mBranches.size() - 1);
-                position = mBranches.size() - 1;
+                categoryNoListNote = mItemCategoryNoListNotes.get(mItemCategoryNoListNotes.size() - 1);
+                position = mItemCategoryNoListNotes.size() - 1;
             } else {
-                branch = mBranches.get(position - 1);
+                categoryNoListNote = mItemCategoryNoListNotes.get(position - 1);
                 --position;
             }
-            selectMenu(branch);
+            selectMenu(categoryNoListNote);
         } catch (Exception e) {
             VnyiUtils.LogException(TAG, e);
         }
@@ -251,15 +230,15 @@ public class MenuFragment extends BaseFragment {
     @OnClick(R.id.ivNext)
     void onNextMenu() {
         try {
-            Branch branch = null;
-            if (position == (mBranches.size() - 1)) {
-                branch = mBranches.get(0);
+            ItemCategoryNoListNote categoryNoListNote = null;
+            if (position == (mItemCategoryNoListNotes.size() - 1)) {
+                categoryNoListNote = mItemCategoryNoListNotes.get(0);
                 position = 0;
             } else {
-                branch = mBranches.get(position + 1);
+                categoryNoListNote = mItemCategoryNoListNotes.get(position + 1);
                 ++position;
             }
-            selectMenu(branch);
+            selectMenu(categoryNoListNote);
         } catch (Exception e) {
             VnyiUtils.LogException(TAG, e);
         }
@@ -285,7 +264,15 @@ public class MenuFragment extends BaseFragment {
                 public void onAnimationEnd(Animator animation) {
                     //                addItemToCart();
                     Toast.makeText(mContext, "Continue Shopping...", Toast.LENGTH_SHORT).show();
-                    tvCart.setText("" + (++itemCounter) + "");
+                    ++itemCounter;
+
+                    if (itemCounter == 1) {
+                        requestPostTicketUpdateItem(mConfigValueModel, ticketId, 0, 1, mItemCategoryDetail, ticketUpdateItem -> {
+                            VnyiPreference.getInstance(getContext()).putInt(VnyiApiServices.ORDER_DETAIL_ID, ticketUpdateItem.getOrderDetailId());
+                        });
+                    } else {
+                        tvCart.setText("" + itemCounter + "");
+                    }
 
                 }
 
@@ -306,22 +293,118 @@ public class MenuFragment extends BaseFragment {
 
     }
 
-    private void selectMenu(Branch branchSelected) {
+    private void selectMenu(ItemCategoryNoListNote categoryNoListNote) {
         try {
-            if (branchSelected == null) return;
-            StreamSupport.stream(mBranches).forEach(branch -> branch.setSelected(branch.getBranchId() == branchSelected.getBranchId()));
-//            Observable.just(mBranches).concatMap(Observable::fromArray).forEach(branches -> branches.forEach(branch -> branch.setSelected(branch.getBranchId() == branchSelected.getBranchId())));
+            if (categoryNoListNote == null) return;
+
+            StreamSupport.stream(mItemCategoryNoListNotes).forEach(noListNote -> noListNote.setSelected(noListNote.getGroupID() == categoryNoListNote.getGroupID()));
+
             mMenuAdapter.notifyDataSetChanged();
             rvMenu.smoothScrollToPosition(position);
+
+            // load item right
+            loadMenuRight(categoryNoListNote.getGroupID(), ticketId);
+
         } catch (Exception e) {
             VnyiUtils.LogException(TAG, e);
         }
     }
 
     private void updateItem(CharSequence charSequence) {
-        if (itemCounter == 0) return;
+        if (itemCounter == 0 || itemCounter == 1) return;
         Log.e(TAG, "==> updateItem:: " + charSequence);
         Toast.makeText(mContext, "Order item successfully", Toast.LENGTH_SHORT).show();
+        int orderDetailId = VnyiPreference.getInstance(mContext).getInt(VnyiApiServices.ORDER_DETAIL_ID);
+        new UpdateItemTask().execute(orderDetailId);
     }
 
+    private List<ItemCategoryDetail> categoryDetailsOrder = new ArrayList<>();
+
+    private class UpdateItemTask extends AsyncTask<Integer, Void, Void> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            Log.e(TAG, "==> UpdateItemTask onPreExecute");
+        }
+
+        @Override
+        protected Void doInBackground(Integer... integers) {
+            Log.e(TAG, "==> UpdateItemTask doInBackground");
+            int orderDetailId = integers[0];
+            for (ItemCategoryDetail categoryDetail : categoryDetailsOrder) {
+                requestPostTicketUpdateItem(mConfigValueModel, ticketId, orderDetailId, (int) (categoryDetail.getOrderedQuantity() + 1), categoryDetail, ticketUpdateInfo -> {
+                });
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            categoryDetailsOrder.clear();
+            Log.e(TAG, "==> UpdateItemTask onPostExecute");
+        }
+    }
+
+    // step1: lúc đầu thì ticketId =0 sau đó gọi hàm tickLoadInfo để tạo bill,
+    // Step2: sau đó gọi Ticket_UpdateInfo để lấy ticketId,
+    // step3: sau đó thêm item goi Ticket_UpdateItem // save OrderDetailId
+    // step4: tiếp tục ơrder sd OrderDetailId
+
+    int ticketId = 0;
+
+    private void loadData() {
+        showDialog();
+
+        TicketLoadInfo ticketInfo = VnyiPreference.getInstance(getContext()).getObject(Constant.KEY_TICKET, TicketLoadInfo.class);
+        if (ticketInfo == null) {
+            requestTicketUpdateInfo(mConfigValueModel, ticketUpdateInfo -> {
+                VnyiPreference.getInstance(getContext()).putObject(Constant.KEY_TICKET_UPDATE_INFO, ticketUpdateInfo);
+                ticketId = ticketUpdateInfo.getTicketId();
+                loadItem(ticketId);
+            });
+        } else {
+            ticketId = ticketInfo.getTicketId();
+            loadItem(ticketId);
+        }
+
+
+    }
+
+    private void loadItem(int ticketId) {
+        showDialog();
+        ticketLoadInfo(mConfigValueModel, ticketId, ticketLoadInfo -> {
+            VnyiPreference.getInstance(getContext()).putObject(Constant.KEY_TICKET, ticketLoadInfo);
+            loadMenuLeft(ticketId);
+        });
+    }
+
+    private void loadMenuLeft(int ticketId) {
+        showDialog();
+
+
+        getListItemCategoryNoTicket(mConfigValueModel, ticketId, noTicketModel -> {
+            // Update UI menu left
+            mItemCategoryNoListNotes = noTicketModel.getItemCategoryNoListNotes();
+            mMenuAdapter.setMenuList(mItemCategoryNoListNotes);
+            selectMenu(mItemCategoryNoListNotes.get(position));
+
+            Log.e(TAG, "==> menu Left:: " + noTicketModel.toString());
+            loadMenuRight(noTicketModel.getItemCategoryNoListNotes().get(0).getGroupID(), ticketId);
+        });
+    }
+
+    private void loadMenuRight(int categoryId, int ticketId) {
+
+        showDialog();
+        getListItemCategoryDetail(mConfigValueModel, false, categoryId, ticketId, categoryDetailModel -> {
+            // Update UI menu right
+            mItemModels = categoryDetailModel.getItemCategoryDetails();
+            mItemAdapter.setItemModelList(mItemModels);
+
+            dismissDialog();
+            Log.e(TAG, "==> menu right:: " + categoryDetailModel.toString());
+        });
+    }
 }

@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import com.vnyi.emenu.maneki.R;
 import com.vnyi.emenu.maneki.customviews.TextViewFont;
 import com.vnyi.emenu.maneki.models.response.Branch;
+import com.vnyi.emenu.maneki.models.response.ItemCategoryNoListNote;
 import com.vnyi.emenu.maneki.utils.VnyiUtils;
 
 import java.util.List;
@@ -28,11 +29,11 @@ public class MenuAdapter extends BaseRecycleAdapter<Branch, MenuAdapter.ViewHold
 
     private static final String TAG = MenuAdapter.class.getSimpleName();
     private Context mContext;
-    private List<Branch> mBranchList;
+    private List<ItemCategoryNoListNote> mBranchList;
 
-    private Consumer<Branch> mConsumer;
+    private Consumer<ItemCategoryNoListNote> mConsumer;
 
-    public MenuAdapter(Context context, List<Branch> branches, Consumer<Branch> consumer) {
+    public MenuAdapter(Context context, List<ItemCategoryNoListNote> branches, Consumer<ItemCategoryNoListNote> consumer) {
         this.mContext = context;
         this.mBranchList = branches;
         this.mConsumer = consumer;
@@ -47,14 +48,14 @@ public class MenuAdapter extends BaseRecycleAdapter<Branch, MenuAdapter.ViewHold
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         if (getItemCount() < 1) return;
-        Branch branch = mBranchList.get(position);
-        if (branch == null) return;
-        branch.setPosition(position);
-        holder.binData(mContext, branch);
+        ItemCategoryNoListNote categoryNoListNote = mBranchList.get(position);
+        if (categoryNoListNote == null) return;
+        categoryNoListNote.setPosition(position);
+        holder.binData(mContext, categoryNoListNote);
 
         holder.view.setOnClickListener(view -> {
-            VnyiUtils.LogException(TAG, "==> branch:: " + branch.toString());
-            mConsumer.accept(branch);
+            VnyiUtils.LogException(TAG, "==> categoryNoListNote:: " + categoryNoListNote.toString());
+            mConsumer.accept(categoryNoListNote);
         });
     }
 
@@ -63,7 +64,7 @@ public class MenuAdapter extends BaseRecycleAdapter<Branch, MenuAdapter.ViewHold
         return mBranchList == null ? 0 : mBranchList.size();
     }
 
-    public void setBranchList(List<Branch> branchList) {
+    public void setMenuList(List<ItemCategoryNoListNote> branchList) {
         this.mBranchList = branchList;
         notifyDataSetChanged();
     }
@@ -82,9 +83,9 @@ public class MenuAdapter extends BaseRecycleAdapter<Branch, MenuAdapter.ViewHold
             ButterKnife.bind(this, view);
         }
 
-        private void binData(Context context, Branch branch) {
-            tvMenu.setText(branch.getBranchName());
-            if (branch.isSelected()) {
+        private void binData(Context context, ItemCategoryNoListNote categoryNoListNote) {
+            tvMenu.setText(categoryNoListNote.getGroupName());
+            if (categoryNoListNote.isSelected()) {
                 view.setBackground(context.getDrawable(R.mipmap.bg_btn_white));
                 tvMenu.setTextColor(ContextCompat.getColor(context, R.color.color_black));
 //                ivItem.setVisibility(View.VISIBLE);

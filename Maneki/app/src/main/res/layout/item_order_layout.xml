@@ -7,6 +7,8 @@
     android:padding="@dimen/padding_content">
 
     <ImageView
+        android:id="@+id/ivCartItem"
+        android:visibility="visible"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@mipmap/bg_app" />
@@ -42,10 +44,11 @@
         android:textColor="@color/white"
         android:textSize="@dimen/font_size_title"
         app:font="@string/font_cour" />
-
     <ImageView
-        android:id="@+id/ivCartItem"
+        android:id="@+id/ivCartItemTemp"
+        android:visibility="invisible"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-         />
+        android:background="@mipmap/bg_app" />
+
 </RelativeLayout>

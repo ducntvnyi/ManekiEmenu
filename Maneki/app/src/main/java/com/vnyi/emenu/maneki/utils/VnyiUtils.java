@@ -111,6 +111,25 @@ public class VnyiUtils {
     }
 
     /**
+     * log bug to server
+     *
+     * @param context
+     * @param action
+     * @param tag
+     * @param exception
+     */
+    public static void LogException(Context context, String action, String tag, String exception) {
+        try {
+            // log to file
+            Logger.e(tag, exception);
+            // TODO: log to server
+            saveErrorSys(context, action, exception);
+        } catch (Exception e) {
+            LogException(TAG, e);
+        }
+    }
+
+    /**
      * request permission
      *
      * @param activity
@@ -170,6 +189,7 @@ public class VnyiUtils {
             Log.e(TAG, "==> saveErrorSys " + e.getMessage());
         }
     }
+
 
     public static String getLinkServer(Context context) {
         try {

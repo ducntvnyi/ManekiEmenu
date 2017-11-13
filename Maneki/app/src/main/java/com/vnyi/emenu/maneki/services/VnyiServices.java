@@ -228,7 +228,7 @@ public class VnyiServices {
      * @param userId
      * @param soapListener
      */
-    public static void requestPostTicketUpdateItem(String url_config, int ticketId, int orderDetailId, int itemId, int uomId, String itemQuantity, double itemPrice,
+    public static void requestPostTicketUpdateItem(String url_config, int ticketId, int orderDetailId, int itemId, int uomId, int itemQuantity, double itemPrice,
                                                    int itemChoiceAmount, int discountPer, String itemRequestDetail, int langId, int posId, int userId, SoapListenerVyni soapListener) {
         try {
             String url = url_config + URL;
@@ -299,7 +299,7 @@ public class VnyiServices {
     }
 
     /**
-     * Get list item category get detail
+     * Get list item category get detail(Menu Right)
      *
      * @param url_config
      * @param postMasterPage
@@ -310,7 +310,7 @@ public class VnyiServices {
      * @param posId
      * @param soapListener
      */
-    public static void requestGetItemCategory(String url_config, boolean postMasterPage, int categoryId, int ticketId, int LangId, int objId, int posId, SoapListenerVyni soapListener) {
+    public static void requestGetItemCategoryDetail(String url_config, boolean postMasterPage, int categoryId, int ticketId, int LangId, int objId, int posId, SoapListenerVyni soapListener) {
         try {
             String url = url_config + URL;
             SoapServiceVnyi.getInstance(NAME_SPACE, url, VnyiApiServices.GET_ITEM_CATEGORY_GET_DETAIL).setSoapListener(soapListener)
@@ -468,7 +468,7 @@ public class VnyiServices {
      * @param soapListener
      */
 
-    public static void requestTicketLoadInfo(String url_config, int ticketId, int tableId, String userId, int langId, SoapListenerVyni soapListener) {
+    public static void requestTicketLoadInfo(String url_config, int ticketId, int tableId, int userId, int langId, SoapListenerVyni soapListener) {
         try {
             String url = url_config + URL;
             SoapServiceVnyi.getInstance(NAME_SPACE, url, VnyiApiServices.POST_TICKET_LOAD_INFO).setSoapListener(soapListener)
@@ -476,6 +476,45 @@ public class VnyiServices {
                     .addPropertySoapObject(VnyiApiServices.TABLE_ID, tableId)
                     .addPropertySoapObject(VnyiApiServices.USER_ID, userId)
                     .addPropertySoapObject(VnyiApiServices.LANG_ID, langId)
+                    .execute();
+
+        } catch (Exception e) {
+            VnyiUtils.LogException(TAG, e);
+        }
+    }
+
+    /**
+     * update ticket before order item(ticketId=0) create bill
+     *
+     * @param url_config
+     * @param ticketId
+     * @param tableId
+     * @param branchId
+     * @param posId
+     * @param langId
+     * @param soapListener
+     */
+    public static void requestTicketUpdateInfo(String url_config, int ticketId, int tableId, int branchId, int posId, int langId, SoapListenerVyni soapListener) {
+        try {
+
+            String url = url_config + URL;
+            SoapServiceVnyi.getInstance(NAME_SPACE, url, VnyiApiServices.POST_TICKET_UPDATE_INFO).setSoapListener(soapListener)
+                    .addPropertySoapObject(VnyiApiServices.TICKET_ID, ticketId)
+                    .addPropertySoapObject(VnyiApiServices.CUSTOMER_QUANTITY, 1)
+                    .addPropertySoapObject(VnyiApiServices.CUSTOMER_MEN_QUANTITY, 0)
+                    .addPropertySoapObject(VnyiApiServices.CUSTOMER_CHILDREN_QUANTITY, 0)
+                    .addPropertySoapObject(VnyiApiServices.CUSTOMER_FOREIGN_QUANTITY, 0)
+                    .addPropertySoapObject(VnyiApiServices.CUSTOMER_VIP_CODE, "")
+                    .addPropertySoapObject(VnyiApiServices.CUSTOMER_GROUP_ID, 0)
+                    .addPropertySoapObject(VnyiApiServices.TABLE_ID, tableId)
+                    .addPropertySoapObject(VnyiApiServices.POST_ID, posId)
+                    .addPropertySoapObject(VnyiApiServices.BRANCH_ID, branchId)
+                    .addPropertySoapObject(VnyiApiServices.LANG_ID, langId)
+                    .addPropertySoapObject(VnyiApiServices.DEVICE_NAME, "N")
+                    .addPropertySoapObject(VnyiApiServices.CUSTOMER_TAX, "")
+                    .addPropertySoapObject(VnyiApiServices.COMPANY_NAME, "")
+                    .addPropertySoapObject(VnyiApiServices.COMPANY_ADDRESS, "")
+                    .addPropertySoapObject(VnyiApiServices.TICKET_NOTE, "n")
                     .execute();
 
         } catch (Exception e) {
@@ -494,12 +533,12 @@ public class VnyiServices {
      * @param soapListener
      */
 
-    public static void requestGetListItemCategoryNoTicket(String url_config, int ticketId, int tableId, String posId, int langId, int branchId, SoapListenerVyni soapListener) {
+    public static void requestGetListItemCategoryNoTicket(String url_config, int ticketId, int tableId, int posId, int langId, int branchId, SoapListenerVyni soapListener) {
 
         try {
             String url = url_config + URL;
             SoapServiceVnyi.getInstance(NAME_SPACE, url, VnyiApiServices.GET_LIST_TEM_CATEGORY_NO_TICKET).setSoapListener(soapListener)
-                    .addPropertySoapObject(VnyiApiServices.TICKET_ID, ticketId)
+                    .addPropertySoapObject("TicketID", ticketId)
                     .addPropertySoapObject(VnyiApiServices.TABLE_ID, tableId)
                     .addPropertySoapObject(VnyiApiServices.POST_ID, posId)
                     .addPropertySoapObject(VnyiApiServices.LANG_ID, langId)

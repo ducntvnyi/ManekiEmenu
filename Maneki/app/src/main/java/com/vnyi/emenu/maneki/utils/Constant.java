@@ -62,4 +62,7 @@ public interface Constant {
     String KEY_LINK_SERVER = "LINK_SERVER";
     String KEY_LIST_BRANCH = "list branch";
     String KEY_LIST_USER_ORDER = "list user order";
+    String KEY_LIST_TABLE = "list table";
+    String KEY_TICKET = "ticket";
+    String KEY_TICKET_UPDATE_INFO = "ticket update info";
 }
