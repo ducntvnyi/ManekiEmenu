@@ -3,7 +3,6 @@ package com.vnyi.emenu.maneki.fragments;
 
 import android.animation.Animator;
 import android.graphics.drawable.BitmapDrawable;
-import android.os.AsyncTask;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -15,6 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.jakewharton.rxbinding2.widget.RxTextView;
+import com.qslib.util.ToastUtils;
 import com.vnyi.emenu.maneki.R;
 import com.vnyi.emenu.maneki.adapters.ItemAdapter;
 import com.vnyi.emenu.maneki.adapters.MenuAdapter;
@@ -23,6 +23,7 @@ import com.vnyi.emenu.maneki.customviews.ButtonFont;
 import com.vnyi.emenu.maneki.customviews.CartAnimationUtil;
 import com.vnyi.emenu.maneki.models.AnimationView;
 import com.vnyi.emenu.maneki.models.ConfigValueModel;
+import com.vnyi.emenu.maneki.models.UpdateTicketItemModel;
 import com.vnyi.emenu.maneki.models.response.ItemCategoryDetail;
 import com.vnyi.emenu.maneki.models.response.ItemCategoryNoListNote;
 import com.vnyi.emenu.maneki.models.response.TicketLoadInfo;
@@ -111,11 +112,7 @@ public class MenuFragment extends BaseFragment {
             mItemModels = new ArrayList<>();
             mItemAdapter = new ItemAdapter(mContext, mItemModels, animationView -> {
                 onClickAddToCart(animationView.getImageView(), animationView.getView());
-                if (itemCounter == 0) {
-                    mItemCategoryDetail = animationView.getCategoryDetail();
-                } else {
-                    categoryDetailsOrder.add(animationView.getCategoryDetail());
-                }
+                categoryDetailsOrder.add(animationView.getCategoryDetail());
             });
             mGridLayoutManager = new GridLayoutManager(mContext, 4);
             rvItem.setAdapter(mItemAdapter);
@@ -201,11 +198,7 @@ public class MenuFragment extends BaseFragment {
 
     @OnClick(R.id.btnViewOrder)
     void onClickViewOrder() {
-        try {
-            DialogConfirmOrderFragment.newInstance().show(getFragmentManager(), "");
-        } catch (Exception e) {
-            VnyiUtils.LogException(TAG, e);
-        }
+        mActivity.changeTab(Constant.INDEX_ORDER);
     }
 
     @OnClick(R.id.ivPrevious)
@@ -250,7 +243,9 @@ public class MenuFragment extends BaseFragment {
         onNextMenu();
     }
 
-
+    /**
+     * @param targetView
+     */
     private void makeFlyAnimation(ImageView targetView) {
 
         try {
@@ -265,14 +260,7 @@ public class MenuFragment extends BaseFragment {
                     //                addItemToCart();
                     Toast.makeText(mContext, "Continue Shopping...", Toast.LENGTH_SHORT).show();
                     ++itemCounter;
-
-                    if (itemCounter == 1) {
-                        requestPostTicketUpdateItem(mConfigValueModel, ticketId, 0, 1, mItemCategoryDetail, ticketUpdateItem -> {
-                            VnyiPreference.getInstance(getContext()).putInt(VnyiApiServices.ORDER_DETAIL_ID, ticketUpdateItem.getOrderDetailId());
-                        });
-                    } else {
-                        tvCart.setText("" + itemCounter + "");
-                    }
+                    tvCart.setText("" + itemCounter + "");
 
                 }
 
@@ -311,41 +299,22 @@ public class MenuFragment extends BaseFragment {
     }
 
     private void updateItem(CharSequence charSequence) {
-        if (itemCounter == 0 || itemCounter == 1) return;
-        Log.e(TAG, "==> updateItem:: " + charSequence);
-        Toast.makeText(mContext, "Order item successfully", Toast.LENGTH_SHORT).show();
+
+        if (itemCounter == 0) return;
+
         int orderDetailId = VnyiPreference.getInstance(mContext).getInt(VnyiApiServices.ORDER_DETAIL_ID);
-        new UpdateItemTask().execute(orderDetailId);
+
+        UpdateTicketItemModel updateTicketItemModel = new UpdateTicketItemModel(ticketId, orderDetailId, mConfigValueModel, categoryDetailsOrder);
+        new UpdateItemTask(updateItemOrder -> {
+            ToastUtils.showToast(mContext, "Order successfully!!");
+            categoryDetailsOrder.clear();
+        }).execute(updateTicketItemModel);
+
+
     }
 
     private List<ItemCategoryDetail> categoryDetailsOrder = new ArrayList<>();
 
-    private class UpdateItemTask extends AsyncTask<Integer, Void, Void> {
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            Log.e(TAG, "==> UpdateItemTask onPreExecute");
-        }
-
-        @Override
-        protected Void doInBackground(Integer... integers) {
-            Log.e(TAG, "==> UpdateItemTask doInBackground");
-            int orderDetailId = integers[0];
-            for (ItemCategoryDetail categoryDetail : categoryDetailsOrder) {
-                requestPostTicketUpdateItem(mConfigValueModel, ticketId, orderDetailId, (int) (categoryDetail.getOrderedQuantity() + 1), categoryDetail, ticketUpdateInfo -> {
-                });
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
-            categoryDetailsOrder.clear();
-            Log.e(TAG, "==> UpdateItemTask onPostExecute");
-        }
-    }
 
     // step1: lúc đầu thì ticketId =0 sau đó gọi hàm tickLoadInfo để tạo bill,
     // Step2: sau đó gọi Ticket_UpdateInfo để lấy ticketId,
@@ -359,12 +328,16 @@ public class MenuFragment extends BaseFragment {
 
         TicketLoadInfo ticketInfo = VnyiPreference.getInstance(getContext()).getObject(Constant.KEY_TICKET, TicketLoadInfo.class);
         if (ticketInfo == null) {
+            VnyiPreference.getInstance(mContext).putInt(VnyiApiServices.ORDER_DETAIL_ID, 0);
+            Log.e(TAG, "==> requestTicketUpdateInfo create Ticket");
             requestTicketUpdateInfo(mConfigValueModel, ticketUpdateInfo -> {
                 VnyiPreference.getInstance(getContext()).putObject(Constant.KEY_TICKET_UPDATE_INFO, ticketUpdateInfo);
+                VnyiPreference.getInstance(getContext()).putInt(Constant.KEY_TICKET_ID, ticketUpdateInfo.getTicketId());
                 ticketId = ticketUpdateInfo.getTicketId();
                 loadItem(ticketId);
             });
         } else {
+            Log.e(TAG, "==> ticketLoadInfo");
             ticketId = ticketInfo.getTicketId();
             loadItem(ticketId);
         }
@@ -375,7 +348,9 @@ public class MenuFragment extends BaseFragment {
     private void loadItem(int ticketId) {
         showDialog();
         ticketLoadInfo(mConfigValueModel, ticketId, ticketLoadInfo -> {
+
             VnyiPreference.getInstance(getContext()).putObject(Constant.KEY_TICKET, ticketLoadInfo);
+            VnyiPreference.getInstance(getContext()).putInt(Constant.KEY_TICKET_ID, ticketId);
             loadMenuLeft(ticketId);
         });
     }

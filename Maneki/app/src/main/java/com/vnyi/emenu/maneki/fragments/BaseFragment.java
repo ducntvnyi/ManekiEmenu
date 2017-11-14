@@ -2,10 +2,12 @@ package com.vnyi.emenu.maneki.fragments;
 
 
 import android.content.Context;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,9 +25,16 @@ import com.vnyi.emenu.maneki.applications.VnyiPreference;
 import com.vnyi.emenu.maneki.models.ConfigValueModel;
 import com.vnyi.emenu.maneki.models.ItemCategoryDetailModel;
 import com.vnyi.emenu.maneki.models.NoTicketModel;
+import com.vnyi.emenu.maneki.models.TicketItemOrderModel;
+import com.vnyi.emenu.maneki.models.TicketPaymentModel;
+import com.vnyi.emenu.maneki.models.UpdateTicketItemModel;
 import com.vnyi.emenu.maneki.models.response.ItemCategoryDetail;
 import com.vnyi.emenu.maneki.models.response.ItemCategoryNoListNote;
+import com.vnyi.emenu.maneki.models.response.TicketItemOrder1;
+import com.vnyi.emenu.maneki.models.response.TicketItemOrderMoney;
 import com.vnyi.emenu.maneki.models.response.TicketLoadInfo;
+import com.vnyi.emenu.maneki.models.response.TicketPayment;
+import com.vnyi.emenu.maneki.models.response.TicketPaymentMoney;
 import com.vnyi.emenu.maneki.models.response.TicketUpdateInfo;
 import com.vnyi.emenu.maneki.models.response.TicketUpdateItem;
 import com.vnyi.emenu.maneki.services.VnyiApiServices;
@@ -111,6 +120,7 @@ public abstract class BaseFragment extends Fragment {
     protected void showDialog() {
         try {
             // dismiss dialog
+            if (mActivity == null) mActivity = (MainActivity) getActivity();
             dismissDialog();
             progressDialog = new ProgressDialogUtils();
             progressDialog.setMessage(getString(R.string.loading));
@@ -159,7 +169,7 @@ public abstract class BaseFragment extends Fragment {
      * @paramconsumer
      */
     public void ticketLoadInfo(ConfigValueModel configValueModel, int ticketId, Consumer<TicketLoadInfo> consumer) {
-
+        VnyiUtils.LogException(TAG, "<<<--------------start ticketLoadInfo------------>>>");
         try {
             if (!NetworkUtils.isNetworkAvailable(getContext())) return;
 
@@ -218,12 +228,13 @@ public abstract class BaseFragment extends Fragment {
                 @Override
                 public void onFinished() {
                     //                dismissDialog();
-                    VnyiUtils.LogException(mContext, "onFinished", TAG, "==> ticketLoadInfo onFinished ");
+                    VnyiUtils.LogException(TAG, "==> ticketLoadInfo onFinished ");
                 }
             });
         } catch (Exception e) {
             VnyiUtils.LogException(mContext, "ticketLoadInfo", TAG, e.getMessage());
         }
+        VnyiUtils.LogException(TAG, "<<<--------------end ticketLoadInfo------------>>>");
     }
 
     /**
@@ -234,7 +245,7 @@ public abstract class BaseFragment extends Fragment {
      * @param consumer
      */
     public void getListItemCategoryNoTicket(ConfigValueModel configValueModel, int ticketId, Consumer<NoTicketModel> consumer) {
-
+        VnyiUtils.LogException(TAG, "<<<--------------start getListItemCategoryNoTicket------------>>>");
         try {
             int posId = VnyiPreference.getInstance(getContext()).getInt(VnyiApiServices.POST_ID);
             int langId = VnyiPreference.getInstance(getContext()).getInt(VnyiApiServices.LANG_ID);
@@ -290,7 +301,7 @@ public abstract class BaseFragment extends Fragment {
 
                 @Override
                 public void onFail(Exception ex) {
-                    dismissDialog();
+//                    dismissDialog();
                     VnyiUtils.LogException(mContext, "onFail", TAG, "==> getListItemCategoryNoTicket onFail " + ex.getMessage());
                 }
 
@@ -303,6 +314,7 @@ public abstract class BaseFragment extends Fragment {
         } catch (Exception e) {
             VnyiUtils.LogException(mContext, "getListItemCategoryNoTicket", TAG, e.getMessage());
         }
+        VnyiUtils.LogException(TAG, "<<<--------------end getListItemCategoryNoTicket------------>>>");
     }
 
     /**
@@ -316,7 +328,7 @@ public abstract class BaseFragment extends Fragment {
      */
     public void getListItemCategoryDetail(ConfigValueModel configValueModel, boolean postMasterPage, int categoryId,
                                           int ticketId, Consumer<ItemCategoryDetailModel> consumer) {
-
+        VnyiUtils.LogException(TAG, "<<<--------------start getListItemCategoryDetail------------>>>");
         int posId = VnyiPreference.getInstance(getContext()).getInt(VnyiApiServices.POST_ID);
         int langId = VnyiPreference.getInstance(getContext()).getInt(VnyiApiServices.LANG_ID);
         int objId = Integer.parseInt(configValueModel.getUserOrder().getConfigValue());
@@ -335,7 +347,7 @@ public abstract class BaseFragment extends Fragment {
             @Override
             public void onStarted() {
                 VnyiUtils.LogException(TAG, "==> getListItemCategoryDetail onStarted ");
-//                showDialog();
+                showDialog();
             }
 
             @Override
@@ -371,7 +383,7 @@ public abstract class BaseFragment extends Fragment {
             @Override
             public void onFail(Exception ex) {
                 dismissDialog();
-                VnyiUtils.LogException(TAG, "==> getListItemCategoryDetail onFail " + ex.getMessage());
+                VnyiUtils.LogException(mContext, "onFail", TAG, "==> getListItemCategoryDetail onFail " + ex.getMessage());
             }
 
             @Override
@@ -380,6 +392,7 @@ public abstract class BaseFragment extends Fragment {
                 VnyiUtils.LogException(TAG, "==> getListItemCategoryDetail onFinished ");
             }
         });
+        VnyiUtils.LogException(TAG, "<<<--------------end getListItemCategoryDetail------------>>>");
     }
 
     /**
@@ -389,7 +402,7 @@ public abstract class BaseFragment extends Fragment {
      * @param consumer
      */
     public void requestTicketUpdateInfo(ConfigValueModel configValueModel, Consumer<TicketUpdateInfo> consumer) {
-        VnyiUtils.LogException(mContext, "requestTicketUpdateInfo ", TAG, "--------------start------------");
+        VnyiUtils.LogException(TAG, "--------------start requestTicketUpdateInfo------------");
         try {
             int posId = VnyiPreference.getInstance(getContext()).getInt(VnyiApiServices.POST_ID);
             int langId = VnyiPreference.getInstance(getContext()).getInt(VnyiApiServices.LANG_ID);
@@ -437,7 +450,6 @@ public abstract class BaseFragment extends Fragment {
 
                         }
                     }
-                    dismissDialog();
 
                 }
 
@@ -449,14 +461,14 @@ public abstract class BaseFragment extends Fragment {
 
                 @Override
                 public void onFinished() {
-                    dismissDialog();
+//                    dismissDialog();
                     VnyiUtils.LogException(TAG, "==> requestTicketUpdateInfo onFinished ");
                 }
             });
         } catch (Exception e) {
             VnyiUtils.LogException(mContext, "requestTicketUpdateInfo", TAG, e.getMessage());
         }
-        VnyiUtils.LogException(mContext, "requestTicketUpdateInfo ", TAG, "--------------End------------");
+        VnyiUtils.LogException(TAG, "--------------end requestTicketUpdateInfo------------");
     }
 
     /**
@@ -471,6 +483,8 @@ public abstract class BaseFragment extends Fragment {
      */
     public void requestPostTicketUpdateItem(ConfigValueModel configValueModel, int ticketId, int orderDetailId, int quantity, ItemCategoryDetail categoryDetail, Consumer<TicketUpdateItem> consumer) {
 
+        VnyiUtils.LogException(TAG, "--------------start requestPostTicketUpdateItem------------");
+        VnyiUtils.LogException(TAG, "==> requestPostTicketUpdateItem: orderDetailId:: " + orderDetailId + " - quantity " + quantity + " - getItemId:" + categoryDetail.getItemId());
         int posId = VnyiPreference.getInstance(getContext()).getInt(VnyiApiServices.POST_ID);
         int langId = VnyiPreference.getInstance(getContext()).getInt(VnyiApiServices.LANG_ID);
         int userId = Integer.parseInt(configValueModel.getUserOrder().getConfigValue());
@@ -527,7 +541,7 @@ public abstract class BaseFragment extends Fragment {
                     @Override
                     public void onFail(Exception ex) {
                         dismissDialog();
-                        VnyiUtils.LogException(TAG, "==> requestPostTicketUpdateItem onFail " + ex.getMessage());
+                        VnyiUtils.LogException(mContext, "onFail", TAG, "==> requestPostTicketUpdateItem onFail " + ex.getMessage());
                     }
 
                     @Override
@@ -536,11 +550,15 @@ public abstract class BaseFragment extends Fragment {
                         VnyiUtils.LogException(TAG, "==> requestPostTicketUpdateItem onFinished ");
                     }
                 });
+        VnyiUtils.LogException(TAG, "--------------end requestPostTicketUpdateItem------------");
     }
 
-
+    /**
+     * @param configValueModel
+     * @param ticketId
+     */
     private void checkStatusBill(ConfigValueModel configValueModel, int ticketId) {
-        VnyiUtils.LogException(mContext, "checkStatusBill ", TAG, "--------------Start------------");
+        VnyiUtils.LogException(TAG, "--------------start checkStatusBill------------");
         try {
             int langId = VnyiPreference.getInstance(getContext()).getInt(VnyiApiServices.LANG_ID);
             int yourVersion = VnyiPreference.getInstance(getContext()).getInt(VnyiApiServices.YOUR_VERSION);
@@ -582,8 +600,303 @@ public abstract class BaseFragment extends Fragment {
         } catch (Exception e) {
             VnyiUtils.LogException(mContext, "onFail", TAG, "==> checkStatusBill " + e.getMessage());
         }
-        VnyiUtils.LogException(mContext, "checkStatusBill ", TAG, "--------------end------------");
+        VnyiUtils.LogException(TAG, "--------------end checkStatusBill------------");
+    }
+
+    protected void requestGetTicketItemOrder(ConfigValueModel configValueModel, int ticketId, int getType, Consumer<TicketItemOrderModel> consumer) {
+
+        VnyiUtils.LogException(TAG, "--------------start requestGetTicketItemOrder------------");
+
+        try {
+            int langId = VnyiPreference.getInstance(getContext()).getInt(VnyiApiServices.LANG_ID);
+            int userId = Integer.parseInt(configValueModel.getUserOrder().getConfigValue());
+            int branchId = Integer.parseInt(configValueModel.getBranch().getConfigValue());
+            String url = configValueModel.getLinkServer();
+
+            if (!NetworkUtils.isNetworkAvailable(getContext())) return;
+
+            VnyiServices.requestGetTicketItemOrder(url, ticketId, getType, userId, langId, branchId, new SoapListenerVyni() {
+                @Override
+                public void onStarted() {
+                    VnyiUtils.LogException(TAG, "==> requestGetTicketItemOrder onFinished ");
+                    showDialog();
+                }
+
+                @Override
+                public void onSuccess(SoapResponse soapResponse) {
+                    VnyiUtils.LogException(TAG, "==> requestGetTicketItemOrder onSuccess ");
+                    if (soapResponse == null) return;
+
+                    if (soapResponse.getStatus().toLowerCase().equals("true")) {
+                        if (soapResponse.getResult() != null) {
+                            VnyiUtils.LogException(TAG, "==> requestGetTicketItemOrder onSuccess:: " + soapResponse.toString());
+                            try {
+                                JSONObject configValueObject = new JSONObject(soapResponse.getResult());
+
+                                List<TicketItemOrder1> ticketItemOrders = JacksonUtils.convertJsonToObject(configValueObject.getString(VnyiApiServices.TABLE), new TypeReference<List<TicketItemOrder1>>() {
+                                });
+                                List<TicketItemOrderMoney> itemOrderMoneys = JacksonUtils.convertJsonToObject(configValueObject.getString("Table2"), new TypeReference<List<TicketItemOrderMoney>>() {
+                                });
+                                TicketItemOrderModel itemOrderModel = new TicketItemOrderModel();
+                                if (ticketItemOrders != null && ticketItemOrders.size() > 0) {
+                                    itemOrderModel.setTicketItemOrders(ticketItemOrders);
+                                }
+                                if (itemOrderMoneys != null && itemOrderMoneys.size() > 0) {
+                                    itemOrderModel.setTicketItemOrderMoney(itemOrderMoneys.get(0));
+                                }
+                                consumer.accept(itemOrderModel);
+                            } catch (JSONException e) {
+                                VnyiUtils.LogException(mContext, "jsonObject passed error: ", TAG, "==> " + e.getMessage());
+                            }
+
+                        }
+                    }
+                    dismissDialog();
+
+                }
+
+                @Override
+                public void onFail(Exception ex) {
+                    VnyiUtils.LogException(mContext, "onFail", TAG, "==> requestGetTicketItemOrder " + ex.getMessage());
+                }
+
+                @Override
+                public void onFinished() {
+                    VnyiUtils.LogException(TAG, "==> requestGetTicketItemOrder onFinished ");
+                }
+            });
+        } catch (Exception e) {
+            VnyiUtils.LogException(mContext, "catch", TAG, "==> requestGetTicketItemOrder " + e.getMessage());
+        }
+        VnyiUtils.LogException(TAG, "--------------end requestGetTicketItemOrder------------");
     }
 
 
+    protected void requestLoadInfoTicketPayment(ConfigValueModel configValueModel, int ticketId, Consumer<TicketPaymentModel> consumer) {
+
+        VnyiUtils.LogException(TAG, "--------------start requestLoadInfoTicketPayment------------");
+
+        try {
+            int langId = VnyiPreference.getInstance(getContext()).getInt(VnyiApiServices.LANG_ID);
+
+            String url = configValueModel.getLinkServer();
+
+            if (!NetworkUtils.isNetworkAvailable(getContext())) return;
+
+            VnyiServices.requestLoadInfoTicketPayment(url, ticketId, langId, new SoapListenerVyni() {
+                @Override
+                public void onStarted() {
+                    VnyiUtils.LogException(TAG, "==> requestLoadInfoTicketPayment onFinished ");
+                    showDialog();
+                }
+
+                @Override
+                public void onSuccess(SoapResponse soapResponse) {
+                    VnyiUtils.LogException(TAG, "==> requestLoadInfoTicketPayment onSuccess ");
+                    if (soapResponse == null) return;
+
+                    if (soapResponse.getStatus().toLowerCase().equals("true")) {
+                        if (soapResponse.getResult() != null) {
+                            VnyiUtils.LogException(TAG, "==> requestLoadInfoTicketPayment onSuccess:: " + soapResponse.toString());
+                            try {
+                                JSONObject configValueObject = new JSONObject(soapResponse.getResult());
+
+                                List<TicketPaymentMoney> paymentMoneys = JacksonUtils.convertJsonToObject(configValueObject.getString(VnyiApiServices.TABLE), new TypeReference<List<TicketPaymentMoney>>() {
+                                });
+                                List<TicketPayment> ticketPayments = JacksonUtils.convertJsonToObject(configValueObject.getString("Table1"), new TypeReference<List<TicketPayment>>() {
+                                });
+                                TicketPaymentModel paymentModel = new TicketPaymentModel();
+                                if (paymentMoneys != null && paymentMoneys.size() > 0) {
+                                    paymentModel.setTicketPaymentMoney(paymentMoneys.get(0));
+                                }
+                                if (ticketPayments != null && ticketPayments.size() > 0) {
+                                    paymentModel.setTicketPayments(ticketPayments);
+                                }
+                                consumer.accept(paymentModel);
+                            } catch (JSONException e) {
+                                VnyiUtils.LogException(mContext, "jsonObject passed error: ", TAG, "==> " + e.getMessage());
+                            }
+
+                        }
+                    }
+                    dismissDialog();
+
+                }
+
+                @Override
+                public void onFail(Exception ex) {
+                    VnyiUtils.LogException(mContext, "onFail", TAG, "==> requestLoadInfoTicketPayment " + ex.getMessage());
+                }
+
+                @Override
+                public void onFinished() {
+                    VnyiUtils.LogException(TAG, "==> requestLoadInfoTicketPayment onFinished ");
+                }
+            });
+        } catch (Exception e) {
+            VnyiUtils.LogException(mContext, "catch", TAG, "==> requestLoadInfoTicketPayment " + e.getMessage());
+        }
+        VnyiUtils.LogException(TAG, "--------------end requestLoadInfoTicketPayment------------");
+    }
+
+
+    class UpdateItemTask extends AsyncTask<UpdateTicketItemModel, Void, Void> {
+
+        private Consumer<Boolean> UpdateItemTaskConsumer;
+
+        public UpdateItemTask(Consumer<Boolean> updateItemTaskConsumer) {
+            UpdateItemTaskConsumer = updateItemTaskConsumer;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            Log.e(TAG, "==> UpdateItemTask onPreExecute");
+        }
+
+        @Override
+        protected Void doInBackground(UpdateTicketItemModel... categoryDetailsOrder) {
+            Log.e(TAG, "==> UpdateItemTask doInBackground");
+            UpdateTicketItemModel updateTicketItemModel = categoryDetailsOrder[0];
+            for (ItemCategoryDetail categoryDetail : updateTicketItemModel.getItemCategoryDetails()) {
+                requestPostTicketUpdateItem(updateTicketItemModel.getConfigValueModel(), updateTicketItemModel.getTicketId(),
+                        updateTicketItemModel.getOrderDetailId(), (int) (categoryDetail.getOrderedQuantity() + 1), categoryDetail, ticketUpdateInfo -> {
+                            VnyiPreference.getInstance(mContext).putInt(VnyiApiServices.ORDER_DETAIL_ID, ticketUpdateInfo.getOrderDetailId());
+                        });
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            UpdateItemTaskConsumer.accept(true);
+            Log.e(TAG, "==> UpdateItemTask onPostExecute");
+        }
+    }
+
+    /**
+     * huỷ order
+     *
+     * @param configValueModel
+     * @param ticketId
+     * @param consumer
+     */
+    protected void requestPostTicketCancelAllItemOrdering(ConfigValueModel configValueModel, int ticketId, Consumer<Boolean> consumer) {
+
+        VnyiUtils.LogException(TAG, "--------------Start requestPostTicketCancelAllItemOrdering------------");
+        try {
+            int langId = VnyiPreference.getInstance(getContext()).getInt(VnyiApiServices.LANG_ID);
+            int userId = Integer.parseInt(configValueModel.getUserOrder().getConfigValue());
+            String url = configValueModel.getLinkServer();
+
+            if (!NetworkUtils.isNetworkAvailable(getContext())) return;
+
+            VnyiServices.requestPostTicketCancelAllItemOrdering(url, ticketId, userId, langId, new SoapListenerVyni() {
+                @Override
+                public void onStarted() {
+                    VnyiUtils.LogException(TAG, "==> requestGetTicketItemOrder onFinished ");
+                    showDialog();
+                }
+
+                @Override
+                public void onSuccess(SoapResponse soapResponse) {
+                    VnyiUtils.LogException(TAG, "==> requestGetTicketItemOrder onSuccess ");
+
+
+                    if (soapResponse == null) return;
+
+                    if (soapResponse.getStatus().toLowerCase().equals("true")) {
+                        consumer.accept(true);
+                    }else {
+                        consumer.accept(false);
+                    }
+
+                    dismissDialog();
+
+                }
+
+                @Override
+                public void onFail(Exception ex) {
+                    dismissDialog();
+                    VnyiUtils.LogException(mContext, "onFail", TAG, "==> requestGetTicketItemOrder " + ex.getMessage());
+                }
+
+                @Override
+                public void onFinished() {
+                    dismissDialog();
+                    VnyiUtils.LogException(TAG, "==> requestGetTicketItemOrder onFinished ");
+                }
+            });
+        } catch (Exception e) {
+            VnyiUtils.LogException(mContext, "catch", TAG, "==> requestGetTicketItemOrder " + e.getMessage());
+        }
+        VnyiUtils.LogException(TAG, "--------------end requestPostTicketCancelAllItemOrdering------------");
+    }
+
+    /**
+     * send item order
+     *
+     * @param configValueModel
+     * @param ticketId
+     * @param consumer
+     */
+    protected void requestPostTicketSendItemOrder(ConfigValueModel configValueModel, int ticketId, Consumer<Boolean> consumer) {
+
+        VnyiUtils.LogException(TAG, "--------------Start requestPostTicketSendItemOrder------------");
+        try {
+            int posId = VnyiPreference.getInstance(getContext()).getInt(VnyiApiServices.POST_ID);
+            int langId = VnyiPreference.getInstance(getContext()).getInt(VnyiApiServices.LANG_ID);
+            int userId = Integer.parseInt(configValueModel.getUserOrder().getConfigValue());
+
+            String url = configValueModel.getLinkServer();
+
+            if (!NetworkUtils.isNetworkAvailable(getContext())) return;
+
+            VnyiServices.requestPostTicketSendItemOrder(url, ticketId, userId, posId, langId, new SoapListenerVyni() {
+                @Override
+                public void onStarted() {
+                    VnyiUtils.LogException(TAG, "==> requestPostTicketSendItemOrder onFinished ");
+                    showDialog();
+                }
+
+                @Override
+                public void onSuccess(SoapResponse soapResponse) {
+                    VnyiUtils.LogException(TAG, "==> requestPostTicketSendItemOrder onSuccess ");
+
+
+                    if (soapResponse == null) return;
+
+                    if (soapResponse.getStatus().toLowerCase().equals("true")) {
+                        consumer.accept(true);
+                    } else {
+                        consumer.accept(false);
+                    }
+
+
+                    dismissDialog();
+
+                }
+
+                @Override
+                public void onFail(Exception ex) {
+                    dismissDialog();
+                    consumer.accept(false);
+                    VnyiUtils.LogException(mContext, "onFail", TAG, "==> requestPostTicketSendItemOrder " + ex.getMessage());
+                }
+
+                @Override
+                public void onFinished() {
+                    dismissDialog();
+                    VnyiUtils.LogException(TAG, "==> requestPostTicketSendItemOrder onFinished ");
+                }
+            });
+        } catch (Exception e) {
+            VnyiUtils.LogException(mContext, "catch", TAG, "==> requestPostTicketSendItemOrder " + e.getMessage());
+        }
+        VnyiUtils.LogException(TAG, "--------------end requestPostTicketSendItemOrder------------");
+    }
+
 }
+
+

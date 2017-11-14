@@ -197,11 +197,11 @@ public class VnyiServices {
      * @param langId
      * @param soapListener
      */
-    public static void requestRequestGetList(String url_config, int itemId, int langId, SoapListenerVyni soapListener) {
+    public static void requestRequestGetList(String url_config, int typeId,int itemId, int langId, SoapListenerVyni soapListener) {
         try {
             String url = url_config + URL;
             SoapServiceVnyi.getInstance(NAME_SPACE, url, VnyiApiServices.REQUEST_GET_LIST).setSoapListener(soapListener)
-                    .addPropertySoapObject(VnyiApiServices.TYPE, 2)
+                    .addPropertySoapObject(VnyiApiServices.TYPE, typeId)
                     .addPropertySoapObject(VnyiApiServices.ITEM_ID, itemId)
                     .addPropertySoapObject(VnyiApiServices.LANG_ID, langId)
                     .execute();
@@ -442,7 +442,7 @@ public class VnyiServices {
      * @param langId
      * @param soapListener
      */
-    public static void requestConfigValueUpdateInfo(String url_config, int posId, String keyCode, String keyValue, int langId, SoapListenerVyni soapListener) {
+    public static void requestConfigValueUpdateInfo(String url_config, String keyCode, String keyValue, int langId, int posId, SoapListenerVyni soapListener) {
         try {
             String url = url_config + URL;
             SoapServiceVnyi.getInstance(NAME_SPACE, url, VnyiApiServices.CONFIG_VALUE_UPDATE_INFO).setSoapListener(soapListener)
@@ -561,7 +561,7 @@ public class VnyiServices {
      * @param branchId
      * @param soapListener
      */
-    public static void requestGetTicketItemOrder(String url_config, int ticketId, int getType, String userId, int langId, int branchId, SoapListenerVyni soapListener) {
+    public static void requestGetTicketItemOrder(String url_config, int ticketId, int getType, int userId, int langId, int branchId, SoapListenerVyni soapListener) {
 
         try {
             String url = url_config + URL;

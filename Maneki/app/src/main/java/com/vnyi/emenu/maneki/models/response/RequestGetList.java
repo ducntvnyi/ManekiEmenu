@@ -10,6 +10,16 @@ public class RequestGetList {
     @JsonProperty("RequestNote")
     private String requestNote;
 
+    private boolean isChecked;
+
+    public boolean isChecked() {
+        return isChecked;
+    }
+
+    public void setChecked(boolean checked) {
+        isChecked = checked;
+    }
+
     public String getRequestNote() {
         return requestNote;
     }
@@ -22,6 +32,7 @@ public class RequestGetList {
     public String toString() {
         return "RequestGetList{" +
                 "requestNote='" + requestNote + '\'' +
+                ", isChecked=" + isChecked +
                 '}';
     }
 }

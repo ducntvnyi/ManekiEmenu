@@ -64,5 +64,7 @@ public interface Constant {
     String KEY_LIST_USER_ORDER = "list user order";
     String KEY_LIST_TABLE = "list table";
     String KEY_TICKET = "ticket";
+    String KEY_TICKET_ID = "ticket id";
     String KEY_TICKET_UPDATE_INFO = "ticket update info";
+    String KEY_TABLE_NAME = "table name";
 }

@@ -4,12 +4,17 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
+import android.widget.RelativeLayout;
 
 import com.vnyi.emenu.maneki.R;
-import com.vnyi.emenu.maneki.adapters.OrderAdapter;
+import com.vnyi.emenu.maneki.adapters.PaymentItemAdapter;
+import com.vnyi.emenu.maneki.applications.VnyiPreference;
 import com.vnyi.emenu.maneki.customviews.TextViewFont;
-import com.vnyi.emenu.maneki.models.response.OrderItemModel;
+import com.vnyi.emenu.maneki.models.ConfigValueModel;
+import com.vnyi.emenu.maneki.models.TicketPaymentModel;
+import com.vnyi.emenu.maneki.models.response.TicketPayment;
+import com.vnyi.emenu.maneki.models.response.TicketPaymentMoney;
+import com.vnyi.emenu.maneki.utils.Constant;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,8 +29,12 @@ public class PaymentFragment extends BaseFragment {
 
     private static final String TAG = PaymentFragment.class.getSimpleName();
 
+    @BindView(R.id.rootView)
+    RelativeLayout rootView;
     @BindView(R.id.llHeaderTable)
     LinearLayout llHeaderTable;
+    @BindView(R.id.tvTableName)
+    TextViewFont tvTableName;
     @BindView(R.id.rvItemOrder)
     RecyclerView rvItemOrder;
     @BindView(R.id.PriceTotal)
@@ -36,17 +45,17 @@ public class PaymentFragment extends BaseFragment {
     TextViewFont tvSaleOffPrice;
     @BindView(R.id.tvVAT)
     TextViewFont tvVAT;
-    @BindView(R.id.tvTotalPaymen)
-    TextViewFont tvTotalPaymen;
-    @BindView(R.id.llAction)
-    LinearLayout llAction;
-    @BindView(R.id.tvCart)
-    TextView tvCart;
+    @BindView(R.id.tvTotalPayment)
+    TextViewFont tvTotalPayment;
 
 
-    private List<OrderItemModel> mOrderItemModels;
-    private OrderAdapter mOrderAdapter;
+    private ConfigValueModel mConfigValueModel;
+    private int ticketId;
+    private List<TicketPayment> ticketPayments;
+    private PaymentItemAdapter paymentItemAdapter;
 
+
+    private TicketPaymentMoney mTicketItemOrderMoney;
 
     public static Fragment newInstance() {
         Fragment fragment = new PaymentFragment();
@@ -55,45 +64,39 @@ public class PaymentFragment extends BaseFragment {
 
     @Override
     public int getFragmentLayoutId() {
-        return R.layout.order_fragment;
+        return R.layout.payment_fragment;
     }
 
     @Override
     public void initViews() {
-
         // init menu adapter
-        mOrderItemModels = new ArrayList<>();
-
-        mOrderAdapter = new OrderAdapter(mContext, true, mOrderItemModels, orderItemModel -> {
-
-        }, itemAdd -> {
-
-        }, itemReduce -> {
-
-        });
+        ticketPayments = new ArrayList<>();
+        paymentItemAdapter = new PaymentItemAdapter(mContext, true, ticketPayments);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
-        rvItemOrder.setAdapter(mOrderAdapter);
+        rvItemOrder.setAdapter(paymentItemAdapter);
         rvItemOrder.setLayoutManager(layoutManager);
 
     }
 
     @Override
     public void initData() {
-        // new ArrayList<>
-        mOrderItemModels.add(new OrderItemModel(1, "", "Sushi Ca ngu", 10, 100000f));
-        mOrderItemModels.add(new OrderItemModel(2, "", "Sushi Ca ngu", 9, 200000f));
-        mOrderItemModels.add(new OrderItemModel(3, "", "Sushi Ca ngu", 3, 400000f));
-        mOrderItemModels.add(new OrderItemModel(4, "", "Sushi Ca ngu", 1, 500000f));
-        mOrderItemModels.add(new OrderItemModel(5, "", "Sushi Ca ngu", 2, 600000f));
-        mOrderItemModels.add(new OrderItemModel(6, "", "Sushi Ca ngu", 3, 700000f));
-        mOrderItemModels.add(new OrderItemModel(7, "", "Sushi Ca ngu", 10, 800000f));
-        mOrderItemModels.add(new OrderItemModel(8, "", "Sushi Ca ngu", 6, 900000f));
-        mOrderItemModels.add(new OrderItemModel(9, "", "Sushi Ca ngu", 9, 770000f));
-        mOrderItemModels.add(new OrderItemModel(10, "", "Sushi Ca ngu", 8, 140000f));
-        mOrderItemModels.add(new OrderItemModel(11, "", "Sushi Ca ngu", 11, 190000f));
-        mOrderItemModels.add(new OrderItemModel(12, "", "Sushi Ca ngu", 1, 220000f));
-        mOrderAdapter.setOrderItemModelList(mOrderItemModels);
+
+        mConfigValueModel = VnyiPreference.getInstance(getContext()).getObject(Constant.KEY_CONFIG_VALUE, ConfigValueModel.class);
+        ticketId = VnyiPreference.getInstance(getContext()).getInt(Constant.KEY_TICKET_ID);
+
+        requestLoadInfoTicketPayment(mConfigValueModel, ticketId, this::updateUI);
     }
 
+    private void updateUI(TicketPaymentModel ticketItemOrderModel) {
+
+        mTicketItemOrderMoney = ticketItemOrderModel.getTicketPaymentMoney();
+        ticketPayments = ticketItemOrderModel.getTicketPayments();
+        paymentItemAdapter.setTicketPaymentList(ticketPayments);
+
+        tvTotalMoney.setText("" + mTicketItemOrderMoney.getItemAmount() + " VND");
+        tvSaleOffPrice.setText("" + mTicketItemOrderMoney.getDiscountItem() + " VND");
+        tvVAT.setText("" + mTicketItemOrderMoney.getVatAmount() + " VND");
+        tvTotalPayment.setText("" + mTicketItemOrderMoney.getTotalAmount() + " VND");
+    }
 
 }

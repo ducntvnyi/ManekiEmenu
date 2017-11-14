@@ -2,6 +2,7 @@ package com.vnyi.emenu.maneki.adapters;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,7 @@ import com.vnyi.emenu.maneki.customviews.TextViewFont;
 import com.vnyi.emenu.maneki.models.AnimationView;
 import com.vnyi.emenu.maneki.models.ItemModel;
 import com.vnyi.emenu.maneki.models.response.ItemCategoryDetail;
+import com.vnyi.emenu.maneki.services.VnyiApiServices;
 import com.vnyi.emenu.maneki.utils.VnyiUtils;
 
 import java.util.List;
@@ -93,9 +95,9 @@ public class ItemAdapter extends BaseRecycleAdapter<ItemModel, ItemAdapter.ViewH
         private void binData(Context context, ItemCategoryDetail itemModel) {
             tvItemName.setText(itemModel.getItemNameLang());
             tvPrice.setText("" + itemModel.getItemPrice() + "");
+            Log.e(TAG, "==> getItemUrlImage::" + VnyiApiServices.URL_CONFIG + itemModel.getItemUrlImage());
             Glide.with(context)
-                    .load("http://via.placeholder.com/300.png")
-                    .placeholder(R.mipmap.ic_placehoder)
+                    .load(VnyiApiServices.URL_CONFIG + itemModel.getItemUrlImage())
                     .fitCenter()
                     .centerCrop()
                     .into(ivCartItem);

@@ -248,43 +248,6 @@ public abstract class BaseActivity extends FragmentActivity {
         });
     }
 
-    protected void updateConfirm(int postId, int langId, String keyCode, String keyValue) {
-
-
-        VnyiUtils.LogException(TAG, "==> updateConfirm:: keyCode:: " + keyCode + " keyValue::" + keyValue);
-        try {
-            String url = VnyiPreference.getInstance(getApplicationContext()).getString(Constant.KEY_CONFIG_URL);
-
-            if (!NetworkUtils.isNetworkAvailable(getApplicationContext())) return;
-
-            VnyiServices.requestConfigValueUpdateInfo(url, postId, keyCode, keyValue, langId, new SoapListenerVyni() {
-
-                        @Override
-                        public void onStarted() {
-                            VnyiUtils.LogException(TAG, "==> updateConfirm onStarted ");
-                        }
-
-                        @Override
-                        public void onSuccess(SoapResponse soapResponse) {
-
-                        }
-
-                        @Override
-                        public void onFail(Exception ex) {
-                            VnyiUtils.LogException(TAG, "==> updateConfirm onFail ");
-                        }
-
-                        @Override
-                        public void onFinished() {
-                            VnyiUtils.LogException(TAG, "==> updateConfirm onFinished ");
-                        }
-                    }
-            );
-        } catch (Exception e) {
-            VnyiUtils.LogException(TAG, e);
-        }
-    }
-
     protected void loadBranch(String url) {
 
         if (!NetworkUtils.isNetworkAvailable(getApplicationContext())) return;
@@ -700,7 +663,6 @@ public abstract class BaseActivity extends FragmentActivity {
     }
 
     /**
-     *
      * load Menu right
      *
      * @param configValueModel

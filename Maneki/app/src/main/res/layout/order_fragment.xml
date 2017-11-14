@@ -21,12 +21,12 @@
             android:layout_weight="1"
             android:gravity="center"
             android:text="@string/table"
-
             android:textAllCaps="true"
             android:textColor="@color/white"
             android:textSize="@dimen/font_size_content" />
 
         <com.vnyi.emenu.maneki.customviews.TextViewFont
+            android:id="@+id/tvTableName"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -102,7 +102,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="right"
-                android:text="100.000 VND"
+                android:text="0 VND"
                 android:textColor="@color/white"
                 android:textSize="@dimen/font_size_content" />
         </LinearLayout>
@@ -132,7 +132,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="right"
-                android:text="100.000 VND"
+                android:text="0 VND"
                 android:textColor="@color/white"
                 android:textSize="@dimen/font_size_content" />
         </LinearLayout>
@@ -162,7 +162,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="right"
-                android:text="100.000 VND"
+                android:text="0 VND"
                 android:textColor="@color/white"
                 android:textSize="@dimen/font_size_content" />
         </LinearLayout>
@@ -179,7 +179,7 @@
             android:padding="@dimen/padding_layout">
 
             <com.vnyi.emenu.maneki.customviews.TextViewFont
-                android:id="@+id/tvTotalPaymen"
+
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -188,11 +188,12 @@
                 android:textSize="@dimen/font_size_content" />
 
             <com.vnyi.emenu.maneki.customviews.TextViewFont
+                android:id="@+id/tvTotalPayment"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="right"
-                android:text="100.000 VND"
+                android:text="0 VND"
                 android:textColor="@color/white"
                 android:textSize="@dimen/font_size_content" />
         </LinearLayout>
@@ -205,33 +206,50 @@
 
     <LinearLayout
         android:id="@+id/llAction"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
+        android:layout_marginEnd="@dimen/margin_payment"
+        android:layout_marginStart="@dimen/margin_payment"
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/btnPayment"
-            android:layout_width="300dp"
+            android:id="@+id/btnOrder"
+            android:layout_width="0dp"
             android:layout_height="50dp"
             android:layout_marginBottom="@dimen/margin_layout_default"
             android:layout_marginTop="@dimen/margin_layout"
+            android:layout_weight="1"
             android:background="@drawable/bg_btn_selector"
-            android:text="@string/payment"
+            android:text="@string/order"
             android:textColor="@color/white"
             android:textSize="@dimen/font_size_tab_header" />
 
         <Button
             android:id="@+id/btnAddItem"
-            android:layout_width="300dp"
+            android:layout_width="0dp"
             android:layout_height="50dp"
             android:layout_marginBottom="@dimen/margin_layout_default"
             android:layout_marginStart="@dimen/margin_layout_default"
             android:layout_marginTop="@dimen/margin_layout"
-            android:background="@drawable/bg_btn_white_selector"
-            android:text="@string/payment"
-            android:textColor="@color/color_app"
+            android:layout_weight="1"
+            android:background="@drawable/bg_btn_selector"
+            android:text="@string/add_item"
+            android:textColor="@color/white"
+            android:textSize="@dimen/font_size_tab_header" />
+
+        <Button
+            android:id="@+id/btnCancelOrder"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_marginBottom="@dimen/margin_layout_default"
+            android:layout_marginStart="@dimen/margin_layout_default"
+            android:layout_marginTop="@dimen/margin_layout"
+            android:layout_weight="1"
+            android:background="@drawable/bg_btn_selector"
+            android:text="@string/cancel_order"
+            android:textColor="@color/white"
             android:textSize="@dimen/font_size_tab_header" />
     </LinearLayout>
 

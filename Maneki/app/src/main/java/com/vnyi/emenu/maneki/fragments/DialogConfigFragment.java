@@ -12,9 +12,6 @@ import android.widget.ScrollView;
 import android.widget.Switch;
 import android.widget.TableRow;
 
-import com.qslib.network.NetworkUtils;
-import com.qslib.soap.SoapListenerVyni;
-import com.qslib.soap.SoapResponse;
 import com.qslib.util.KeyboardUtils;
 import com.vnyi.emenu.maneki.R;
 import com.vnyi.emenu.maneki.applications.VnyiPreference;
@@ -28,7 +25,6 @@ import com.vnyi.emenu.maneki.models.UserModel;
 import com.vnyi.emenu.maneki.models.response.Branch;
 import com.vnyi.emenu.maneki.models.response.Table;
 import com.vnyi.emenu.maneki.models.response.UserOrder;
-import com.vnyi.emenu.maneki.services.VnyiServices;
 import com.vnyi.emenu.maneki.utils.Constant;
 import com.vnyi.emenu.maneki.utils.VnyiUtils;
 
@@ -193,7 +189,7 @@ public class DialogConfigFragment extends BaseDialogFragment {
 
             tvTableNameLabel.setText(mConfigValueModel.getTableName().getConfigName());
             tvTableName.setText(getTableName(tableId));
-
+            VnyiPreference.getInstance(getContext()).putString(Constant.KEY_TABLE_NAME, tvTableName.getText().toString().trim());
             tvTableNameUserLabel.setText(mConfigValueModel.getUserOrder().getConfigName());
             tvTableNameUser.setText(getUserName());
 
@@ -342,6 +338,9 @@ public class DialogConfigFragment extends BaseDialogFragment {
         new ConfirmConfigTask().execute(mConfigValueModel);
     }
 
+    /**
+     * update config in background thread
+     */
     private class ConfirmConfigTask extends AsyncTask<ConfigValueModel, Void, Boolean> {
 
 
@@ -356,28 +355,27 @@ public class DialogConfigFragment extends BaseDialogFragment {
         @Override
         protected Boolean doInBackground(ConfigValueModel... configValueModels) {
             VnyiUtils.LogException("ConfirmConfigTask", "==> doInBackground");
-            int posId = 817;
-            int langId = 1;
+
             ConfigValueModel configValueModel = configValueModels[0];
 
             // update config branch
-            updateConfirm(posId, langId, configValueModel.getBranch().getConfigCode(), configValueModel.getBranch().getConfigValue());
+            updateConfirm(configValueModel.getLinkServer(), configValueModel.getBranch().getConfigCode(), configValueModel.getBranch().getConfigValue());
             // update config link sale off
-            updateConfirm(posId, langId, configValueModel.getLinkSaleOff().getConfigCode(), configValueModel.getLinkSaleOff().getConfigValue());
+            updateConfirm(configValueModel.getLinkServer(), configValueModel.getLinkSaleOff().getConfigCode(), configValueModel.getLinkSaleOff().getConfigValue());
             // update config ten ban cho thiet bi
-            updateConfirm(posId, langId, configValueModel.getTableName().getConfigCode(), configValueModel.getTableName().getConfigValue());
+            updateConfirm(configValueModel.getLinkServer(), configValueModel.getTableName().getConfigCode(), configValueModel.getTableName().getConfigValue());
             // update config cap de load danh sach cha ben
-            updateConfirm(posId, langId, configValueModel.getLoadListParent().getConfigCode(), configValueModel.getLoadListParent().getConfigValue());
+            updateConfirm(configValueModel.getLinkServer(), configValueModel.getLoadListParent().getConfigCode(), configValueModel.getLoadListParent().getConfigValue());
             // update config link huong dan sd
-            updateConfirm(posId, langId, configValueModel.getLinkUserApp().getConfigCode(), configValueModel.getLinkUserApp().getConfigValue());
+            updateConfirm(configValueModel.getLinkServer(), configValueModel.getLinkUserApp().getConfigCode(), configValueModel.getLinkUserApp().getConfigValue());
             // update config ten user de order tren emenu
-            updateConfirm(posId, langId, configValueModel.getUserOrder().getConfigCode(), configValueModel.getUserOrder().getConfigValue());
+            updateConfirm(configValueModel.getLinkServer(), configValueModel.getUserOrder().getConfigCode(), configValueModel.getUserOrder().getConfigValue());
             // update config chon thay doi ban
-            updateConfirm(posId, langId, configValueModel.getChangeTable().getConfigCode(), configValueModel.getChangeTable().getConfigValue());
+            updateConfirm(configValueModel.getLinkServer(), configValueModel.getChangeTable().getConfigCode(), configValueModel.getChangeTable().getConfigValue());
             // update config so luong hien thi theo cot tren giao dien
-            updateConfirm(posId, langId, configValueModel.getNumbTableShow().getConfigCode(), configValueModel.getNumbTableShow().getConfigValue());
+            updateConfirm(configValueModel.getLinkServer(), configValueModel.getNumbTableShow().getConfigCode(), configValueModel.getNumbTableShow().getConfigValue());
 
-            return isCompleteUpdateConfig;
+            return true;
         }
 
         @Override
@@ -386,41 +384,6 @@ public class DialogConfigFragment extends BaseDialogFragment {
             dismissDialog();
             VnyiUtils.LogException("ConfirmConfigTask", "==> onPostExecute:: " + aBoolean);
             mConsumerConfigValue.accept(true);
-        }
-    }
-
-    protected void updateConfirm(int postId, int langId, String keyCode, String keyValue) {
-        VnyiUtils.LogException(TAG, "==> updateConfirm:: keyCode:: " + keyCode + " keyValue::" + keyValue);
-        try {
-            if (!NetworkUtils.isNetworkAvailable(getContext())) return;
-
-            VnyiServices.requestConfigValueUpdateInfo(mConfigValueModel.getLinkServer(), postId, keyCode, keyValue, langId, new SoapListenerVyni() {
-
-                        @Override
-                        public void onStarted() {
-                            VnyiUtils.LogException(TAG, "==> updateConfirm onStarted ");
-                        }
-
-                        @Override
-                        public void onSuccess(SoapResponse soapResponse) {
-                            isCompleteUpdateConfig = true;
-                            VnyiUtils.LogException(TAG, "==> updateConfirm onSuccess ");
-                        }
-
-                        @Override
-                        public void onFail(Exception ex) {
-                            isCompleteUpdateConfig = false;
-                            VnyiUtils.LogException(TAG, "==> updateConfirm onFail ");
-                        }
-
-                        @Override
-                        public void onFinished() {
-                            VnyiUtils.LogException(TAG, "==> updateConfirm onFinished ");
-                        }
-                    }
-            );
-        } catch (Exception e) {
-            VnyiUtils.LogException(TAG, e);
         }
     }
 

@@ -68,6 +68,7 @@ public class BaseDialogFragment extends BaseMainDialogFragment {
 
                             if (tableNames != null || tableNames.size() > 0) {
                                 tableName = tableNames.get(0).getTableName();
+
                             }
                         } catch (JSONException e) {
                             VnyiUtils.LogException(TAG, "==> jsonObject passed error:  " + e.getMessage());
@@ -99,7 +100,7 @@ public class BaseDialogFragment extends BaseMainDialogFragment {
         int reaAutoId = 4;
         int listType = 1;
         int branchId = Integer.parseInt(configValueModel.getBranch().getConfigValue());
-        int langId = 1;
+        int langId = VnyiPreference.getInstance(getContext()).getInt(VnyiApiServices.LANG_ID);
 
         if (!NetworkUtils.isNetworkAvailable(getContext())) return;
 
@@ -149,4 +150,50 @@ public class BaseDialogFragment extends BaseMainDialogFragment {
         });
     }
 
+    /**
+     * update config app ( chi nhanh - ten ban -...)
+     *
+     * @param linkServer
+     * @param keyCode
+     * @param keyValue
+     */
+    protected void updateConfirm(String linkServer, String keyCode, String keyValue) {
+
+        VnyiUtils.LogException(TAG, "==> updateConfirm:: keyCode:: " + keyCode + " keyValue::" + keyValue);
+
+        int posId = VnyiPreference.getInstance(getContext()).getInt(VnyiApiServices.POST_ID);
+        int langId = VnyiPreference.getInstance(getContext()).getInt(VnyiApiServices.LANG_ID);
+
+        try {
+            if (!NetworkUtils.isNetworkAvailable(getContext())) return;
+
+            VnyiServices.requestConfigValueUpdateInfo(linkServer, keyCode, keyValue, langId, posId, new SoapListenerVyni() {
+
+                        @Override
+                        public void onStarted() {
+                            VnyiUtils.LogException(TAG, "==> updateConfirm onStarted ");
+                        }
+
+                        @Override
+                        public void onSuccess(SoapResponse soapResponse) {
+
+                            VnyiUtils.LogException(TAG, "==> updateConfirm onSuccess ");
+                        }
+
+                        @Override
+                        public void onFail(Exception ex) {
+
+                            VnyiUtils.LogException(TAG, "==> updateConfirm onFail ");
+                        }
+
+                        @Override
+                        public void onFinished() {
+                            VnyiUtils.LogException(TAG, "==> updateConfirm onFinished ");
+                        }
+                    }
+            );
+        } catch (Exception e) {
+            VnyiUtils.LogException(TAG, e);
+        }
+    }
 }

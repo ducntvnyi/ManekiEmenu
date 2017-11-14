@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center"
@@ -18,30 +19,36 @@
             android:background="@color/color_app"
             android:gravity="center"
             android:padding="@dimen/font_size_tab_header"
-            android:text="Confirmtaion for table: 01"
+            android:text="@string/cfrm_table_order"
             android:textColor="@color/white"
-            android:textSize="@dimen/font_size_tab_header" />
+            android:textSize="@dimen/font_size_tab_header"
+            app:font="@string/font_redsun_vn" />
 
         <com.vnyi.emenu.maneki.customviews.TextViewFont
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/padding_layout"
-            android:padding="@dimen/font_size_tab_header"
+            android:paddingEnd="@dimen/padding_layout"
+            android:paddingLeft="@dimen/padding_layout"
             android:text="@string/confirm_order"
-            android:textSize="@dimen/font_size_tab_header" />
+            android:textSize="@dimen/font_size_tab_header"
+            app:font="@string/font_redsun_vn" />
 
         <com.vnyi.emenu.maneki.customviews.TextViewFont
+            android:id="@+id/tvCodeOrder"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/padding_layout"
+            android:layout_marginTop="@dimen/margin_layout_default"
             android:background="@color/color_app"
             android:gravity="center"
             android:padding="@dimen/padding_content"
             android:text="@string/order_code"
             android:textColor="@color/white"
-            android:textSize="@dimen/font_size_tab_header" />
+            android:textSize="@dimen/font_size_tab_header"
+            app:font="@string/font_redsun_vn" />
 
         <com.vnyi.emenu.maneki.customviews.EditTextFont
+            android:id="@+id/edtCodeOrder"
             android:layout_width="250dp"
             android:layout_height="50dp"
             android:layout_marginBottom="@dimen/margin_layout_default"
@@ -49,12 +56,13 @@
             android:background="@color/color_gray"
             android:gravity="center"
             android:hint="100100"
-            android:maxLength="6"
             android:imeOptions="actionDone"
             android:inputType="number"
+            android:maxLength="6"
             android:maxLines="1"
             android:padding="@dimen/padding_content"
-            android:textSize="@dimen/font_size_tab_header" />
+            android:textSize="@dimen/font_size_tab_header"
+            app:font="@string/font_redsun_vn" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -63,6 +71,7 @@
             android:orientation="horizontal">
 
             <Button
+                android:id="@+id/btnYes"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/padding_content"
@@ -72,6 +81,7 @@
                 android:textColor="@color/white" />
 
             <Button
+                android:id="@+id/btnNo"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/padding_content"

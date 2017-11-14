@@ -2,15 +2,18 @@ package com.vnyi.emenu.maneki.adapters;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import com.bumptech.glide.Glide;
 import com.vnyi.emenu.maneki.R;
 import com.vnyi.emenu.maneki.customviews.TextViewFont;
-import com.vnyi.emenu.maneki.models.response.OrderItemModel;
+import com.vnyi.emenu.maneki.models.response.TicketItemOrder1;
+import com.vnyi.emenu.maneki.services.VnyiApiServices;
 import com.vnyi.emenu.maneki.utils.VnyiUtils;
 
 import java.util.List;
@@ -23,19 +26,19 @@ import java8.util.function.Consumer;
  * Created by Hungnd on 11/7/17.
  */
 
-public class OrderAdapter extends BaseRecycleAdapter<OrderItemModel, OrderAdapter.ViewHolder> {
+public class OrderAdapter extends BaseRecycleAdapter<TicketItemOrder1, OrderAdapter.ViewHolder> {
 
 
     private static final String TAG = OrderAdapter.class.getSimpleName();
     private Context mContext;
-    private List<OrderItemModel> mModelList;
+    private List<TicketItemOrder1> mModelList;
 
-    private Consumer<OrderItemModel> mConsumer;
-    private Consumer<OrderItemModel> mConsumerAddItem;
-    private Consumer<OrderItemModel> mConsumerReduce;
+    private Consumer<TicketItemOrder1> mConsumer;
+    private Consumer<TicketItemOrder1> mConsumerAddItem;
+    private Consumer<TicketItemOrder1> mConsumerReduce;
     private boolean isPayment;
 
-    public OrderAdapter(Context context, boolean isPayment, List<OrderItemModel> itemModels, Consumer<OrderItemModel> consumer, Consumer<OrderItemModel> consumerAddItem, Consumer<OrderItemModel> consumerReduce) {
+    public OrderAdapter(Context context, boolean isPayment, List<TicketItemOrder1> itemModels, Consumer<TicketItemOrder1> consumer, Consumer<TicketItemOrder1> consumerAddItem, Consumer<TicketItemOrder1> consumerReduce) {
         this.mContext = context;
         this.isPayment = isPayment;
         this.mModelList = itemModels;
@@ -54,7 +57,7 @@ public class OrderAdapter extends BaseRecycleAdapter<OrderItemModel, OrderAdapte
     public void onBindViewHolder(ViewHolder holder, int position) {
         try {
             if (getItemCount() < 1) return;
-            OrderItemModel itemModel = mModelList.get(position);
+            TicketItemOrder1 itemModel = mModelList.get(position);
             if (itemModel == null) return;
 
             holder.binData(mContext, itemModel);
@@ -64,13 +67,25 @@ public class OrderAdapter extends BaseRecycleAdapter<OrderItemModel, OrderAdapte
                 mConsumer.accept(itemModel);
             });
             holder.tvAddQuantity.setOnClickListener(view -> {
-                itemModel.setQuantity(itemModel.getQuantity() + 1);
-                holder.tvQuantity.setText("" + itemModel.getQuantity() + "");
+                mModelList.get(position).setItemQuantity(itemModel.getItemQuantity() + 1);
+                mModelList.get(position).setItemAmount(itemModel.getItemAmount() + itemModel.getItemPrice());
+                holder.tvQuantity.setText("" + itemModel.getItemQuantity() + "");
+                holder.tvTotalMoney.setText("" + itemModel.getItemAmount() + "");
                 mConsumerAddItem.accept(itemModel);
             });
             holder.tvReduceQuantity.setOnClickListener(view -> {
-                itemModel.setQuantity(itemModel.getQuantity() - 1);
-                holder.tvQuantity.setText("" + itemModel.getQuantity() + "");
+                if (mModelList.get(position).getItemQuantity() == 0) {
+                    mModelList.get(position).setItemQuantity(0);
+                    mModelList.get(position).setItemAmount(0d);
+                    holder.tvQuantity.setText("0");
+                    holder.tvTotalMoney.setText("0 VND");
+                } else {
+                    mModelList.get(position).setItemQuantity(itemModel.getItemQuantity() - 1);
+                    mModelList.get(position).setItemAmount(itemModel.getItemAmount() - itemModel.getItemPrice());
+                    holder.tvQuantity.setText("" + itemModel.getItemQuantity() + "");
+                    holder.tvTotalMoney.setText("" + itemModel.getItemAmount() + "");
+                }
+
                 mConsumerReduce.accept(itemModel);
             });
         } catch (Exception e) {
@@ -83,8 +98,8 @@ public class OrderAdapter extends BaseRecycleAdapter<OrderItemModel, OrderAdapte
         return mModelList == null ? 0 : mModelList.size();
     }
 
-    public void setOrderItemModelList(List<OrderItemModel> orderItemModels) {
-        this.mModelList = orderItemModels;
+    public void setTicketItemOrderList(List<TicketItemOrder1> TicketItemOrder1s) {
+        this.mModelList = TicketItemOrder1s;
         notifyDataSetChanged();
     }
 
@@ -113,11 +128,17 @@ public class OrderAdapter extends BaseRecycleAdapter<OrderItemModel, OrderAdapte
             llChangeQuantity.setVisibility(isPayment ? View.GONE : View.VISIBLE);
         }
 
-        private void binData(Context context, OrderItemModel itemModel) {
+        private void binData(Context context, TicketItemOrder1 itemModel) {
             try {
                 tvItemName.setText(itemModel.getItemName());
-                tvQuantity.setText("" + itemModel.getQuantity() + "");
-                tvTotalMoney.setText("" + itemModel.getTotalMoney() + " VND");
+                tvQuantity.setText("" + itemModel.getItemQuantity() + "");
+                tvTotalMoney.setText("" + (int) itemModel.getItemAmount() + " VND");
+                Log.e(TAG, "==> getItemImage::" + VnyiApiServices.URL_CONFIG + itemModel.getItemImage());
+                Glide.with(context)
+                        .load(VnyiApiServices.URL_CONFIG + itemModel.getItemImage())
+                        .fitCenter()
+                        .centerCrop()
+                        .into(ivItem);
             } catch (Exception e) {
                 VnyiUtils.LogException(TAG, e);
             }

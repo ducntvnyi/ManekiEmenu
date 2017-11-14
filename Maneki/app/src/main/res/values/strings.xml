@@ -47,5 +47,9 @@
     <string name="table">Bàn</string>
     <string name="vnd">VND</string>
     <string name="sl">SL</string>
+    <string name="add_item">Thêm Món</string>
+    <string name="cancel_order">Huỷ Đặt Món</string>
+    <string name="cfrm_table_order">Confirmtaion for table:</string>
+    <string name="request_waiter">Yêu cầu phục vụ</string>
 
 </resources>

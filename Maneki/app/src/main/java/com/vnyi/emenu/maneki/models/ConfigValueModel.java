@@ -1,6 +1,9 @@
 package com.vnyi.emenu.maneki.models;
 
+import android.text.TextUtils;
+
 import com.vnyi.emenu.maneki.models.response.config.ConfigModel;
+import com.vnyi.emenu.maneki.services.VnyiServices;
 
 /**
  * Created by Hungnd on 11/9/17.
@@ -19,6 +22,8 @@ public class ConfigValueModel {
     private ConfigModel numbTableShow;
 
     public String getLinkServer() {
+        if (TextUtils.isEmpty(linkServer))
+            return VnyiServices.URL_CONFIG;
         return linkServer;
     }
 

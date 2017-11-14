@@ -1,16 +1,72 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rootView"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:gravity="center"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:id="@+id/llHeaderTable"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="@dimen/margin_payment"
+        android:layout_marginStart="@dimen/margin_payment"
+        android:orientation="horizontal"
+        android:paddingBottom="@dimen/padding_layout"
+        android:paddingTop="@dimen/padding_layout">
+
+        <com.vnyi.emenu.maneki.customviews.TextViewFont
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/table"
+            android:textAllCaps="true"
+            android:textColor="@color/white"
+            android:textSize="@dimen/font_size_content" />
+
+        <com.vnyi.emenu.maneki.customviews.TextViewFont
+            android:id="@+id/tvTableName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="D1"
+            android:textAllCaps="true"
+            android:textColor="@color/white"
+            android:textSize="@dimen/font_size_content" />
+
+        <com.vnyi.emenu.maneki.customviews.TextViewFont
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textColor="@color/white"
+            android:textSize="@dimen/font_size_content" />
+
+        <com.vnyi.emenu.maneki.customviews.TextViewFont
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textAllCaps="true"
+            android:textColor="@color/white"
+            android:textSize="@dimen/font_size_content" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/llHeaderTable"
+        android:layout_marginRight="@dimen/margin_payment"
+        android:layout_marginStart="@dimen/margin_payment"
+        android:background="@color/white" />
 
     <LinearLayout
         android:layout_width="450dp"
         android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
         android:background="@color/white"
         android:gravity="center_horizontal"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:visibility="visible">
 
         <com.vnyi.emenu.maneki.customviews.TextViewFont
             android:layout_width="match_parent"
@@ -18,7 +74,8 @@
             android:background="@color/color_app"
             android:gravity="center"
             android:padding="@dimen/font_size_tab_header"
-            android:text="Confirmtaion for table: 01"
+            android:text="@string/request_waiter"
+            android:textAllCaps="true"
             android:textColor="@color/white"
             android:textSize="@dimen/font_size_tab_header" />
 
@@ -31,34 +88,10 @@
             android:textSize="@dimen/font_size_tab_header"
             android:textStyle="bold" />
 
-        <CheckBox
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rvGetList"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="@dimen/padding_content"
-            android:text="Them khan giay"
-
-            android:textSize="@dimen/font_size_tab_header" />
-
-        <CheckBox
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="@dimen/padding_content"
-            android:text="Them Dua"
-            android:textSize="@dimen/font_size_tab_header" />
-
-        <CheckBox
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="@dimen/padding_content"
-            android:text="Them bat"
-            android:textSize="@dimen/font_size_tab_header" />
-
-        <CheckBox
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="@dimen/padding_content"
-            android:text="Them Dua"
-            android:textSize="@dimen/font_size_tab_header" />
+            android:layout_height="300dp" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -85,9 +118,9 @@
                 android:layout_weight="1"
                 android:background="@drawable/bg_btn_selector"
                 android:text="@string/no"
-                android:textSize="@dimen/font_size_tab_header"
-                android:textColor="@color/white" />
+                android:textColor="@color/white"
+                android:textSize="@dimen/font_size_tab_header" />
 
         </LinearLayout>
     </LinearLayout>
-</LinearLayout>
+</RelativeLayout>

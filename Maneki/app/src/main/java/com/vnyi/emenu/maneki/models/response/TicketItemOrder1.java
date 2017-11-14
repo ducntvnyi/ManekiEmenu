@@ -127,8 +127,8 @@ public class TicketItemOrder1 {
         this.itemRequestDetail = itemRequestDetail;
     }
 
-    public double getItemQuantity() {
-        return itemQuantity;
+    public int getItemQuantity() {
+        return (int) itemQuantity;
     }
 
     public void setItemQuantity(double itemQuantity) {
