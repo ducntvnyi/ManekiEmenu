@@ -11,7 +11,6 @@ import java.util.List;
 public class UpdateTicketItemModel {
 
     private int ticketId;
-    private int orderDetailId;
     private ConfigValueModel configValueModel;
     private List<ItemCategoryDetail> itemCategoryDetails;
 
@@ -19,9 +18,8 @@ public class UpdateTicketItemModel {
 
     }
 
-    public UpdateTicketItemModel(int ticketId, int orderDetailId, ConfigValueModel configValueModel, List<ItemCategoryDetail> itemCategoryDetails) {
+    public UpdateTicketItemModel(int ticketId, ConfigValueModel configValueModel, List<ItemCategoryDetail> itemCategoryDetails) {
         this.ticketId = ticketId;
-        this.orderDetailId = orderDetailId;
         this.configValueModel = configValueModel;
         this.itemCategoryDetails = itemCategoryDetails;
     }
@@ -42,14 +40,6 @@ public class UpdateTicketItemModel {
         this.ticketId = ticketId;
     }
 
-    public int getOrderDetailId() {
-        return orderDetailId;
-    }
-
-    public void setOrderDetailId(int orderDetailId) {
-        this.orderDetailId = orderDetailId;
-    }
-
     public List<ItemCategoryDetail> getItemCategoryDetails() {
         return itemCategoryDetails;
     }
@@ -63,7 +53,6 @@ public class UpdateTicketItemModel {
         return "UpdateTicketItemModel{" +
                 "configValueModel=" + configValueModel.toString() +
                 "ticketId=" + ticketId +
-                ", orderDetailId=" + orderDetailId +
                 ", itemCategoryDetails=" + itemCategoryDetails.toString() +
                 '}';
     }

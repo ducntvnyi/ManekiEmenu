@@ -190,6 +190,7 @@ public class DialogConfigFragment extends BaseDialogFragment {
             tvTableNameLabel.setText(mConfigValueModel.getTableName().getConfigName());
             tvTableName.setText(getTableName(tableId));
             VnyiPreference.getInstance(getContext()).putString(Constant.KEY_TABLE_NAME, tvTableName.getText().toString().trim());
+
             tvTableNameUserLabel.setText(mConfigValueModel.getUserOrder().getConfigName());
             tvTableNameUser.setText(getUserName());
 

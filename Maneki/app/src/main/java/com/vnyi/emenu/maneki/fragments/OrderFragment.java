@@ -20,7 +20,6 @@ import com.vnyi.emenu.maneki.models.response.ItemCategoryDetail;
 import com.vnyi.emenu.maneki.models.response.TicketItemOrder1;
 import com.vnyi.emenu.maneki.models.response.TicketItemOrderMoney;
 import com.vnyi.emenu.maneki.models.response.TicketUpdateInfo;
-import com.vnyi.emenu.maneki.services.VnyiApiServices;
 import com.vnyi.emenu.maneki.utils.Constant;
 import com.vnyi.emenu.maneki.utils.VnyiUtils;
 
@@ -77,7 +76,7 @@ public class OrderFragment extends BaseFragment {
     private List<TicketItemOrder1> mItemOrderList = new ArrayList<>();
     private TicketItemOrderMoney mTicketItemOrderMoney;
     private int ticketId;
-    private int orderDetailId;
+
     private String tableName;
 
     public static Fragment newInstance() {
@@ -174,9 +173,9 @@ public class OrderFragment extends BaseFragment {
     public void initData() {
 
         ticketId = VnyiPreference.getInstance(getContext()).getInt(Constant.KEY_TICKET_ID);
-        orderDetailId = VnyiPreference.getInstance(mContext).getInt(VnyiApiServices.ORDER_DETAIL_ID);
+
         mConfigValueModel = VnyiPreference.getInstance(getContext()).getObject(Constant.KEY_CONFIG_VALUE, ConfigValueModel.class);
-        int getType = 1;
+        int getType = 2;
 
         requestGetTicketItemOrder(mConfigValueModel, ticketId, getType, this::updateUI);
 
@@ -198,7 +197,7 @@ public class OrderFragment extends BaseFragment {
         Log.e(TAG, "==> updateItem:: " + charSequence);
 
 
-        new UpdateItemOrderTask(mItemOrderList, mConfigValueModel, ticketId, orderDetailId).execute();
+        new UpdateItemOrderTask(mItemOrderList, mConfigValueModel, ticketId).execute();
     }
 
     private class UpdateItemOrderTask extends AsyncTask<Void, Void, Void> {
@@ -208,11 +207,10 @@ public class OrderFragment extends BaseFragment {
         private int ticketId;
         private int orderId;
 
-        public UpdateItemOrderTask(List<TicketItemOrder1> itemOrderList, ConfigValueModel configValueModel, int ticketId, int orderId) {
+        public UpdateItemOrderTask(List<TicketItemOrder1> itemOrderList, ConfigValueModel configValueModel, int ticketId) {
             this.ticketItemOrders = itemOrderList;
             this.configValueModel = configValueModel;
             this.ticketId = ticketId;
-            this.orderId = orderId;
         }
 
         @Override
@@ -224,7 +222,7 @@ public class OrderFragment extends BaseFragment {
         @Override
         protected Void doInBackground(Void... voids) {
             Log.e(TAG, "==> UpdateItemOrderTask doInBackground");
-            updateOrder(ticketItemOrders, this.configValueModel, this.ticketId, this.orderId);
+            updateOrder(ticketItemOrders, this.configValueModel, this.ticketId);
             return null;
         }
 
@@ -236,7 +234,7 @@ public class OrderFragment extends BaseFragment {
         }
     }
 
-    private void updateOrder(List<TicketItemOrder1> itemOrderList, ConfigValueModel configValueModel, int ticketId, int orderId) {
+    private void updateOrder(List<TicketItemOrder1> itemOrderList, ConfigValueModel configValueModel, int ticketId) {
         for (TicketItemOrder1 order1 : itemOrderList) {
             ItemCategoryDetail itemCategoryDetail = new ItemCategoryDetail();
             itemCategoryDetail.setItemId(order1.getItemId());
@@ -244,8 +242,8 @@ public class OrderFragment extends BaseFragment {
             itemCategoryDetail.setItemPrice(order1.getItemPrice());
             itemCategoryDetail.setItemDiscountPer((int) order1.getItemDiscountPer());
 
-            requestPostTicketUpdateItem(configValueModel, ticketId, orderId, (order1.getItemQuantity() + 1), itemCategoryDetail, ticketUpdateInfo -> {
-                VnyiPreference.getInstance(mContext).putInt(VnyiApiServices.ORDER_DETAIL_ID, ticketUpdateInfo.getOrderDetailId());
+            requestPostTicketUpdateItem(configValueModel, ticketId, (order1.getItemQuantity() + 1), itemCategoryDetail, ticketUpdateInfo -> {
+
             });
         }
     }
@@ -284,10 +282,10 @@ public class OrderFragment extends BaseFragment {
     void onCancelOrderClick() {
         mActivity.showProgressDialog();
         requestPostTicketCancelAllItemOrdering(mConfigValueModel, ticketId, isCallOrder -> {
-            VnyiPreference.getInstance(getContext()).putObject(Constant.KEY_TICKET, null);
+//            VnyiPreference.getInstance(getContext()).putObject(Constant.KEY_TICKET, null);
             mActivity.changeTab(Constant.INDEX_MENU);
             if (isCallOrder) {
-                VnyiPreference.getInstance(getContext()).putObject(Constant.KEY_TICKET, null);
+//                VnyiPreference.getInstance(getContext()).putObject(Constant.KEY_TICKET, null);
                 clearData();
                 mActivity.hideProgressDialog();
                 mActivity.changeTab(Constant.INDEX_MENU);

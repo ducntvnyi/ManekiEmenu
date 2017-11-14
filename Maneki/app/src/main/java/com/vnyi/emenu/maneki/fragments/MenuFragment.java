@@ -27,7 +27,6 @@ import com.vnyi.emenu.maneki.models.UpdateTicketItemModel;
 import com.vnyi.emenu.maneki.models.response.ItemCategoryDetail;
 import com.vnyi.emenu.maneki.models.response.ItemCategoryNoListNote;
 import com.vnyi.emenu.maneki.models.response.TicketLoadInfo;
-import com.vnyi.emenu.maneki.services.VnyiApiServices;
 import com.vnyi.emenu.maneki.utils.Constant;
 import com.vnyi.emenu.maneki.utils.ViewUtils;
 import com.vnyi.emenu.maneki.utils.VnyiUtils;
@@ -302,14 +301,11 @@ public class MenuFragment extends BaseFragment {
 
         if (itemCounter == 0) return;
 
-        int orderDetailId = VnyiPreference.getInstance(mContext).getInt(VnyiApiServices.ORDER_DETAIL_ID);
-
-        UpdateTicketItemModel updateTicketItemModel = new UpdateTicketItemModel(ticketId, orderDetailId, mConfigValueModel, categoryDetailsOrder);
+        UpdateTicketItemModel updateTicketItemModel = new UpdateTicketItemModel(ticketId, mConfigValueModel, categoryDetailsOrder);
         new UpdateItemTask(updateItemOrder -> {
             ToastUtils.showToast(mContext, "Order successfully!!");
             categoryDetailsOrder.clear();
         }).execute(updateTicketItemModel);
-
 
     }
 
@@ -328,7 +324,7 @@ public class MenuFragment extends BaseFragment {
 
         TicketLoadInfo ticketInfo = VnyiPreference.getInstance(getContext()).getObject(Constant.KEY_TICKET, TicketLoadInfo.class);
         if (ticketInfo == null) {
-            VnyiPreference.getInstance(mContext).putInt(VnyiApiServices.ORDER_DETAIL_ID, 0);
+
             Log.e(TAG, "==> requestTicketUpdateInfo create Ticket");
             requestTicketUpdateInfo(mConfigValueModel, ticketUpdateInfo -> {
                 VnyiPreference.getInstance(getContext()).putObject(Constant.KEY_TICKET_UPDATE_INFO, ticketUpdateInfo);
@@ -348,7 +344,6 @@ public class MenuFragment extends BaseFragment {
     private void loadItem(int ticketId) {
         showDialog();
         ticketLoadInfo(mConfigValueModel, ticketId, ticketLoadInfo -> {
-
             VnyiPreference.getInstance(getContext()).putObject(Constant.KEY_TICKET, ticketLoadInfo);
             VnyiPreference.getInstance(getContext()).putInt(Constant.KEY_TICKET_ID, ticketId);
             loadMenuLeft(ticketId);

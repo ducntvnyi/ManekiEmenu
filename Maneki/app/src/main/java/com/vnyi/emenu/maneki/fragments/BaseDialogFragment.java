@@ -68,6 +68,7 @@ public class BaseDialogFragment extends BaseMainDialogFragment {
 
                             if (tableNames != null || tableNames.size() > 0) {
                                 tableName = tableNames.get(0).getTableName();
+                                VnyiPreference.getInstance(getContext()).putString(Constant.KEY_TABLE_NAME, tableName);
 
                             }
                         } catch (JSONException e) {

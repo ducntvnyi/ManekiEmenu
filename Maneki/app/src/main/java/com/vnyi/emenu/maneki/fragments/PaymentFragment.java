@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
+import com.qslib.util.ToastUtils;
 import com.vnyi.emenu.maneki.R;
 import com.vnyi.emenu.maneki.adapters.PaymentItemAdapter;
 import com.vnyi.emenu.maneki.applications.VnyiPreference;
@@ -20,6 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 
 /**
  * Created by Hungnd on 11/6/17.
@@ -99,4 +101,18 @@ public class PaymentFragment extends BaseFragment {
         tvTotalPayment.setText("" + mTicketItemOrderMoney.getTotalAmount() + " VND");
     }
 
+    @OnClick(R.id.btnPayment)
+    void onBtnPaymentClick() {
+        requestPayment();
+    }
+
+    private void requestPayment() {
+        requestTicketProcessingPayment(mConfigValueModel, ticketId, payment -> {
+            if (payment) {
+                mActivity.changeTab(Constant.INDEX_MENU);
+            } else {
+                ToastUtils.showToast(mContext, "Payment failed!!");
+            }
+        });
+    }
 }
