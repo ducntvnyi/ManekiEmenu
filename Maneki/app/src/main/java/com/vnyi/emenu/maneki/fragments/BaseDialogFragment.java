@@ -35,120 +35,128 @@ public class BaseDialogFragment extends BaseMainDialogFragment {
 
     protected String getTableName(int tableId) {
 
-        if (!NetworkUtils.isNetworkAvailable(getContext())) return tableName;
-        String url = VnyiServices.URL_CONFIG;
+        try {
+            if (!NetworkUtils.isNetworkAvailable(getContext())) return tableName;
+            String url = VnyiServices.URL_CONFIG;
 
-        ConfigValueModel configValueModel = VnyiPreference.getInstance(getContext()).getObject(Constant.KEY_CONFIG_VALUE, ConfigValueModel.class);
+            ConfigValueModel configValueModel = VnyiPreference.getInstance(getContext()).getObject(Constant.KEY_CONFIG_VALUE, ConfigValueModel.class);
 
-        if (configValueModel != null && !configValueModel.getLinkServer().equals(""))
-            url = configValueModel.getLinkServer();
+            if (configValueModel != null && !configValueModel.getLinkServer().equals(""))
+                url = configValueModel.getLinkServer();
 
-        VnyiServices.requestConfigValueTableNameById(url, tableId, new SoapListenerVyni() {
+            VnyiServices.requestConfigValueTableNameById(url, tableId, new SoapListenerVyni() {
 
-            @Override
-            public void onStarted() {
-                VnyiUtils.LogException(TAG, "==> getTableName onStarted ");
-                showDialog();
-            }
-
-            @Override
-            public void onSuccess(SoapResponse soapResponse) {
-                dismissDialog();
-                VnyiUtils.LogException(TAG, "==> getTableName onSuccess ");
-                if (soapResponse == null) return;
-
-                if (soapResponse.getStatus().toLowerCase().equals("true")) {
-                    if (soapResponse.getResult() != null) {
-                        VnyiUtils.LogException(TAG, "==> getTableName onSuccess:: " + soapResponse.toString());
-                        try {
-                            JSONObject configValueObject = new JSONObject(soapResponse.getResult());
-
-                            List<TableName> tableNames = JacksonUtils.convertJsonToObject(configValueObject.getString(VnyiApiServices.TABLE), new TypeReference<List<TableName>>() {
-                            });
-
-                            if (tableNames != null || tableNames.size() > 0) {
-                                tableName = tableNames.get(0).getTableName();
-                                VnyiPreference.getInstance(getContext()).putString(Constant.KEY_TABLE_NAME, tableName);
-
-                            }
-                        } catch (JSONException e) {
-                            VnyiUtils.LogException(TAG, "==> jsonObject passed error:  " + e.getMessage());
-                        }
-
-                    }
+                @Override
+                public void onStarted() {
+                    VnyiUtils.LogException(TAG, "==> getTableName onStarted ");
+                    showDialog();
                 }
 
-            }
+                @Override
+                public void onSuccess(SoapResponse soapResponse) {
+                    dismissDialog();
+                    VnyiUtils.LogException(TAG, "==> getTableName onSuccess ");
+                    if (soapResponse == null) return;
 
-            @Override
-            public void onFail(Exception ex) {
-                dismissDialog();
-                VnyiUtils.LogException(TAG, "==> getTableName onFail " + ex.getMessage());
-            }
+                    if (soapResponse.getStatus().toLowerCase().equals("true")) {
+                        if (soapResponse.getResult() != null) {
+                            VnyiUtils.LogException(TAG, "==> getTableName onSuccess:: " + soapResponse.toString());
+                            try {
+                                JSONObject configValueObject = new JSONObject(soapResponse.getResult());
 
-            @Override
-            public void onFinished() {
-                dismissDialog();
-                VnyiUtils.LogException(TAG, "==> getTableName onFinished ");
-            }
-        });
+                                List<TableName> tableNames = JacksonUtils.convertJsonToObject(configValueObject.getString(VnyiApiServices.TABLE), new TypeReference<List<TableName>>() {
+                                });
+
+                                if (tableNames != null || tableNames.size() > 0) {
+                                    tableName = tableNames.get(0).getTableName();
+                                    VnyiPreference.getInstance(getContext()).putString(Constant.KEY_TABLE_NAME, tableName);
+
+                                }
+                            } catch (JSONException e) {
+                                VnyiUtils.LogException(TAG, "==> jsonObject passed error:  " + e.getMessage());
+                            }
+
+                        }
+                    }
+
+                }
+
+                @Override
+                public void onFail(Exception ex) {
+                    dismissDialog();
+                    VnyiUtils.LogException(TAG, "==> getTableName onFail " + ex.getMessage());
+                }
+
+                @Override
+                public void onFinished() {
+                    dismissDialog();
+                    VnyiUtils.LogException(TAG, "==> getTableName onFinished ");
+                }
+            });
+        } catch (Exception e) {
+            VnyiUtils.LogException(getContext(), " getTableName", TAG, e.getMessage());
+        }
         return tableName;
     }
 
 
     protected void loadTables(ConfigValueModel configValueModel, Consumer<Table> consumer) {
 
-        int reaAutoId = 4;
-        int listType = 1;
-        int branchId = Integer.parseInt(configValueModel.getBranch().getConfigValue());
-        int langId = VnyiPreference.getInstance(getContext()).getInt(VnyiApiServices.LANG_ID);
+        try {
+            int reaAutoId = 4;
+            int listType = 1;
+            int branchId = Integer.parseInt(configValueModel.getBranch().getConfigValue());
+            int langId = VnyiPreference.getInstance(getContext()).getInt(VnyiApiServices.LANG_ID);
 
-        if (!NetworkUtils.isNetworkAvailable(getContext())) return;
+            if (!NetworkUtils.isNetworkAvailable(getContext())) return;
 
-        VnyiServices.requestGetTableList(configValueModel.getLinkServer(), reaAutoId, listType, branchId, langId, new SoapListenerVyni() {
+            VnyiServices.requestGetTableList(configValueModel.getLinkServer(), reaAutoId, listType, branchId, langId, new SoapListenerVyni() {
 
-            @Override
-            public void onStarted() {
-                showDialog();
-                VnyiUtils.LogException(TAG, "==> loadTables onStarted ");
-            }
-
-            @Override
-            public void onSuccess(SoapResponse soapResponse) {
-                dismissDialog();
-                VnyiUtils.LogException(TAG, "==> loadTables onSuccess ");
-                if (soapResponse == null) return;
-
-                if (soapResponse.getStatus().toLowerCase().equals("true")) {
-                    if (soapResponse.getResult() != null) {
-                        VnyiUtils.LogException(TAG, "==> loadTables onSuccess:: " + soapResponse.toString());
-
-                        List<Table> tables = JacksonUtils.convertJsonToListObject(soapResponse.getResult(), Table.class);
-                        if (tables == null) return;
-                        consumer.accept(tables.get(0));
-                        TableModel tableModel = new TableModel();
-                        tableModel.setTables(tables);
-                        VnyiPreference.getInstance(getContext()).putObject(Constant.KEY_LIST_TABLE, tableModel);
-                        // save to local
-                        VnyiUtils.LogException(TAG, "==> tables" + tables.toString());
-
-                    }
+                @Override
+                public void onStarted() {
+                    showDialog();
+                    VnyiUtils.LogException(TAG, "==> loadTables onStarted ");
                 }
 
-            }
+                @Override
+                public void onSuccess(SoapResponse soapResponse) {
+                    dismissDialog();
+                    VnyiUtils.LogException(TAG, "==> loadTables onSuccess ");
+                    if (soapResponse == null) return;
 
-            @Override
-            public void onFail(Exception ex) {
-                dismissDialog();
-                VnyiUtils.LogException(TAG, "==> loadTables onFail " + ex.getMessage());
-            }
+                    if (soapResponse.getStatus().toLowerCase().equals("true")) {
+                        if (soapResponse.getResult() != null) {
+                            VnyiUtils.LogException(TAG, "==> loadTables onSuccess:: " + soapResponse.toString());
 
-            @Override
-            public void onFinished() {
-                dismissDialog();
-                VnyiUtils.LogException(TAG, "==> loadBloadTablesranch onFinished ");
-            }
-        });
+                            List<Table> tables = JacksonUtils.convertJsonToListObject(soapResponse.getResult(), Table.class);
+                            if (tables == null) return;
+                            consumer.accept(tables.get(0));
+                            TableModel tableModel = new TableModel();
+                            tableModel.setTables(tables);
+                            VnyiPreference.getInstance(getContext()).putObject(Constant.KEY_LIST_TABLE, tableModel);
+                            // save to local
+                            VnyiUtils.LogException(TAG, "==> tables" + tables.toString());
+
+                        }
+                    }
+
+                }
+
+                @Override
+                public void onFail(Exception ex) {
+                    dismissDialog();
+                    VnyiUtils.LogException(TAG, "==> loadTables onFail " + ex.getMessage());
+                }
+
+                @Override
+                public void onFinished() {
+                    dismissDialog();
+                    VnyiUtils.LogException(TAG, "==> loadBloadTablesranch onFinished ");
+                }
+            });
+        } catch (NumberFormatException e) {
+            VnyiUtils.LogException(getContext(), " loadTables", TAG, e.getMessage());
+        }
     }
 
     /**
@@ -194,7 +202,7 @@ public class BaseDialogFragment extends BaseMainDialogFragment {
                     }
             );
         } catch (Exception e) {
-            VnyiUtils.LogException(TAG, e);
+            VnyiUtils.LogException(getContext(), " updateConfirm", TAG, e.getMessage());
         }
     }
 }

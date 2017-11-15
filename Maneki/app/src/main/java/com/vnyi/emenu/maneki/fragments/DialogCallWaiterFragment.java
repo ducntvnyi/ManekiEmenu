@@ -73,31 +73,39 @@ public class DialogCallWaiterFragment extends BaseMainDialogFragment {
     }
 
     private void initViews() {
-        mConfigValueModel = VnyiPreference.getInstance(getContext()).getObject(Constant.KEY_CONFIG_VALUE, ConfigValueModel.class);
-        VnyiUtils.LogException(TAG, "==> requestRequestGetList:" + mRequestGetLists.size());
-        mGetListAdapter = new GetListAdapter(getContext(), mRequestGetLists, requestGetList -> {
+        try {
+            mConfigValueModel = VnyiPreference.getInstance(getContext()).getObject(Constant.KEY_CONFIG_VALUE, ConfigValueModel.class);
+            VnyiUtils.LogException(TAG, "==> requestRequestGetList:" + mRequestGetLists.size());
+            mGetListAdapter = new GetListAdapter(getContext(), mRequestGetLists, requestGetList -> {
 
-        });
-        mGetListAdapter.setGetList(mRequestGetLists);
+            });
+            mGetListAdapter.setGetList(mRequestGetLists);
 
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
-        rvGetList.setAdapter(mGetListAdapter);
-        rvGetList.setLayoutManager(layoutManager);
+            LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
+            rvGetList.setAdapter(mGetListAdapter);
+            rvGetList.setLayoutManager(layoutManager);
+        } catch (Exception e) {
+            VnyiUtils.LogException(getContext(), "initViews", TAG, e.getMessage());
+        }
     }
 
     @OnClick(R.id.btnSendRequest)
     void onClickSendRequest() {
-        if (mGetListAdapter.getItemCount() == 0) return;
-        List<RequestGetList> requestGetLists = StreamSupport.stream(mGetListAdapter.getListRequest()).filter(RequestGetList::isChecked).collect(Collectors.toList());
+        try {
+            if (mGetListAdapter.getItemCount() == 0) return;
+            List<RequestGetList> requestGetLists = StreamSupport.stream(mGetListAdapter.getListRequest()).filter(RequestGetList::isChecked).collect(Collectors.toList());
 
-        if (requestGetLists == null || requestGetLists.size() == 0) return;
+            if (requestGetLists == null || requestGetLists.size() == 0) return;
 
-        String requestDetail = StreamSupport.stream(requestGetLists).map(RequestGetList::getRequestNote).collect(Collectors.joining(", "));
+            String requestDetail = StreamSupport.stream(requestGetLists).map(RequestGetList::getRequestNote).collect(Collectors.joining(", "));
 
-        Log.e(TAG, "==> requestDetail:: " + requestDetail);
-        int ticketId = VnyiPreference.getInstance(getContext()).getInt(Constant.KEY_TICKET_ID);
-        if (TextUtils.isEmpty(requestDetail)) return;
-        requestTicketSendItemWaiter(mConfigValueModel, ticketId, requestDetail);
+            Log.e(TAG, "==> requestDetail:: " + requestDetail);
+            int ticketId = VnyiPreference.getInstance(getContext()).getInt(Constant.KEY_TICKET_ID);
+            if (TextUtils.isEmpty(requestDetail)) return;
+            requestTicketSendItemWaiter(mConfigValueModel, ticketId, requestDetail);
+        } catch (Exception e) {
+            VnyiUtils.LogException(getContext(), "initViews", TAG, e.getMessage());
+        }
     }
 
     @OnClick(R.id.btnCancelRquest)

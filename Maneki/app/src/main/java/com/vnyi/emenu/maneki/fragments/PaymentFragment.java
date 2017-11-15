@@ -16,6 +16,7 @@ import com.vnyi.emenu.maneki.models.TicketPaymentModel;
 import com.vnyi.emenu.maneki.models.response.TicketPayment;
 import com.vnyi.emenu.maneki.models.response.TicketPaymentMoney;
 import com.vnyi.emenu.maneki.utils.Constant;
+import com.vnyi.emenu.maneki.utils.VnyiUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -72,36 +73,46 @@ public class PaymentFragment extends BaseFragment {
     @Override
     public void initViews() {
         // init menu adapter
-        tableName = VnyiPreference.getInstance(getContext()).getString(Constant.KEY_TABLE_NAME);
-        tvTableName.setText(tableName);
+        try {
+            tableName = VnyiPreference.getInstance(getContext()).getString(Constant.KEY_TABLE_NAME);
+            tvTableName.setText(tableName);
 
-        ticketPayments = new ArrayList<>();
-        paymentItemAdapter = new PaymentItemAdapter(mContext, true, ticketPayments);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
-        rvItemOrder.setAdapter(paymentItemAdapter);
-        rvItemOrder.setLayoutManager(layoutManager);
+            ticketPayments = new ArrayList<>();
+            paymentItemAdapter = new PaymentItemAdapter(mContext, true, ticketPayments);
+            LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
+            rvItemOrder.setAdapter(paymentItemAdapter);
+            rvItemOrder.setLayoutManager(layoutManager);
+        } catch (Exception e) {
+            VnyiUtils.LogException(getContext(), " initViews onFail", TAG, e.getMessage());
+        }
 
     }
 
     @Override
     public void initData() {
+        try {
+            mConfigValueModel = VnyiPreference.getInstance(getContext()).getObject(Constant.KEY_CONFIG_VALUE, ConfigValueModel.class);
+            ticketId = VnyiPreference.getInstance(getContext()).getInt(Constant.KEY_TICKET_ID);
 
-        mConfigValueModel = VnyiPreference.getInstance(getContext()).getObject(Constant.KEY_CONFIG_VALUE, ConfigValueModel.class);
-        ticketId = VnyiPreference.getInstance(getContext()).getInt(Constant.KEY_TICKET_ID);
-
-        requestLoadInfoTicketPayment(mConfigValueModel, ticketId, this::updateUI);
+            requestLoadInfoTicketPayment(mConfigValueModel, ticketId, this::updateUI);
+        } catch (Exception e) {
+            VnyiUtils.LogException(getContext(), " initData", TAG, e.getMessage());
+        }
     }
 
     private void updateUI(TicketPaymentModel ticketItemOrderModel) {
+        try {
+            mTicketItemOrderMoney = ticketItemOrderModel.getTicketPaymentMoney();
+            ticketPayments = ticketItemOrderModel.getTicketPayments();
+            paymentItemAdapter.setTicketPaymentList(ticketPayments);
 
-        mTicketItemOrderMoney = ticketItemOrderModel.getTicketPaymentMoney();
-        ticketPayments = ticketItemOrderModel.getTicketPayments();
-        paymentItemAdapter.setTicketPaymentList(ticketPayments);
-
-        tvTotalMoney.setText("" + mTicketItemOrderMoney.getItemAmount() + " VND");
-        tvSaleOffPrice.setText("" + mTicketItemOrderMoney.getDiscountItem() + " VND");
-        tvVAT.setText("" + mTicketItemOrderMoney.getVatAmount() + " VND");
-        tvTotalPayment.setText("" + mTicketItemOrderMoney.getTotalAmount() + " VND");
+            tvTotalMoney.setText("" + mTicketItemOrderMoney.getItemAmount() + " VND");
+            tvSaleOffPrice.setText("" + mTicketItemOrderMoney.getDiscountItem() + " VND");
+            tvVAT.setText("" + mTicketItemOrderMoney.getVatAmount() + " VND");
+            tvTotalPayment.setText("" + mTicketItemOrderMoney.getTotalAmount() + " VND");
+        } catch (Exception e) {
+            VnyiUtils.LogException(getContext(), " updateUI", TAG, e.getMessage());
+        }
     }
 
     @OnClick(R.id.btnPayment)
@@ -112,7 +123,6 @@ public class PaymentFragment extends BaseFragment {
     private void requestPayment() {
         requestTicketProcessingPayment(mConfigValueModel, ticketId, payment -> {
             if (payment) {
-//                mActivity.changeTab(Constant.INDEX_MENU);
                 ToastUtils.showToast(mContext, "Payment successfully!!");
             } else {
                 ToastUtils.showToast(mContext, "Payment failed!!");

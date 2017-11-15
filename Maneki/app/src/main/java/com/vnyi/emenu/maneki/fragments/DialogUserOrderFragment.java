@@ -82,14 +82,18 @@ public class DialogUserOrderFragment extends BaseMainDialogFragment {
     }
 
     private void initViews() {
-        mUserOrderAdapter = new UserAdapter(getContext(), mUserOrders, branch -> {
-            mConsumer.accept(branch);
-            dismiss();
-        });
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
-        rvUserOrderList.setAdapter(mUserOrderAdapter);
-        rvUserOrderList.setLayoutManager(layoutManager);
-        rvUserOrderList.addItemDecoration(new DividerItemDecoration(getContext()));
+        try {
+            mUserOrderAdapter = new UserAdapter(getContext(), mUserOrders, branch -> {
+                mConsumer.accept(branch);
+                dismiss();
+            });
+            LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
+            rvUserOrderList.setAdapter(mUserOrderAdapter);
+            rvUserOrderList.setLayoutManager(layoutManager);
+            rvUserOrderList.addItemDecoration(new DividerItemDecoration(getContext()));
+        } catch (Exception e) {
+            VnyiUtils.LogException(getContext(), "initViews", TAG, e.getMessage());
+        }
     }
 
 
@@ -122,54 +126,58 @@ public class DialogUserOrderFragment extends BaseMainDialogFragment {
 
     protected void loadTables() {
 
-        if (!NetworkUtils.isNetworkAvailable(getContext())) return;
+        try {
+            if (!NetworkUtils.isNetworkAvailable(getContext())) return;
 
-        VnyiServices.requestConfigValueUserOrder(linkSerVer, this.mBranchId, 1, new SoapListenerVyni() {
+            VnyiServices.requestConfigValueUserOrder(linkSerVer, this.mBranchId, 1, new SoapListenerVyni() {
 
-            @Override
-            public void onStarted() {
-                VnyiUtils.LogException(TAG, "==> loadTables onStarted ");
-                showDialog();
-            }
-
-            @Override
-            public void onSuccess(SoapResponse soapResponse) {
-                dismissDialog();
-                VnyiUtils.LogException(TAG, "==> loadTables onSuccess ");
-                if (soapResponse == null) return;
-
-                if (soapResponse.getStatus().toLowerCase().equals("true")) {
-                    if (soapResponse.getResult() != null) {
-                        VnyiUtils.LogException(TAG, "==> loadTables onSuccess:: " + soapResponse.toString());
-                        try {
-                            JSONObject configValueObject = new JSONObject(soapResponse.getResult());
-
-                            mUserOrders = JacksonUtils.convertJsonToObject(configValueObject.getString(VnyiApiServices.TABLE), new TypeReference<List<UserOrder>>() {
-                            });
-                            mUserOrderAdapter.setTableList(mUserOrders);
-                            // save to local
-                            VnyiUtils.LogException(TAG, "==> mUserOrders" + mUserOrders.toString());
-
-                        } catch (JSONException e) {
-                            VnyiUtils.LogException(TAG, "==> jsonObject passed error:  " + e.getMessage());
-                        }
-
-                    }
+                @Override
+                public void onStarted() {
+                    VnyiUtils.LogException(TAG, "==> requestConfigValueUserOrder onStarted ");
+                    showDialog();
                 }
 
-            }
+                @Override
+                public void onSuccess(SoapResponse soapResponse) {
+                    dismissDialog();
+                    VnyiUtils.LogException(TAG, "==> requestConfigValueUserOrder onSuccess ");
+                    if (soapResponse == null) return;
 
-            @Override
-            public void onFail(Exception ex) {
-                dismissDialog();
-                VnyiUtils.LogException(TAG, "==> loadTables onFail " + ex.getMessage());
-            }
+                    if (soapResponse.getStatus().toLowerCase().equals("true")) {
+                        if (soapResponse.getResult() != null) {
+                            VnyiUtils.LogException(TAG, "==> requestConfigValueUserOrder onSuccess:: " + soapResponse.toString());
+                            try {
+                                JSONObject configValueObject = new JSONObject(soapResponse.getResult());
 
-            @Override
-            public void onFinished() {
-                dismissDialog();
-                VnyiUtils.LogException(TAG, "==> loadBloadTablesranch onFinished ");
-            }
-        });
+                                mUserOrders = JacksonUtils.convertJsonToObject(configValueObject.getString(VnyiApiServices.TABLE), new TypeReference<List<UserOrder>>() {
+                                });
+                                mUserOrderAdapter.setTableList(mUserOrders);
+                                // save to local
+                                VnyiUtils.LogException(TAG, "==> mUserOrders" + mUserOrders.toString());
+
+                            } catch (JSONException e) {
+                                VnyiUtils.LogException(TAG, "==> jsonObject passed error:  " + e.getMessage());
+                            }
+
+                        }
+                    }
+
+                }
+
+                @Override
+                public void onFail(Exception ex) {
+                    dismissDialog();
+                    VnyiUtils.LogException(getContext(), " requestConfigValueUserOrder onFail", TAG, ex.getMessage());
+                }
+
+                @Override
+                public void onFinished() {
+                    dismissDialog();
+                    VnyiUtils.LogException(TAG, "==> loadBloadTablesranch onFinished ");
+                }
+            });
+        } catch (Exception e) {
+            VnyiUtils.LogException(getContext(), "initViews", TAG, e.getMessage());
+        }
     }
 }

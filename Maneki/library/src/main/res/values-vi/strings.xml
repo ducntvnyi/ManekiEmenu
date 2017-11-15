@@ -1,0 +1,67 @@
+<resources>
+
+    <string name="read_more">show more</string>
+    <string name="read_less">show less</string>
+    <string name="loading">loading</string>
+    <string name="no_data">Data not found</string>
+    <string name="network_unavailable">Network unavailable, please check your network</string>
+    <!--Chart-->
+    <string name="percent_lable">%</string>
+    <string name="app_name">Maneki</string>
+    <string name="menu">Thực Đơn</string>
+    <string name="order">Đặt Món</string>
+    <string name="sale">Khuyến Mãi</string>
+    <string name="call_staff">Gọi Phục Vụ</string>
+    <string name="payment">Thanh Toán</string>
+    <string name="use_intro">HDSD MENU</string>
+    <string name="vietnamese">Việt Nam</string>
+    <string name="english">English</string>
+    <string name="close">close</string>
+    <string name="view_order">Xem Đơn Hàng</string>
+    <string name="double_tap_to_exit">Double tab to exit</string>
+    <string name="confirm_order">Đặt món của bạn sẽ được chuyển vào bếp sau khi bạn nhập mã code. Đồ ăn sẽ có sau 10 phút</string>
+    <string name="order_code">Mã đặt món</string>
+    <string name="yes">yes</string>
+    <string name="no">No</string>
+    <string name="call_waiter">Gọi Phục Vụ</string>
+    <string name="font_cour">cour</string>
+    <string name="font_courbd">courbd</string>
+    <string name="font_courbi">courbi</string>
+    <string name="font_couri">couri</string>
+    <string name="font_redsun_desgin_de_light">Redsun design DE Light</string>
+    <string name="font_redsun_desgin_de">Redsun design DE</string>
+    <string name="font_redsun_desgin_deblod">Redsun design DEBold</string>
+    <string name="font_edsun_vn_bold_italic">Redsun Vietnam Bold Italic</string>
+    <string name="font_edsun_vn_bold">Redsun  Vietnam Bold</string>
+    <string name="font_edsun_vn_italic">Redsun  Vietnam Italic</string>
+    <string name="font_redsun_vn">Redsun  Vietnam</string>
+    <string name="config_server">Vui lòng nhập đường dẫn kết nối tới server</string>
+    <string name="setting_config">Thiếtt lập cấu hình</string>
+    <string name="confirm">Xác Nhận</string>
+    <string name="branch">Chi Nhánh</string>
+    <string name="table_name_device">Tên bàn cho thiết bị</string>
+    <string name="name_user">Tên User để Order</string>
+    <string name="load_list_group_parent">Load danh sách nhóm cha</string>
+    <string name="link_sale_off">Link Thông Tin Khuyến Mãi</string>
+    <string name="link_use_app">Link Hướng Dẫn Order</string>
+    <string name="choose_branch">Chọn Khu</string>
+    <string name="change_table">Chọn thay đổi bàn</string>
+    <string name="num_table_show">Số lượng bàn theo số cột</string>
+    <string name="choose_table">Chọn Bàn</string>
+    <string name="choose_user_order">Chọn user để order</string>
+    <string name="ok">Ok</string>
+    <string name="input_value">Nhập giá trị</string>
+    <string name="table">Bàn</string>
+    <string name="vnd">VND</string>
+    <string name="sl">SL</string>
+    <string name="add_item">Thêm Món</string>
+    <string name="cancel_order">Huỷ Đặt Món</string>
+    <string name="cfrm_table_order">Confirmtaion for table:</string>
+    <string name="request_waiter">Yêu cầu phục vụ</string>
+    <string name="failed_grant_permisson">Failed grant permission</string>
+    <string name="money_amount">Số Tiền:</string>
+    <string name="discount">Giảm giá:</string>
+    <string name="total_amount">Tổng cộng:</string>
+    <string name="confirm_remove_item">Bạn có chắc chắn muốn xoá món này</string>
+
+</resources>

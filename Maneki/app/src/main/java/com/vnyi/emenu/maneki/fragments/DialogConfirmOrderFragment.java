@@ -14,6 +14,7 @@ import com.vnyi.emenu.maneki.R;
 import com.vnyi.emenu.maneki.applications.VnyiPreference;
 import com.vnyi.emenu.maneki.customviews.TextViewFont;
 import com.vnyi.emenu.maneki.utils.Constant;
+import com.vnyi.emenu.maneki.utils.VnyiUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -67,9 +68,13 @@ public class DialogConfirmOrderFragment extends BaseMainDialogFragment {
     }
 
     private void initViews() {
-        String tableName = VnyiPreference.getInstance(getContext()).getString(Constant.KEY_TABLE_NAME);
-        tvTableName.setText(tvTableName.getText() + " " + tableName);
-        tvCodeOrder.setText(tvCodeOrder.getText().toString() + "\n" + code);
+        try {
+            String tableName = VnyiPreference.getInstance(getContext()).getString(Constant.KEY_TABLE_NAME);
+            tvTableName.setText(tvTableName.getText() + " " + tableName);
+            tvCodeOrder.setText(tvCodeOrder.getText().toString() + "\n" + code);
+        } catch (Exception e) {
+            VnyiUtils.LogException(getContext(), "initViews", TAG, e.getMessage());
+        }
     }
 
     private boolean isValidOrderCode() {

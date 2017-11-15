@@ -13,6 +13,7 @@ import com.vnyi.emenu.maneki.adapters.TableListAdapter;
 import com.vnyi.emenu.maneki.customviews.DividerItemDecoration;
 import com.vnyi.emenu.maneki.customviews.TextViewFont;
 import com.vnyi.emenu.maneki.models.response.Table;
+import com.vnyi.emenu.maneki.utils.VnyiUtils;
 
 import java.util.List;
 
@@ -67,15 +68,18 @@ public class DialogTableFragment extends BaseDialogFragment {
     }
 
     private void initViews() {
-
-        mTableListAdapter = new TableListAdapter(getContext(), mTableList, branch -> {
-            mConsumer.accept(branch);
-            dismiss();
-        });
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
-        rvTableList.setAdapter(mTableListAdapter);
-        rvTableList.setLayoutManager(layoutManager);
-        rvTableList.addItemDecoration(new DividerItemDecoration(getContext()));
+        try {
+            mTableListAdapter = new TableListAdapter(getContext(), mTableList, branch -> {
+                mConsumer.accept(branch);
+                dismiss();
+            });
+            LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
+            rvTableList.setAdapter(mTableListAdapter);
+            rvTableList.setLayoutManager(layoutManager);
+            rvTableList.addItemDecoration(new DividerItemDecoration(getContext()));
+        } catch (Exception e) {
+            VnyiUtils.LogException(getContext(), "initViews", TAG, e.getMessage());
+        }
     }
 
     private void loadData() {

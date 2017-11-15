@@ -8,6 +8,7 @@ import com.vnyi.emenu.maneki.R;
 import com.vnyi.emenu.maneki.applications.VnyiPreference;
 import com.vnyi.emenu.maneki.models.ConfigValueModel;
 import com.vnyi.emenu.maneki.utils.Constant;
+import com.vnyi.emenu.maneki.utils.VnyiUtils;
 
 import butterknife.BindView;
 
@@ -38,14 +39,17 @@ public class UseAppFragment extends BaseFragment {
 
     @Override
     public void initViews() {
-        mConfigValueModel = VnyiPreference.getInstance(getContext()).getObject(Constant.KEY_CONFIG_VALUE, ConfigValueModel.class);
-
-        // onListener
-        webView.getSettings().setLoadsImagesAutomatically(true);
-        webView.getSettings().setJavaScriptEnabled(true);
-        webView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
-        if (mConfigValueModel == null) return;
-        webView.loadUrl(mConfigValueModel.getLinkUserApp().getConfigDefaultValue());
+        try {
+            mConfigValueModel = VnyiPreference.getInstance(getContext()).getObject(Constant.KEY_CONFIG_VALUE, ConfigValueModel.class);
+            // onListener
+            webView.getSettings().setLoadsImagesAutomatically(true);
+            webView.getSettings().setJavaScriptEnabled(true);
+            webView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
+            if (mConfigValueModel == null) return;
+            webView.loadUrl(mConfigValueModel.getLinkUserApp().getConfigDefaultValue());
+        } catch (Exception e) {
+            VnyiUtils.LogException(getContext(), " initViews", TAG, e.getMessage());
+        }
 
     }
 

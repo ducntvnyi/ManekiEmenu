@@ -14,6 +14,7 @@ import com.vnyi.emenu.maneki.adapters.BranchAdapter;
 import com.vnyi.emenu.maneki.customviews.DividerItemDecoration;
 import com.vnyi.emenu.maneki.customviews.TextViewFont;
 import com.vnyi.emenu.maneki.models.response.Branch;
+import com.vnyi.emenu.maneki.utils.VnyiUtils;
 
 import java.util.List;
 
@@ -27,6 +28,7 @@ import java8.util.function.Consumer;
 
 public class DialogBranchFragment extends BaseMainDialogFragment {
 
+    private static final String TAG = DialogUserOrderFragment.class.getSimpleName();
     @BindView(R.id.tvTitle)
     TextViewFont tvTitle;
     @BindView(R.id.rvBranchList)
@@ -65,15 +67,18 @@ public class DialogBranchFragment extends BaseMainDialogFragment {
     }
 
     private void initViews() {
-
-        mBranchAdapter = new BranchAdapter(getContext(), mBranches, branch -> {
-            mConsumer.accept(branch);
-            dismiss();
-        });
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
-        rvBranchList.setAdapter(mBranchAdapter);
-        rvBranchList.setLayoutManager(layoutManager);
-        rvBranchList.addItemDecoration(new DividerItemDecoration(getContext()));
+        try {
+            mBranchAdapter = new BranchAdapter(getContext(), mBranches, branch -> {
+                mConsumer.accept(branch);
+                dismiss();
+            });
+            LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
+            rvBranchList.setAdapter(mBranchAdapter);
+            rvBranchList.setLayoutManager(layoutManager);
+            rvBranchList.addItemDecoration(new DividerItemDecoration(getContext()));
+        } catch (Exception e) {
+            VnyiUtils.LogException(getContext(), "onClickConfigHome", TAG, e.getMessage());
+        }
     }
 
     private void loadData() {

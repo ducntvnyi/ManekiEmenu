@@ -86,13 +86,17 @@ public class OrderFragment extends BaseFragment {
     private void cancelItem(TicketItemOrder1 itemReduce) {
 
         requestTicketCancelItem(mConfigValueModel, ticketId, aBoolean -> {
-            mTicketItemOrderMoney.setItemAmount(mTicketItemOrderMoney.getItemAmount() - itemReduce.getItemAmount());
-            mTicketItemOrderMoney.setTotalAmount(mTicketItemOrderMoney.getTotalAmount() - itemReduce.getItemAmount());
-            tvTotalMoney.setText("" + mTicketItemOrderMoney.getItemAmount() + " VND");
-            tvTotalPayment.setText("" + mTicketItemOrderMoney.getTotalAmount() + " VND");
+            try {
+                mTicketItemOrderMoney.setItemAmount(mTicketItemOrderMoney.getItemAmount() - itemReduce.getItemAmount());
+                mTicketItemOrderMoney.setTotalAmount(mTicketItemOrderMoney.getTotalAmount() - itemReduce.getItemAmount());
+                tvTotalMoney.setText("" + mTicketItemOrderMoney.getItemAmount() + " VND");
+                tvTotalPayment.setText("" + mTicketItemOrderMoney.getTotalAmount() + " VND");
 
-            mOrderItemModels.remove(itemReduce);
-            mOrderAdapter.notifyDataSetChanged();
+                mOrderItemModels.remove(itemReduce);
+                mOrderAdapter.notifyDataSetChanged();
+            } catch (Exception e) {
+                VnyiUtils.LogException(mContext, "requestTicketCancelItem", TAG, e.getMessage());
+            }
         });
 
 
@@ -106,127 +110,141 @@ public class OrderFragment extends BaseFragment {
 
     @Override
     public void initViews() {
-        debounce();
-        // init menu adapter
-        tableName = VnyiPreference.getInstance(getContext()).getString(Constant.KEY_TABLE_NAME);
-        tvTableName.setText(tableName);
-        mOrderItemModels = new ArrayList<>();
+        try {
+            debounce();
+            // init menu adapter
+            tableName = VnyiPreference.getInstance(getContext()).getString(Constant.KEY_TABLE_NAME);
+            tvTableName.setText(tableName);
+            mOrderItemModels = new ArrayList<>();
 
-        mOrderAdapter = new OrderAdapter(mContext, false, mOrderItemModels, orderItemModel -> {
-            //TODO onClick
-        }, itemAdd -> {
-            ++itemCounter;
-            tvCart.setText("" + itemCounter + "");
-            mTicketItemOrderMoney.setItemAmount(mTicketItemOrderMoney.getItemAmount() + itemAdd.getItemAmount());
-            mTicketItemOrderMoney.setTotalAmount(mTicketItemOrderMoney.getTotalAmount() + itemAdd.getItemAmount());
-            tvTotalMoney.setText("" + mTicketItemOrderMoney.getItemAmount() + " VND");
-            tvTotalPayment.setText("" + mTicketItemOrderMoney.getTotalAmount() + " VND");
+            mOrderAdapter = new OrderAdapter(mContext, false, mOrderItemModels, orderItemModel -> {
+                //TODO onClick
+            }, itemAdd -> {
+                ++itemCounter;
+                tvCart.setText("" + itemCounter + "");
+                mTicketItemOrderMoney.setItemAmount(mTicketItemOrderMoney.getItemAmount() + itemAdd.getItemAmount());
+                mTicketItemOrderMoney.setTotalAmount(mTicketItemOrderMoney.getTotalAmount() + itemAdd.getItemAmount());
+                tvTotalMoney.setText("" + mTicketItemOrderMoney.getItemAmount() + " VND");
+                tvTotalPayment.setText("" + mTicketItemOrderMoney.getTotalAmount() + " VND");
 
-            if (mItemOrderList.size() > 0) {
-                boolean isPresent = StreamSupport.stream(mItemOrderList).filter(item -> item.getItemId() == itemAdd.getItemId()).findFirst().isPresent();
-                if (isPresent) {
-                    StreamSupport.stream(mItemOrderList).filter(item -> item.getItemId() == itemAdd.getItemId()).findFirst().get().setItemQuantity(itemAdd.getItemQuantity());
+                if (mItemOrderList.size() > 0) {
+                    boolean isPresent = StreamSupport.stream(mItemOrderList).filter(item -> item.getItemId() == itemAdd.getItemId()).findFirst().isPresent();
+                    if (isPresent) {
+                        StreamSupport.stream(mItemOrderList).filter(item -> item.getItemId() == itemAdd.getItemId()).findFirst().get().setItemQuantity(itemAdd.getItemQuantity());
+                    } else {
+                        mItemOrderList.add(itemAdd);
+                    }
                 } else {
                     mItemOrderList.add(itemAdd);
                 }
-            } else {
-                mItemOrderList.add(itemAdd);
-            }
 
-        }, itemReduce -> {
+            }, itemReduce -> {
 
-            if (itemReduce.getItemQuantity() == 0) {
-                DialogRemoveItemFragment.newInstance().setConsumer(removeItem -> {
-                    if (removeItem) {
-                        cancelItem(itemReduce);
-                    } else {
-                        StreamSupport.stream(mOrderItemModels).filter(item -> item.getItemId() == itemReduce.getItemId()).findFirst().get().setItemQuantity(1);
-                        StreamSupport.stream(mOrderItemModels).filter(item -> item.getItemId() == itemReduce.getItemId()).findFirst().get().setItemAmount(itemReduce.getItemAmount());
-                        mOrderAdapter.notifyDataSetChanged();
-                    }
-                }).show(getFragmentManager(), "");
+                if (itemReduce.getItemQuantity() == 0) {
+                    DialogRemoveItemFragment.newInstance().setConsumer(removeItem -> {
+                        if (removeItem) {
+                            cancelItem(itemReduce);
+                        } else {
+                            StreamSupport.stream(mOrderItemModels).filter(item -> item.getItemId() == itemReduce.getItemId()).findFirst().get().setItemQuantity(1);
+                            StreamSupport.stream(mOrderItemModels).filter(item -> item.getItemId() == itemReduce.getItemId()).findFirst().get().setItemAmount(itemReduce.getItemAmount());
+                            mOrderAdapter.notifyDataSetChanged();
+                        }
+                    }).show(getFragmentManager(), "");
 
-            } else {
-                --itemCounter;
-                tvCart.setText("" + itemCounter + "");
-                mTicketItemOrderMoney.setItemAmount(mTicketItemOrderMoney.getItemAmount() - itemReduce.getItemAmount());
-                mTicketItemOrderMoney.setTotalAmount(mTicketItemOrderMoney.getTotalAmount() - itemReduce.getItemAmount());
-                tvTotalMoney.setText("" + mTicketItemOrderMoney.getItemAmount() + " VND");
-                tvTotalPayment.setText("" + mTicketItemOrderMoney.getTotalAmount() + " VND");
-                if (mItemOrderList.size() > 0) {
-                    boolean isPresent = StreamSupport.stream(mItemOrderList).filter(item -> item.getItemId() == itemReduce.getItemId()).findFirst().isPresent();
-                    if (isPresent) {
-                        StreamSupport.stream(mItemOrderList).filter(item -> item.getItemId() == itemReduce.getItemId()).findFirst().get().setItemQuantity(itemReduce.getItemQuantity());
+                } else {
+                    --itemCounter;
+                    tvCart.setText("" + itemCounter + "");
+                    mTicketItemOrderMoney.setItemAmount(mTicketItemOrderMoney.getItemAmount() - itemReduce.getItemAmount());
+                    mTicketItemOrderMoney.setTotalAmount(mTicketItemOrderMoney.getTotalAmount() - itemReduce.getItemAmount());
+                    tvTotalMoney.setText("" + mTicketItemOrderMoney.getItemAmount() + " VND");
+                    tvTotalPayment.setText("" + mTicketItemOrderMoney.getTotalAmount() + " VND");
+                    if (mItemOrderList.size() > 0) {
+                        boolean isPresent = StreamSupport.stream(mItemOrderList).filter(item -> item.getItemId() == itemReduce.getItemId()).findFirst().isPresent();
+                        if (isPresent) {
+                            StreamSupport.stream(mItemOrderList).filter(item -> item.getItemId() == itemReduce.getItemId()).findFirst().get().setItemQuantity(itemReduce.getItemQuantity());
+                        } else {
+                            mItemOrderList.add(itemReduce);
+                        }
                     } else {
                         mItemOrderList.add(itemReduce);
                     }
-                } else {
-                    mItemOrderList.add(itemReduce);
                 }
-            }
-        });
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
-        rvItemOrder.setAdapter(mOrderAdapter);
-        rvItemOrder.setLayoutManager(layoutManager);
+            });
+            LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
+            rvItemOrder.setAdapter(mOrderAdapter);
+            rvItemOrder.setLayoutManager(layoutManager);
+        } catch (Exception e) {
+            VnyiUtils.LogException(mContext, "initViews", TAG, e.getMessage());
+        }
 
     }
 
     private void debounce() {
-        RxTextView.textChanges(tvCart)
-                .debounce(3, TimeUnit.SECONDS, AndroidSchedulers.mainThread())
-                .observeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<CharSequence>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
+        try {
+            RxTextView.textChanges(tvCart)
+                    .debounce(3, TimeUnit.SECONDS, AndroidSchedulers.mainThread())
+                    .observeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new Observer<CharSequence>() {
+                        @Override
+                        public void onSubscribe(Disposable d) {
 
-                    }
+                        }
 
-                    @Override
-                    public void onNext(CharSequence value) {
-                        updateItem(value);
-                    }
+                        @Override
+                        public void onNext(CharSequence value) {
+                            updateItem(value);
+                        }
 
-                    @Override
-                    public void onError(Throwable e) {
+                        @Override
+                        public void onError(Throwable e) {
 
-                    }
+                        }
 
-                    @Override
-                    public void onComplete() {
+                        @Override
+                        public void onComplete() {
 
-                    }
-                });
+                        }
+                    });
+        } catch (Exception e) {
+            VnyiUtils.LogException(mContext, "debounce", TAG, e.getMessage());
+        }
     }
 
     @Override
     public void initData() {
 
-        ticketId = VnyiPreference.getInstance(getContext()).getInt(Constant.KEY_TICKET_ID);
+        try {
+            ticketId = VnyiPreference.getInstance(getContext()).getInt(Constant.KEY_TICKET_ID);
 
-        mConfigValueModel = VnyiPreference.getInstance(getContext()).getObject(Constant.KEY_CONFIG_VALUE, ConfigValueModel.class);
-        int getType = 2;
+            mConfigValueModel = VnyiPreference.getInstance(getContext()).getObject(Constant.KEY_CONFIG_VALUE, ConfigValueModel.class);
+            int getType = 2;
 
-        requestGetTicketItemOrder(mConfigValueModel, ticketId, getType, this::updateUI);
+            requestGetTicketItemOrder(mConfigValueModel, ticketId, getType, this::updateUI);
+        } catch (Exception e) {
+            VnyiUtils.LogException(mContext, "initData", TAG, e.getMessage());
+        }
 
     }
 
     private void updateUI(TicketItemOrderModel ticketItemOrderModel) {
-        mOrderItemModels = ticketItemOrderModel.getTicketItemOrders();
-        mOrderAdapter.setTicketItemOrderList(mOrderItemModels);
-        mTicketItemOrderMoney = ticketItemOrderModel.getTicketItemOrderMoney();
+        try {
+            mOrderItemModels = ticketItemOrderModel.getTicketItemOrders();
+            mOrderAdapter.setTicketItemOrderList(mOrderItemModels);
+            mTicketItemOrderMoney = ticketItemOrderModel.getTicketItemOrderMoney();
 
-        tvTotalMoney.setText("" + mTicketItemOrderMoney.getItemAmount() + " VND");
-        tvSaleOffPrice.setText("" + mTicketItemOrderMoney.getDiscountAmount() + " VND");
-        tvVAT.setText("" + mTicketItemOrderMoney.getvATAmount() + " VND");
-        tvTotalPayment.setText("" + mTicketItemOrderMoney.getTotalAmount() + " VND");
+            tvTotalMoney.setText("" + mTicketItemOrderMoney.getItemAmount() + " VND");
+            tvSaleOffPrice.setText("" + mTicketItemOrderMoney.getDiscountAmount() + " VND");
+            tvVAT.setText("" + mTicketItemOrderMoney.getvATAmount() + " VND");
+            tvTotalPayment.setText("" + mTicketItemOrderMoney.getTotalAmount() + " VND");
+        } catch (Exception e) {
+            VnyiUtils.LogException(mContext, "updateUI", TAG, e.getMessage());
+        }
     }
 
     private void updateItem(CharSequence charSequence) {
         if (itemCounter == 0) return;
         Log.e(TAG, "==> updateItem:: " + charSequence);
-
-
         new UpdateItemOrderTask(mItemOrderList, mConfigValueModel, ticketId).execute();
     }
 
@@ -265,19 +283,23 @@ public class OrderFragment extends BaseFragment {
     }
 
     private void updateOrder(List<TicketItemOrder1> itemOrderList, ConfigValueModel configValueModel, int ticketId) {
-        for (TicketItemOrder1 order1 : itemOrderList) {
-            ItemCategoryDetail itemCategoryDetail = new ItemCategoryDetail();
+        try {
+            for (TicketItemOrder1 order1 : itemOrderList) {
+                ItemCategoryDetail itemCategoryDetail = new ItemCategoryDetail();
 
-            itemCategoryDetail.setItemId(order1.getItemId());
-            itemCategoryDetail.setUomId(order1.getUomId());
-            itemCategoryDetail.setItemPrice(order1.getItemPrice());
-            itemCategoryDetail.setItemDiscountPer((int) order1.getItemDiscountPer());
-            itemCategoryDetail.setOrderDetailId(order1.getOrderDetailId());
+                itemCategoryDetail.setItemId(order1.getItemId());
+                itemCategoryDetail.setUomId(order1.getUomId());
+                itemCategoryDetail.setItemPrice(order1.getItemPrice());
+                itemCategoryDetail.setItemDiscountPer((int) order1.getItemDiscountPer());
+                itemCategoryDetail.setOrderDetailId(order1.getOrderDetailId());
 
-            requestPostTicketUpdateItem(configValueModel, ticketId, (order1.getItemQuantity()), itemCategoryDetail, ticketUpdateInfo -> {
-                StreamSupport.stream(itemOrderList).forEach(item -> item.setOrderDetailId(item.getItemId() == ticketUpdateInfo.getItemId() ?
-                        ticketUpdateInfo.getOrderDetailId() + "" : item.getOrderDetailId()));
-            });
+                requestPostTicketUpdateItem(configValueModel, ticketId, (order1.getItemQuantity()), itemCategoryDetail, ticketUpdateInfo -> {
+                    StreamSupport.stream(itemOrderList).forEach(item -> item.setOrderDetailId(item.getItemId() == ticketUpdateInfo.getItemId() ?
+                            ticketUpdateInfo.getOrderDetailId() + "" : item.getOrderDetailId()));
+                });
+            }
+        } catch (Exception e) {
+            VnyiUtils.LogException(mContext, "updateOrder", "UpdateItemOrderTask", e.getMessage());
         }
     }
 
@@ -289,12 +311,16 @@ public class OrderFragment extends BaseFragment {
                     .setConsumer(isValidCode -> {
                         requestPostTicketSendItemOrder(mConfigValueModel, ticketId, sendOrder -> {
                             // Dat hang thanh k va k con mon nao
-                            if (sendOrder) {
-                                ToastUtils.showToast(getContext(), "Đặt món thành công!");
-                                VnyiPreference.getInstance(getContext()).putObject(Constant.KEY_TICKET, null);
-                                mActivity.changeTab(Constant.INDEX_MENU);
-                            } else {
-                                ToastUtils.showToast(getContext(), "Đặt món chưa thành công!");
+                            try {
+                                if (sendOrder) {
+                                    ToastUtils.showToast(getContext(), "Đặt món thành công!");
+                                    VnyiPreference.getInstance(getContext()).putObject(Constant.KEY_TICKET, null);
+                                    mActivity.changeTab(Constant.INDEX_MENU);
+                                } else {
+                                    ToastUtils.showToast(getContext(), "Đặt món chưa thành công!");
+                                }
+                            } catch (Exception e) {
+                                VnyiUtils.LogException(mContext, "DialogConfirmOrderFragment", TAG, e.getMessage());
                             }
                         });
                     })
@@ -313,29 +339,36 @@ public class OrderFragment extends BaseFragment {
 
     @OnClick(R.id.btnCancelOrder)
     void onCancelOrderClick() {
-        mActivity.showProgressDialog();
-        requestPostTicketCancelAllItemOrdering(mConfigValueModel, ticketId, isCallOrder -> {
-//            VnyiPreference.getInstance(getContext()).putObject(Constant.KEY_TICKET, null);
-            mActivity.changeTab(Constant.INDEX_MENU);
-            if (isCallOrder) {
-//                VnyiPreference.getInstance(getContext()).putObject(Constant.KEY_TICKET, null);
-                clearData();
-                mActivity.hideProgressDialog();
+        try {
+            mActivity.showProgressDialog();
+            requestPostTicketCancelAllItemOrdering(mConfigValueModel, ticketId, isCallOrder -> {
+    //            VnyiPreference.getInstance(getContext()).putObject(Constant.KEY_TICKET, null);
                 mActivity.changeTab(Constant.INDEX_MENU);
-            } else {
-                ToastUtils.showToast(getContext(), "Huy mon khong thanh cong!");
-            }
-        });
+                if (isCallOrder) {
+    //                VnyiPreference.getInstance(getContext()).putObject(Constant.KEY_TICKET, null);
+                    clearData();
+                    mActivity.hideProgressDialog();
+                    mActivity.changeTab(Constant.INDEX_MENU);
+                } else {
+                    ToastUtils.showToast(getContext(), "Huy mon khong thanh cong!");
+                }
+            });
+        } catch (Exception e) {
+            VnyiUtils.LogException(mContext, "onCancelOrderClick", TAG, e.getMessage());
+        }
     }
 
     private void clearData() {
-
-        mItemOrderList.clear();
-        mOrderItemModels.clear();
-        mOrderAdapter.setTicketItemOrderList(mOrderItemModels);
-        tvTotalMoney.setText("0 VND");
-        tvSaleOffPrice.setText("0 VND");
-        tvVAT.setText("0 VND");
-        tvTotalPayment.setText("0 VND");
+        try {
+            mItemOrderList.clear();
+            mOrderItemModels.clear();
+            mOrderAdapter.setTicketItemOrderList(mOrderItemModels);
+            tvTotalMoney.setText("0 VND");
+            tvSaleOffPrice.setText("0 VND");
+            tvVAT.setText("0 VND");
+            tvTotalPayment.setText("0 VND");
+        } catch (Exception e) {
+            VnyiUtils.LogException(mContext, "clearData", TAG, e.getMessage());
+        }
     }
 }

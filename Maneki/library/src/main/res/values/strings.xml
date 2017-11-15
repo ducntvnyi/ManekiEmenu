@@ -1,7 +1,7 @@
 <resources>
     <string name="read_more">show more</string>
     <string name="read_less">show less</string>
-    <string name="loading">loading...</string>
+    <string name="loading">loading</string>
     <string name="no_data">Data not found</string>
     <string name="network_unavailable">Network unavailable, please check your network</string>
     <!--Chart-->

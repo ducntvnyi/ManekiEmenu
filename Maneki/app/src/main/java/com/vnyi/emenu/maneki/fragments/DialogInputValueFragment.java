@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import com.qslib.fragment.BaseMainDialogFragment;
 import com.vnyi.emenu.maneki.R;
 import com.vnyi.emenu.maneki.customviews.EditTextFont;
+import com.vnyi.emenu.maneki.utils.VnyiUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -20,6 +21,8 @@ import java8.util.function.Consumer;
  */
 
 public class DialogInputValueFragment extends BaseMainDialogFragment {
+
+    private static final String TAG = DialogInputValueFragment.class.getSimpleName();
 
     private boolean isNumber = false;
     private String valueString;
@@ -61,8 +64,12 @@ public class DialogInputValueFragment extends BaseMainDialogFragment {
     }
 
     private void initViews() {
-        edtValueInt.setVisibility(isNumber ? View.VISIBLE : View.GONE);
-        edtValueString.setVisibility(isNumber ? View.GONE : View.VISIBLE);
+        try {
+            edtValueInt.setVisibility(isNumber ? View.VISIBLE : View.GONE);
+            edtValueString.setVisibility(isNumber ? View.GONE : View.VISIBLE);
+        } catch (Exception e) {
+            VnyiUtils.LogException(getContext(), "initViews", TAG, e.getMessage());
+        }
     }
 
     private void loadData() {
@@ -86,14 +93,19 @@ public class DialogInputValueFragment extends BaseMainDialogFragment {
 
     @OnClick(R.id.btnYes)
     void onClickYes() {
-        if (isNumber) {
-            valueInt = Integer.parseInt(edtValueInt.getText().toString());
-            this.consumerValueInt.accept(valueInt);
+        try {
+            if (isNumber) {
+                valueInt = Integer.parseInt(edtValueInt.getText().toString());
+                this.consumerValueInt.accept(valueInt);
+                dismiss();
+            } else {
+                valueString = edtValueString.getText().toString();
+                this.consumerValueString.accept(valueString);
+                dismiss();
+            }
+        } catch (NumberFormatException e) {
             dismiss();
-        } else {
-            valueString = edtValueString.getText().toString();
-            this.consumerValueString.accept(valueString);
-            dismiss();
+            VnyiUtils.LogException(getContext(), "onClickYes", TAG, e.getMessage());
         }
     }
 

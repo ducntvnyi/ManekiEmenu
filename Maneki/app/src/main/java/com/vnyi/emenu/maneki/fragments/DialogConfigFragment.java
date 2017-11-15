@@ -127,21 +127,25 @@ public class DialogConfigFragment extends BaseDialogFragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        getDialog().getWindow().setWindowAnimations(com.qslib.library.R.style.DialogAnimationLeft);
+        try {
+            getDialog().getWindow().setWindowAnimations(com.qslib.library.R.style.DialogAnimationLeft);
 
-        switchConfig.setOnCheckedChangeListener((compoundButton, checked) -> {
-            if (checked) {
-                // update UI
-                // Load config valueLoad
-                llConfigContainer.setVisibility(View.VISIBLE);
-//                scrollViewConfig.setVisibility(View.VISIBLE);
-            } else {
-//                scrollViewConfig.setVisibility(View.GONE);
-                llConfigContainer.setVisibility(View.GONE);
-            }
-            KeyboardUtils.hideSoftKeyboard(getActivity());
-        });
-        loadData();
+            switchConfig.setOnCheckedChangeListener((compoundButton, checked) -> {
+                if (checked) {
+                    // update UI
+                    // Load config valueLoad
+                    llConfigContainer.setVisibility(View.VISIBLE);
+                    //                scrollViewConfig.setVisibility(View.VISIBLE);
+                } else {
+                    //                scrollViewConfig.setVisibility(View.GONE);
+                    llConfigContainer.setVisibility(View.GONE);
+                }
+                KeyboardUtils.hideSoftKeyboard(getActivity());
+            });
+            loadData();
+        } catch (Exception e) {
+            VnyiUtils.LogException(getContext(), "initViews", TAG, e.getMessage());
+        }
     }
 
     private String getBranchName() {
@@ -181,37 +185,41 @@ public class DialogConfigFragment extends BaseDialogFragment {
 
 
     private void loadData() {
-        mConfigValueModel = VnyiPreference.getInstance(getContext()).getObject(Constant.KEY_CONFIG_VALUE, ConfigValueModel.class);
-        if (mConfigValueModel != null) {
-            int tableId = Integer.parseInt(mConfigValueModel.getTableName().getConfigValue());
+        try {
+            mConfigValueModel = VnyiPreference.getInstance(getContext()).getObject(Constant.KEY_CONFIG_VALUE, ConfigValueModel.class);
+            if (mConfigValueModel != null) {
+                int tableId = Integer.parseInt(mConfigValueModel.getTableName().getConfigValue());
 
-            edtLinkServer.setText(mConfigValueModel.getLinkServer());
+                edtLinkServer.setText(mConfigValueModel.getLinkServer());
 
-            tvBranchLabel.setText(mConfigValueModel.getBranch().getConfigName());
+                tvBranchLabel.setText(mConfigValueModel.getBranch().getConfigName());
 
-            tvBranch.setText(getBranchName());
+                tvBranch.setText(getBranchName());
 
-            tvTableNameLabel.setText(mConfigValueModel.getTableName().getConfigName());
-            tvTableName.setText(getTableName(tableId));
-            VnyiPreference.getInstance(getContext()).putString(Constant.KEY_TABLE_NAME, tvTableName.getText().toString().trim());
+                tvTableNameLabel.setText(mConfigValueModel.getTableName().getConfigName());
+                tvTableName.setText(getTableName(tableId));
+                VnyiPreference.getInstance(getContext()).putString(Constant.KEY_TABLE_NAME, tvTableName.getText().toString().trim());
 
-            tvTableNameUserLabel.setText(mConfigValueModel.getUserOrder().getConfigName());
-            tvTableNameUser.setText(getUserName());
+                tvTableNameUserLabel.setText(mConfigValueModel.getUserOrder().getConfigName());
+                tvTableNameUser.setText(getUserName());
 
-            tvLoadListParentLabel.setText(mConfigValueModel.getLoadListParent().getConfigName());
-            tvLoadListParent.setText(mConfigValueModel.getLoadListParent().getConfigValue());
+                tvLoadListParentLabel.setText(mConfigValueModel.getLoadListParent().getConfigName());
+                tvLoadListParent.setText(mConfigValueModel.getLoadListParent().getConfigValue());
 
-            tvLinkSaleOffLabel.setText(mConfigValueModel.getLinkSaleOff().getConfigName());
-            tvLinkSaleOff.setText(mConfigValueModel.getLinkSaleOff().getConfigValue());
+                tvLinkSaleOffLabel.setText(mConfigValueModel.getLinkSaleOff().getConfigName());
+                tvLinkSaleOff.setText(mConfigValueModel.getLinkSaleOff().getConfigValue());
 
-            tvLinkUseAppLabel.setText(mConfigValueModel.getLinkUserApp().getConfigName());
-            tvLinkUseApp.setText(mConfigValueModel.getLinkUserApp().getConfigValue());
+                tvLinkUseAppLabel.setText(mConfigValueModel.getLinkUserApp().getConfigName());
+                tvLinkUseApp.setText(mConfigValueModel.getLinkUserApp().getConfigValue());
 
-            tvChangeTableLabel.setText(mConfigValueModel.getChangeTable().getConfigName());
-            tvChangeTable.setText(mConfigValueModel.getChangeTable().getConfigValue());
+                tvChangeTableLabel.setText(mConfigValueModel.getChangeTable().getConfigName());
+                tvChangeTable.setText(mConfigValueModel.getChangeTable().getConfigValue());
 
-            tvNumTableShowLabel.setText(mConfigValueModel.getNumbTableShow().getConfigName());
-            tvNumTableShow.setText(mConfigValueModel.getNumbTableShow().getConfigValue());
+                tvNumTableShowLabel.setText(mConfigValueModel.getNumbTableShow().getConfigName());
+                tvNumTableShow.setText(mConfigValueModel.getNumbTableShow().getConfigValue());
+            }
+        } catch (NumberFormatException e) {
+            VnyiUtils.LogException(getContext(), "loadData", TAG, e.getMessage());
         }
     }
 
@@ -222,125 +230,154 @@ public class DialogConfigFragment extends BaseDialogFragment {
 
     @OnClick(R.id.tbrBranch)
     void onClickBranch() {
-        VnyiUtils.LogException(TAG, "==> onClickBranch");
-        List<Branch> branches = VnyiPreference.getInstance(getContext()).getObject(Constant.KEY_LIST_BRANCH, BranchModel.class).getBranches();
+        try {
+            List<Branch> branches = VnyiPreference.getInstance(getContext()).getObject(Constant.KEY_LIST_BRANCH, BranchModel.class).getBranches();
 
-        if (branches == null || branches.size() == 0) return;
+            if (branches == null || branches.size() == 0) return;
 
-        DialogBranchFragment.newInstance()
-                .setListBranch(branches)
-                .setConsumer(branch -> {
-                    tvBranch.setText(branch.getBranchName());
-                    mConfigValueModel.getBranch().setConfigName(branch.getBranchName());
-                    mConfigValueModel.getBranch().setConfigValue(branch.getBranchId() + "");
-                    //
-                    loadTables(mConfigValueModel, table -> {
-                        tvTableName.setText(table.getRetDefineId());
-                        mConfigValueModel.getTableName().setConfigValue(table.getRetAutoId() + "");
-                        mConfigValueModel.getTableName().setName(table.getRetDefineId() + "");
-                    });
-                }).show(getFragmentManager(), "");
+            DialogBranchFragment.newInstance().setListBranch(branches).setConsumer(branch -> {
+                tvBranch.setText(branch.getBranchName());
+                mConfigValueModel.getBranch().setConfigName(branch.getBranchName());
+                mConfigValueModel.getBranch().setConfigValue(branch.getBranchId() + "");
+                //
+                loadTables(mConfigValueModel, table -> {
+                    tvTableName.setText(table.getRetDefineId());
+                    mConfigValueModel.getTableName().setConfigValue(table.getRetAutoId() + "");
+                    mConfigValueModel.getTableName().setName(table.getRetDefineId() + "");
+                });
+            }).show(getFragmentManager(), "");
+        } catch (Exception e) {
+            VnyiUtils.LogException(getContext(), "onClickBranch", TAG, e.getMessage());
+        }
     }
 
     @OnClick(R.id.tbrDevice)
     void onClickTableName() {
-        VnyiUtils.LogException(TAG, "==> tbrDevice");
-        List<Table> tables = VnyiPreference.getInstance(getContext()).getObject(Constant.KEY_LIST_TABLE, TableModel.class).getTables();
 
-        if (tables == null || tables.size() == 0) return;
+        try {
+            List<Table> tables = VnyiPreference.getInstance(getContext()).getObject(Constant.KEY_LIST_TABLE, TableModel.class).getTables();
 
-        DialogTableFragment.newInstance()
-                .setLinkServer(mConfigValueModel.getLinkServer())
-                .setListTable(tables)
-                .setConsumer(tableName -> {
-                    tvTableName.setText(tableName.getRetDefineId());
-                    mConfigValueModel.getTableName().setConfigValue(tableName.getRetAutoId() + "");
-                    mConfigValueModel.getTableName().setName(tableName.getRetDefineId() + "");
+            if (tables == null || tables.size() == 0) return;
 
-                }).show(getFragmentManager(), "");
+            DialogTableFragment.newInstance()
+                    .setLinkServer(mConfigValueModel.getLinkServer())
+                    .setListTable(tables)
+                    .setConsumer(tableName -> {
+                        tvTableName.setText(tableName.getRetDefineId());
+                        mConfigValueModel.getTableName().setConfigValue(tableName.getRetAutoId() + "");
+                        mConfigValueModel.getTableName().setName(tableName.getRetDefineId() + "");
+
+                    }).show(getFragmentManager(), "");
+        } catch (Exception e) {
+            VnyiUtils.LogException(getContext(), "onClickTableName", TAG, e.getMessage());
+        }
     }
 
     @OnClick(R.id.tbrTableNameUserOrder)
     void onClickUserOrder() {
-        VnyiUtils.LogException(TAG, "==> tbrTableNameUserOrder");
-        int branchId = Integer.parseInt(mConfigValueModel.getBranch().getConfigValue().trim());
-        List<UserOrder> userOrders = VnyiPreference.getInstance(getContext()).getObject(Constant.KEY_LIST_USER_ORDER, UserModel.class).getUserOrders();
-        DialogUserOrderFragment.newInstance()
-                .setLinkServer(mConfigValueModel.getLinkServer())
-                .setBranchId(branchId)
-                .setListUser(userOrders)
-                .setConsumer(userOrder -> {
-                    tvTableNameUser.setText(userOrder.getObjName());
-                    mConfigValueModel.getUserOrder().setConfigValue(userOrder.getObjAutoId() + "");
-                    mConfigValueModel.getUserOrder().setConfigName(userOrder.getObjName());
-                })
-                .show(getFragmentManager(), "");
+
+        try {
+            int branchId = Integer.parseInt(mConfigValueModel.getBranch().getConfigValue().trim());
+            List<UserOrder> userOrders = VnyiPreference.getInstance(getContext()).getObject(Constant.KEY_LIST_USER_ORDER, UserModel.class).getUserOrders();
+            DialogUserOrderFragment.newInstance()
+                    .setLinkServer(mConfigValueModel.getLinkServer())
+                    .setBranchId(branchId)
+                    .setListUser(userOrders)
+                    .setConsumer(userOrder -> {
+                        tvTableNameUser.setText(userOrder.getObjName());
+                        mConfigValueModel.getUserOrder().setConfigValue(userOrder.getObjAutoId() + "");
+                        mConfigValueModel.getUserOrder().setConfigName(userOrder.getObjName());
+                    })
+                    .show(getFragmentManager(), "");
+        } catch (NumberFormatException e) {
+            VnyiUtils.LogException(getContext(), "onClickUserOrder", TAG, e.getMessage());
+        }
     }
 
     @OnClick(R.id.tbrLoadListParent)
     void onClickLoadListParent() {
-        VnyiUtils.LogException(TAG, "==> tbrLoadListParent");
-        DialogInputValueFragment.newInstance()
-                .setIsNumberInputType(true)
-                .setConsumerValueInt(value -> {
-                    tvLoadListParent.setText("" + value + "");
-                    mConfigValueModel.getLoadListParent().setConfigValue(value + "");
-                }).show(getFragmentManager(), "");
+        try {
+            DialogInputValueFragment.newInstance()
+                    .setIsNumberInputType(true)
+                    .setConsumerValueInt(value -> {
+                        tvLoadListParent.setText("" + value + "");
+                        mConfigValueModel.getLoadListParent().setConfigValue(value + "");
+                    }).show(getFragmentManager(), "");
+        } catch (Exception e) {
+            VnyiUtils.LogException(getContext(), "onClickLoadListParent", TAG, e.getMessage());
+        }
     }
 
     @OnClick(R.id.tbrLinkSaleOff1111)
     void onClickLinkSaleOff() {
-        VnyiUtils.LogException(TAG, "==> onClickLinkSaleOff");
-        DialogInputValueFragment.newInstance()
-                .setIsNumberInputType(false)
-                .setConsumerValueString(value -> {
-                    tvLinkSaleOff.setText(value);
-                    mConfigValueModel.getLinkSaleOff().setConfigValue(value + "");
-                }).show(getFragmentManager(), "");
+
+        try {
+            DialogInputValueFragment.newInstance()
+                    .setIsNumberInputType(false)
+                    .setConsumerValueString(value -> {
+                        tvLinkSaleOff.setText(value);
+                        mConfigValueModel.getLinkSaleOff().setConfigValue(value + "");
+                    }).show(getFragmentManager(), "");
+        } catch (Exception e) {
+            VnyiUtils.LogException(getContext(), "onClickBranch", TAG, e.getMessage());
+        }
     }
 
     @OnClick(R.id.tbrLinkUseApp)
     void onClickLinkUserApp() {
-        VnyiUtils.LogException(TAG, "==> tbrLinkUseApp");
-        DialogInputValueFragment.newInstance()
-                .setIsNumberInputType(false)
-                .setConsumerValueString(value -> {
-                    tvLinkUseApp.setText(value);
-                    mConfigValueModel.getLinkUserApp().setConfigValue(value + "");
-                }).show(getFragmentManager(), "");
+        try {
+            DialogInputValueFragment.newInstance()
+                    .setIsNumberInputType(false)
+                    .setConsumerValueString(value -> {
+                        tvLinkUseApp.setText(value);
+                        mConfigValueModel.getLinkUserApp().setConfigValue(value + "");
+                    }).show(getFragmentManager(), "");
+        } catch (Exception e) {
+            VnyiUtils.LogException(getContext(), "onClickLinkUserApp", TAG, e.getMessage());
+        }
     }
 
     @OnClick(R.id.tbrChangeTable)
     void onClickChangeTable() {
-        VnyiUtils.LogException(TAG, "==> tbrChangeTable");
-        DialogInputValueFragment.newInstance()
-                .setIsNumberInputType(true)
-                .setConsumerValueInt(value -> {
-                    tvChangeTable.setText("" + value + "");
-                    mConfigValueModel.getChangeTable().setConfigValue(value + "");
-                }).show(getFragmentManager(), "");
+        try {
+            DialogInputValueFragment.newInstance()
+                    .setIsNumberInputType(true)
+                    .setConsumerValueInt(value -> {
+                        tvChangeTable.setText("" + value + "");
+                        mConfigValueModel.getChangeTable().setConfigValue(value + "");
+                    }).show(getFragmentManager(), "");
+        } catch (Exception e) {
+            VnyiUtils.LogException(getContext(), "onClickChangeTable", TAG, e.getMessage());
+        }
     }
 
     @OnClick(R.id.tbrNumTableShow)
     void onClickLNumTableShow() {
-        VnyiUtils.LogException(TAG, "==> tbrNumTableShow");
-        DialogInputValueFragment.newInstance()
-                .setIsNumberInputType(true)
-                .setConsumerValueInt(value -> {
-                    tvNumTableShow.setText("" + value + "");
-                    mConfigValueModel.getNumbTableShow().setConfigValue(value + "");
-                }).show(getFragmentManager(), "");
+        try {
+            DialogInputValueFragment.newInstance()
+                    .setIsNumberInputType(true)
+                    .setConsumerValueInt(value -> {
+                        tvNumTableShow.setText("" + value + "");
+                        mConfigValueModel.getNumbTableShow().setConfigValue(value + "");
+                    }).show(getFragmentManager(), "");
+        } catch (Exception e) {
+            VnyiUtils.LogException(getContext(), "onClickLNumTableShow", TAG, e.getMessage());
+        }
     }
 
     @OnClick(R.id.btnConfirmConfig)
     void onClickLConfirmConfig() {
-        VnyiUtils.LogException(TAG, "==> onClickLConfirmConfig");
-        mConfigValueModel.setLinkServer(edtLinkServer.getText().toString() + "");
-        VnyiPreference.getInstance(getContext()).putString(Constant.KEY_LINK_SERVER, edtLinkServer.getText().toString() + "");
-        VnyiPreference.getInstance(getContext()).putObject(Constant.KEY_CONFIG_VALUE, mConfigValueModel);
-        VnyiUtils.LogException("onClickLConfirmConfig", "==> " + VnyiPreference.getInstance(getContext()).getObject(Constant.KEY_CONFIG_VALUE, ConfigValueModel.class).toString());
-        // update config
-        new ConfirmConfigTask().execute(mConfigValueModel);
+
+        try {
+            mConfigValueModel.setLinkServer(edtLinkServer.getText().toString() + "");
+            VnyiPreference.getInstance(getContext()).putString(Constant.KEY_LINK_SERVER, edtLinkServer.getText().toString() + "");
+            VnyiPreference.getInstance(getContext()).putObject(Constant.KEY_CONFIG_VALUE, mConfigValueModel);
+            VnyiUtils.LogException("onClickLConfirmConfig", "==> " + VnyiPreference.getInstance(getContext()).getObject(Constant.KEY_CONFIG_VALUE, ConfigValueModel.class).toString());
+            // update config
+            new ConfirmConfigTask().execute(mConfigValueModel);
+        } catch (Exception e) {
+            VnyiUtils.LogException(getContext(), "onClickLConfirmConfig", TAG, e.getMessage());
+        }
     }
 
     /**
@@ -361,24 +398,28 @@ public class DialogConfigFragment extends BaseDialogFragment {
         protected Boolean doInBackground(ConfigValueModel... configValueModels) {
             VnyiUtils.LogException("ConfirmConfigTask", "==> doInBackground");
 
-            ConfigValueModel configValueModel = configValueModels[0];
+            try {
+                ConfigValueModel configValueModel = configValueModels[0];
 
-            // update config branch
-            updateConfirm(configValueModel.getLinkServer(), configValueModel.getBranch().getConfigCode(), configValueModel.getBranch().getConfigValue());
-            // update config link sale off
-            updateConfirm(configValueModel.getLinkServer(), configValueModel.getLinkSaleOff().getConfigCode(), configValueModel.getLinkSaleOff().getConfigValue());
-            // update config ten ban cho thiet bi
-            updateConfirm(configValueModel.getLinkServer(), configValueModel.getTableName().getConfigCode(), configValueModel.getTableName().getConfigValue());
-            // update config cap de load danh sach cha ben
-            updateConfirm(configValueModel.getLinkServer(), configValueModel.getLoadListParent().getConfigCode(), configValueModel.getLoadListParent().getConfigValue());
-            // update config link huong dan sd
-            updateConfirm(configValueModel.getLinkServer(), configValueModel.getLinkUserApp().getConfigCode(), configValueModel.getLinkUserApp().getConfigValue());
-            // update config ten user de order tren emenu
-            updateConfirm(configValueModel.getLinkServer(), configValueModel.getUserOrder().getConfigCode(), configValueModel.getUserOrder().getConfigValue());
-            // update config chon thay doi ban
-            updateConfirm(configValueModel.getLinkServer(), configValueModel.getChangeTable().getConfigCode(), configValueModel.getChangeTable().getConfigValue());
-            // update config so luong hien thi theo cot tren giao dien
-            updateConfirm(configValueModel.getLinkServer(), configValueModel.getNumbTableShow().getConfigCode(), configValueModel.getNumbTableShow().getConfigValue());
+                // update config branch
+                updateConfirm(configValueModel.getLinkServer(), configValueModel.getBranch().getConfigCode(), configValueModel.getBranch().getConfigValue());
+                // update config link sale off
+                updateConfirm(configValueModel.getLinkServer(), configValueModel.getLinkSaleOff().getConfigCode(), configValueModel.getLinkSaleOff().getConfigValue());
+                // update config ten ban cho thiet bi
+                updateConfirm(configValueModel.getLinkServer(), configValueModel.getTableName().getConfigCode(), configValueModel.getTableName().getConfigValue());
+                // update config cap de load danh sach cha ben
+                updateConfirm(configValueModel.getLinkServer(), configValueModel.getLoadListParent().getConfigCode(), configValueModel.getLoadListParent().getConfigValue());
+                // update config link huong dan sd
+                updateConfirm(configValueModel.getLinkServer(), configValueModel.getLinkUserApp().getConfigCode(), configValueModel.getLinkUserApp().getConfigValue());
+                // update config ten user de order tren emenu
+                updateConfirm(configValueModel.getLinkServer(), configValueModel.getUserOrder().getConfigCode(), configValueModel.getUserOrder().getConfigValue());
+                // update config chon thay doi ban
+                updateConfirm(configValueModel.getLinkServer(), configValueModel.getChangeTable().getConfigCode(), configValueModel.getChangeTable().getConfigValue());
+                // update config so luong hien thi theo cot tren giao dien
+                updateConfirm(configValueModel.getLinkServer(), configValueModel.getNumbTableShow().getConfigCode(), configValueModel.getNumbTableShow().getConfigValue());
+            } catch (Exception e) {
+                VnyiUtils.LogException(getContext(), "onClickBranch", TAG, e.getMessage());
+            }
 
             return true;
         }

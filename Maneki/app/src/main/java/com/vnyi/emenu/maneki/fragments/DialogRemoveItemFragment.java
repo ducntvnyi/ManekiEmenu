@@ -11,6 +11,7 @@ import com.vnyi.emenu.maneki.R;
 import com.vnyi.emenu.maneki.applications.VnyiPreference;
 import com.vnyi.emenu.maneki.customviews.TextViewFont;
 import com.vnyi.emenu.maneki.utils.Constant;
+import com.vnyi.emenu.maneki.utils.VnyiUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -55,8 +56,12 @@ public class DialogRemoveItemFragment extends BaseMainDialogFragment {
     }
 
     private void initViews() {
-        String tableName = VnyiPreference.getInstance(getContext()).getString(Constant.KEY_TABLE_NAME);
-        tvTableName.setText(tvTableName.getText() + " " + tableName);
+        try {
+            String tableName = VnyiPreference.getInstance(getContext()).getString(Constant.KEY_TABLE_NAME);
+            tvTableName.setText(tvTableName.getText() + " " + tableName);
+        } catch (Exception e) {
+            VnyiUtils.LogException(getContext(), "initViews", TAG, e.getMessage());
+        }
     }
 
     @OnClick(R.id.btnYes)

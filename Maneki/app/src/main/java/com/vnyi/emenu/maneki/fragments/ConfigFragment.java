@@ -4,6 +4,7 @@ import android.support.v4.app.Fragment;
 import android.util.Log;
 
 import com.vnyi.emenu.maneki.R;
+import com.vnyi.emenu.maneki.utils.VnyiUtils;
 
 import butterknife.OnClick;
 
@@ -43,11 +44,15 @@ public class ConfigFragment extends BaseFragment {
     @OnClick(R.id.ivShowConfig)
     void onClickConfigHome() {
         // check config: true => go to.. : false: go to configScreen
-        DialogConfigFragment.newInstance()
-                .setConsumerConfigValue(isConfigValue -> {
-                    Log.e(TAG, "==> onClickConfigHome:: " + isConfigValue);
-                    mActivity.loadConfigValue();
-                })
-                .show(getFragmentManager(), "");
+        try {
+            DialogConfigFragment.newInstance()
+                    .setConsumerConfigValue(isConfigValue -> {
+                        Log.e(TAG, "==> onClickConfigHome:: " + isConfigValue);
+                        mActivity.loadConfigValue();
+                    })
+                    .show(getFragmentManager(), "");
+        } catch (Exception e) {
+            VnyiUtils.LogException(mContext, "onClickConfigHome", TAG, e.getMessage());
+        }
     }
 }

@@ -101,7 +101,6 @@ public class MenuFragment extends BaseFragment {
     @Override
     public void initViews() {
         try {
-
             mConfigValueModel = VnyiPreference.getInstance(getContext()).getObject(Constant.KEY_CONFIG_VALUE, ConfigValueModel.class);
             debounceOrderItem();
             // init menu adapter
@@ -126,7 +125,7 @@ public class MenuFragment extends BaseFragment {
             rvItem.setLayoutManager(mGridLayoutManager);
 
         } catch (Exception e) {
-            VnyiUtils.LogException(TAG, e);
+            VnyiUtils.LogException(getContext(), " initViews", TAG, e.getMessage());
         }
 
 
@@ -160,7 +159,7 @@ public class MenuFragment extends BaseFragment {
                         }
                     });
         } catch (Exception e) {
-            VnyiUtils.LogException(TAG, e);
+            VnyiUtils.LogException(getContext(), " debounceOrderItem", TAG, e.getMessage());
         }
     }
 
@@ -197,7 +196,7 @@ public class MenuFragment extends BaseFragment {
                 imageView.setVisibility(View.GONE);
             }, 100);
         } catch (Exception e) {
-            VnyiUtils.LogException(TAG, e);
+            VnyiUtils.LogException(getContext(), " onClickAddToCart", TAG, e.getMessage());
         }
 
 
@@ -222,7 +221,7 @@ public class MenuFragment extends BaseFragment {
             }
             selectMenu(categoryNoListNote);
         } catch (Exception e) {
-            VnyiUtils.LogException(TAG, e);
+            VnyiUtils.LogException(getContext(), " onPreviousMenu", TAG, e.getMessage());
         }
 
     }
@@ -240,7 +239,7 @@ public class MenuFragment extends BaseFragment {
             }
             selectMenu(categoryNoListNote);
         } catch (Exception e) {
-            VnyiUtils.LogException(TAG, e);
+            VnyiUtils.LogException(getContext(), " onNextMenu", TAG, e.getMessage());
         }
 
     }
@@ -254,7 +253,6 @@ public class MenuFragment extends BaseFragment {
      * @param targetView
      */
     private void makeFlyAnimation(ImageView targetView) {
-
         try {
             new CartAnimationUtil().attachActivity(mActivity).setTargetView(targetView).setMoveDuration(500).setDestView(btnViewOrder).setAnimationListener(new Animator.AnimatorListener() {
                 @Override
@@ -282,7 +280,7 @@ public class MenuFragment extends BaseFragment {
                 }
             }).startAnimation();
         } catch (Exception e) {
-            VnyiUtils.LogException(TAG, e);
+            VnyiUtils.LogException(getContext(), " makeFlyAnimation", TAG, e.getMessage());
         }
 
 
@@ -301,7 +299,7 @@ public class MenuFragment extends BaseFragment {
             loadMenuRight(categoryNoListNote.getGroupID(), ticketId);
 
         } catch (Exception e) {
-            VnyiUtils.LogException(TAG, e);
+            VnyiUtils.LogException(getContext(), " selectMenu", TAG, e.getMessage());
         }
     }
 
