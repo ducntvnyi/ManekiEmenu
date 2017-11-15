@@ -138,7 +138,9 @@ public class OrderAdapter extends BaseRecycleAdapter<TicketItemOrder1, OrderAdap
                         .load(VnyiApiServices.URL_CONFIG + itemModel.getItemImage())
                         .fitCenter()
                         .centerCrop()
+                        .error(R.mipmap.ic_app_default)
                         .into(ivItem);
+
             } catch (Exception e) {
                 VnyiUtils.LogException(TAG, e);
             }

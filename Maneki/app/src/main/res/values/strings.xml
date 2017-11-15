@@ -51,5 +51,10 @@
     <string name="cancel_order">Huỷ Đặt Món</string>
     <string name="cfrm_table_order">Confirmtaion for table:</string>
     <string name="request_waiter">Yêu cầu phục vụ</string>
+    <string name="failed_grant_permisson">Failed grant permission</string>
+    <string name="money_amount">Số Tiền:</string>
+    <string name="discount">Giảm giá:</string>
+    <string name="total_amount">Tổng cộng:</string>
+    <string name="confirm_remove_item">Bạn có chắc chắn muốn xoá món này</string>
 
 </resources>

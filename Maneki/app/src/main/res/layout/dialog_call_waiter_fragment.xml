@@ -22,7 +22,7 @@
             android:text="@string/table"
             android:textAllCaps="true"
             android:textColor="@color/white"
-            android:textSize="@dimen/font_size_content" />
+            android:textSize="@dimen/font_size_header" />
 
         <com.vnyi.emenu.maneki.customviews.TextViewFont
             android:id="@+id/tvTableName"
@@ -32,14 +32,14 @@
             android:text="D1"
             android:textAllCaps="true"
             android:textColor="@color/white"
-            android:textSize="@dimen/font_size_content" />
+            android:textSize="@dimen/font_size_header" />
 
         <com.vnyi.emenu.maneki.customviews.TextViewFont
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:textColor="@color/white"
-            android:textSize="@dimen/font_size_content" />
+            android:textSize="@dimen/font_size_header" />
 
         <com.vnyi.emenu.maneki.customviews.TextViewFont
             android:layout_width="0dp"
@@ -48,14 +48,14 @@
             android:gravity="center"
             android:textAllCaps="true"
             android:textColor="@color/white"
-            android:textSize="@dimen/font_size_content" />
+            android:textSize="@dimen/font_size_header" />
     </LinearLayout>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_below="@+id/llHeaderTable"
-        android:layout_marginRight="@dimen/margin_payment"
+        android:layout_marginEnd="@dimen/margin_payment"
         android:layout_marginStart="@dimen/margin_payment"
         android:background="@color/white" />
 

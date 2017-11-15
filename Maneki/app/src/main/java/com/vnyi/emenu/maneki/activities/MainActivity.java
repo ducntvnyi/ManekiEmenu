@@ -67,7 +67,7 @@ public class MainActivity extends BaseActivity {
         setContentView(R.layout.activity_main);
 
         ButterKnife.bind(this);
-
+        permissionApp();
         intiViews();
         loadData();
 //        currentFragmentConstant.INDEX = VnyiPreference.getInstance(this).getInt(KEY_Constant.INDEX);

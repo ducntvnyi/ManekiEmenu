@@ -21,12 +21,36 @@ android {
             storePassword 'maneki123123'
         }
     }
+
+    applicationVariants.all { variant ->
+        variant.outputs.each { output ->
+            def fileName = output.outputFile.name.replace("-debug", "")
+            fileName = fileName.replace("app", "Maneki")
+            fileName = fileName.replace("-release", "Release")
+            fileName = fileName.replace(".apk", "-${variant.versionName}.apk")
+            output.outputFile = new File(
+                    output.outputFile.parent,
+                    fileName)
+        }
+    }
+    signingConfigs {
+        release {
+            storeFile file(RELEASE_STORE_FILE)
+            storePassword RELEASE_STORE_PASSWORD
+            keyAlias RELEASE_KEY_ALIAS
+            keyPassword RELEASE_KEY_PASSWORD
+        }
+    }
+
+
     buildTypes {
 
         buildTypes {
             release {
                 minifyEnabled false
+                versionNameSuffix '-Release' + getDate()
                 proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+                signingConfig signingConfigs.release
                 zipAlignEnabled true
             }
             debug {
@@ -55,7 +79,12 @@ android {
         sourceCompatibility 1.8
     }
 }
+def getDate() {
+    def date = new Date()
+    def formattedDate = date.format('-MM-dd-yyyy')
+    return formattedDate
 
+}
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
@@ -64,7 +93,7 @@ dependencies {
     compile project(path: ':library')
 
 //    compile 'com.android.support.constraint:constraint-layout:1.0.2'
-    compile 'com.android.support:multidex:1.0.1'
+//    compile 'com.android.support:multidex:1.0.1'
     compile 'com.fasterxml.jackson.core:jackson-annotations:2.8.5'
     compile 'com.jakewharton:butterknife:8.8.1'
 //    compile 'com.android.support:support-v4:25.3.1'

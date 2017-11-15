@@ -53,6 +53,8 @@ public class CallWaiterFragment extends BaseFragment {
     @BindView(R.id.rvGetList)
     RecyclerView rvGetList;
 
+    private String tableName;
+
     public static Fragment newInstance() {
         Fragment fragment = new CallWaiterFragment();
         return fragment;
@@ -67,6 +69,8 @@ public class CallWaiterFragment extends BaseFragment {
     @Override
     public void initViews() {
         // onListener
+        tableName = VnyiPreference.getInstance(getContext()).getString(Constant.KEY_TABLE_NAME);
+        tvTableName.setText(tableName);
         mRequestGetLists = new ArrayList<>();
         mConfigValueModel = VnyiPreference.getInstance(getContext()).getObject(Constant.KEY_CONFIG_VALUE, ConfigValueModel.class);
 

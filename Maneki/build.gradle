@@ -27,3 +27,156 @@ allprojects {
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
+
+
+task convertDimens() {
+    println "Reading Dimens default file"
+    def defaultFile = "${project.rootDir}/app/src/main/res/values/dimens.xml"
+    def xxxhdpiFile = "${project.rootDir}/app/src/main/res/values-xxxhdpi/dimens.xml"
+    def xxhdpiFile = "${project.rootDir}/app/src/main/res/values-xxhdpi/dimens.xml"
+    def xhdpiFile = "${project.rootDir}/app/src/main/res/values-xhdpi/dimens.xml"
+    def mdpiFile = "${project.rootDir}/app/src/main/res/values-mdpi/dimens.xml"
+    def hdpiFile = "${project.rootDir}/app/src/main/res/values-hdpi/dimens.xml"
+    //println "File " + xmlFile360
+    def xmlOriginal = new XmlParser().parse(defaultFile)
+
+    def xxxhdpi = xmlOriginal.clone()
+    def xxhdpi = xmlOriginal.clone()
+    def xhdpi = xmlOriginal.clone()
+    def hdpi = xmlOriginal.clone()
+    def mdpi = xmlOriginal.clone()
+
+    xxxhdpi.dimen.each { dimen ->
+        def value = dimen.text();
+        if (value.contains("sp")) {
+            def newValue = value.replace("sp","").toFloat()
+            newValue = round((3.5/3 * newValue).toFloat(),2);
+            //println dimen.@name + " --> " + value + " --> " + newValue;
+            dimen.value = newValue + "sp"
+            //println "New dimen " + dimen.text()
+        } else if (value.contains("px")) {
+            def newValue = value.replace("px","").toFloat()
+            newValue = round((3.5/3 * newValue).toFloat(),2);
+            //println dimen.@name + " --> " + value + " --> " + newValue;
+            dimen.value = newValue + "px"
+            //println "New dimen " + dimen.text()
+        } else {
+            def newValue = value.replace("dp","").toFloat()
+            newValue = round((3.5/3 * newValue).toFloat(),2);
+            //println dimen.@name + " --> " + value + " --> " + newValue;
+            dimen.value = newValue + "dp"
+            //println "New dimen " + dimen.text()
+        }
+    }
+
+    xxhdpi.dimen.each { dimen ->
+        def value = dimen.text();
+        if (value.contains("sp")) {
+            def newValue = value.replace("sp","").toFloat()
+            newValue = round((3/3 * newValue).toFloat(),2);
+            //println dimen.@name + " --> " + value + " --> " + newValue;
+            dimen.value = newValue + "sp"
+            //println "New dimen " + dimen.text()
+        } else if (value.contains("px")) {
+            def newValue = value.replace("px","").toFloat()
+            newValue = round((3/3 * newValue).toFloat(),2);
+            //println dimen.@name + " --> " + value + " --> " + newValue;
+            dimen.value = newValue + "px"
+            //println "New dimen " + dimen.text()
+        } else {
+            def newValue = value.replace("dp","").toFloat()
+            newValue = round((3/3 * newValue).toFloat(),2);
+            //println dimen.@name + " --> " + value + " --> " + newValue;
+            dimen.value = newValue + "dp"
+            //println "New dimen " + dimen.text()
+        }
+    }
+
+    xhdpi.dimen.each { dimen ->
+        def value = dimen.text();
+        if (value.contains("sp")) {
+            def newValue = value.replace("sp","").toFloat()
+            newValue = round((3/3 * newValue).toFloat(),2);
+            //println dimen.@name + " --> " + value + " --> " + newValue;
+            dimen.value = newValue + "sp"
+            //println "New dimen " + dimen.text()
+        } else if (value.contains("px")) {
+            def newValue = value.replace("px","").toFloat()
+            newValue = round((3/3 * newValue).toFloat(),2);
+            //println dimen.@name + " --> " + value + " --> " + newValue;
+            dimen.value = newValue + "px"
+            //println "New dimen " + dimen.text()
+        } else {
+            def newValue = value.replace("dp","").toFloat()
+            newValue = round((3/3 * newValue).toFloat(),2);
+            //println dimen.@name + " --> " + value + " --> " + newValue;
+            dimen.value = newValue + "dp"
+            //println "New dimen " + dimen.text()
+        }
+    }
+
+    hdpi.dimen.each { dimen ->
+        def value = dimen.text();
+        if (value.contains("sp")) {
+            def newValue = value.replace("sp", "").toFloat()
+            newValue = round((2.5/3 * newValue).toFloat(), 2);
+            //println dimen.@name + " --> " + value + " --> " + newValue;
+            dimen.value = newValue + "sp"
+            //println "New dimen " + dimen.text()
+        } else if (value.contains("px")) {
+            def newValue = value.replace("px","").toFloat()
+            newValue = round((2.5/3 * newValue).toFloat(),2);
+            //println dimen.@name + " --> " + value + " --> " + newValue;
+            dimen.value = newValue + "px"
+            //println "New dimen " + dimen.text()
+        } else {
+            def newValue = value.replace("dp","").toFloat()
+            newValue = round((2.5/3 * newValue).toFloat(),2);
+            //println dimen.@name + " --> " + value + " --> " + newValue;
+            dimen.value = newValue + "dp"
+            //println "New dimen " + dimen.text()
+        }
+    }
+
+    mdpi.dimen.each { dimen ->
+        def value = dimen.text();
+        if (value.contains("sp")) {
+            def newValue = value.replace("sp", "").toFloat()
+            newValue = round((2/3 * newValue).toFloat(), 2);
+            //println dimen.@name + " --> " + value + " --> " + newValue;
+            dimen.value = newValue + "sp"
+            //println "New dimen " + dimen.text()
+        } else if (value.contains("px")) {
+            def newValue = value.replace("px","").toFloat()
+            newValue = round((2/3 * newValue).toFloat(),2);
+            //println dimen.@name + " --> " + value + " --> " + newValue;
+            dimen.value = newValue + "px"
+            //println "New dimen " + dimen.text()
+        } else {
+            def newValue = value.replace("dp","").toFloat()
+            newValue = round((2/3 * newValue).toFloat(),2);
+            //println dimen.@name + " --> " + value + " --> " + newValue;
+            dimen.value = newValue + "dp"
+            //println "New dimen " + dimen.text()
+        }
+    }
+
+    new XmlNodePrinter(new PrintWriter(new FileWriter(xxxhdpiFile))).print(xxxhdpi)
+    println "Has written xxxhdpi file."
+    new XmlNodePrinter(new PrintWriter(new FileWriter(xxhdpiFile))).print(xxhdpi)
+    println "Has written xxhdpi file."
+    new XmlNodePrinter(new PrintWriter(new FileWriter(xhdpiFile))).print(xhdpi)
+    println "Has written xhdpi file."
+    new XmlNodePrinter(new PrintWriter(new FileWriter(hdpiFile))).print(hdpi)
+    println "Has written hdpi file."
+    new XmlNodePrinter(new PrintWriter(new FileWriter(mdpiFile))).print(mdpi)
+    println "Has written mdpi file."
+}
+
+public static float round(float d, int decimalPlace) {
+    BigDecimal bd = new BigDecimal(Float.toString(d));
+    bd = bd.setScale(decimalPlace, BigDecimal.ROUND_HALF_UP);
+    return bd.floatValue();
+}
+
+clean.dependsOn convertDimens

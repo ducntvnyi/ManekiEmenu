@@ -4,14 +4,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/transparent"
-    android:orientation="vertical"
-    android:padding="@dimen/margin_24dp">
+    android:orientation="vertical">
 
     <ImageView
         android:id="@+id/ivDismiss"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:layout_toRightOf="@+id/rlContent"
+        android:layout_toEndOf="@+id/rlContent"
         android:background="@mipmap/ic_close"
         android:padding="@dimen/padding_content"
         android:visibility="visible" />
@@ -22,7 +21,6 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:layout_gravity="center"
-        android:layout_marginTop="@dimen/activity_horizontal_margin"
         android:background="@drawable/bg_config_dialog"
         android:gravity="center_horizontal"
         android:orientation="vertical"
@@ -31,7 +29,7 @@
         <com.vnyi.emenu.maneki.customviews.TextViewFont
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_layout_default"
+            android:layout_marginTop="@dimen/padding_content"
             android:gravity="center"
             android:padding="@dimen/padding_content"
             android:text="@string/config_server"
@@ -43,7 +41,7 @@
             android:id="@+id/edtLinkServer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_layout_default"
+            android:layout_marginTop="@dimen/padding_content"
             android:background="@drawable/bg_edt_default"
             android:hint="http://"
             android:padding="@dimen/padding_layout"
@@ -69,176 +67,183 @@
                 android:id="@+id/switchConfig"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true" />
+                android:layout_alignParentEnd="true" />
         </RelativeLayout>
 
-        <ScrollView
-            android:id="@+id/scrollViewConfig"
+        <LinearLayout
+            android:id="@+id/llConfigContainer"
             android:layout_width="match_parent"
             android:layout_height="300dp"
-            android:layout_marginTop="@dimen/padding_content"
+            android:orientation="vertical"
             android:visibility="gone">
 
-            <LinearLayout
-                android:id="@+id/llConfig"
+            <ScrollView
+                android:id="@+id/scrollViewConfig"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:visibility="visible">
+                android:layout_marginTop="@dimen/padding_content">
 
-                <TableRow
-                    android:id="@+id/tbrBranch"
-                    style="@style/tableRowConfigStyle">
+                <LinearLayout
+                    android:id="@+id/llConfig"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="visible">
 
-                    <com.vnyi.emenu.maneki.customviews.TextViewFont
-                        android:id="@+id/tvBranchLabel"
-                        style="@style/tvLabelStyle"
-                        android:text="@string/branch" />
+                    <TableRow
+                        android:id="@+id/tbrBranch"
+                        style="@style/tableRowConfigStyle">
 
-                    <com.vnyi.emenu.maneki.customviews.TextViewFont
-                        android:id="@+id/tvBranch"
-                        style="@style/tvLabelValueStyle"
-                        android:text="VNYI" />
+                        <com.vnyi.emenu.maneki.customviews.TextViewFont
+                            android:id="@+id/tvBranchLabel"
+                            style="@style/tvLabelStyle"
+                            android:text="@string/branch" />
 
-                </TableRow>
+                        <com.vnyi.emenu.maneki.customviews.TextViewFont
+                            android:id="@+id/tvBranch"
+                            style="@style/tvLabelValueStyle"
+                            android:text="VNYI" />
 
-                <View style="@style/lineHorizontalStyle" />
+                    </TableRow>
 
-                <TableRow
-                    android:id="@+id/tbrDevice"
-                    style="@style/tableRowConfigStyle">
+                    <View style="@style/lineHorizontalStyle" />
 
-                    <com.vnyi.emenu.maneki.customviews.TextViewFont
-                        android:id="@+id/tvTableNameLabel"
-                        style="@style/tvLabelStyle"
-                        android:text="@string/table_name_device" />
+                    <TableRow
+                        android:id="@+id/tbrDevice"
+                        style="@style/tableRowConfigStyle">
 
-                    <com.vnyi.emenu.maneki.customviews.TextViewFont
-                        android:id="@+id/tvTableName"
-                        style="@style/tvLabelValueStyle"
-                        android:hint="D1" />
+                        <com.vnyi.emenu.maneki.customviews.TextViewFont
+                            android:id="@+id/tvTableNameLabel"
+                            style="@style/tvLabelStyle"
+                            android:text="@string/table_name_device" />
 
-                </TableRow>
+                        <com.vnyi.emenu.maneki.customviews.TextViewFont
+                            android:id="@+id/tvTableName"
+                            style="@style/tvLabelValueStyle"
+                            android:hint="D1" />
 
-                <View style="@style/lineHorizontalStyle" />
+                    </TableRow>
 
-                <TableRow
-                    android:id="@+id/tbrTableNameUserOrder"
-                    style="@style/tableRowConfigStyle">
+                    <View style="@style/lineHorizontalStyle" />
 
-                    <com.vnyi.emenu.maneki.customviews.TextViewFont
-                        android:id="@+id/tvTableNameUserLabel"
-                        style="@style/tvLabelStyle"
-                        android:text="@string/name_user" />
+                    <TableRow
+                        android:id="@+id/tbrTableNameUserOrder"
+                        style="@style/tableRowConfigStyle">
 
-                    <com.vnyi.emenu.maneki.customviews.TextViewFont
-                        android:id="@+id/tvTableNameUser"
-                        style="@style/tvLabelValueStyle"
-                        android:text="Emenu" />
+                        <com.vnyi.emenu.maneki.customviews.TextViewFont
+                            android:id="@+id/tvTableNameUserLabel"
+                            style="@style/tvLabelStyle"
+                            android:text="@string/name_user" />
 
-                </TableRow>
+                        <com.vnyi.emenu.maneki.customviews.TextViewFont
+                            android:id="@+id/tvTableNameUser"
+                            style="@style/tvLabelValueStyle"
+                            android:text="Emenu" />
 
-                <View style="@style/lineHorizontalStyle" />
+                    </TableRow>
 
-                <TableRow
-                    android:id="@+id/tbrLoadListParent"
-                    style="@style/tableRowConfigStyle">
+                    <View style="@style/lineHorizontalStyle" />
 
-                    <com.vnyi.emenu.maneki.customviews.TextViewFont
-                        android:id="@+id/tvLoadListParentLabel"
-                        style="@style/tvLabelStyle"
-                        android:text="@string/load_list_group_parent" />
+                    <TableRow
+                        android:id="@+id/tbrLoadListParent"
+                        style="@style/tableRowConfigStyle">
 
-                    <com.vnyi.emenu.maneki.customviews.TextViewFont
-                        android:id="@+id/tvLoadListParent"
-                        style="@style/tvLabelValueStyle"
-                        android:text="4" />
+                        <com.vnyi.emenu.maneki.customviews.TextViewFont
+                            android:id="@+id/tvLoadListParentLabel"
+                            style="@style/tvLabelStyle"
+                            android:text="@string/load_list_group_parent" />
 
-                </TableRow>
+                        <com.vnyi.emenu.maneki.customviews.TextViewFont
+                            android:id="@+id/tvLoadListParent"
+                            style="@style/tvLabelValueStyle"
+                            android:text="4" />
 
-                <View style="@style/lineHorizontalStyle" />
+                    </TableRow>
 
-                <TableRow
-                    android:id="@+id/tbrLinkSaleOff1111"
-                    style="@style/tableRowConfigStyle">
+                    <View style="@style/lineHorizontalStyle" />
 
-                    <com.vnyi.emenu.maneki.customviews.TextViewFont
-                        android:id="@+id/tvLinkSaleOffLabel"
-                        style="@style/tvLabelStyle"
-                        android:text="@string/link_sale_off" />
+                    <TableRow
+                        android:id="@+id/tbrLinkSaleOff1111"
+                        style="@style/tableRowConfigStyle">
 
-                    <com.vnyi.emenu.maneki.customviews.TextViewFont
-                        android:id="@+id/tvLinkSaleOff"
-                        style="@style/tvLabelValueStyle"
-                        android:text="http://" />
+                        <com.vnyi.emenu.maneki.customviews.TextViewFont
+                            android:id="@+id/tvLinkSaleOffLabel"
+                            style="@style/tvLabelStyle"
+                            android:text="@string/link_sale_off" />
 
-                </TableRow>
+                        <com.vnyi.emenu.maneki.customviews.TextViewFont
+                            android:id="@+id/tvLinkSaleOff"
+                            style="@style/tvLabelValueStyle"
+                            android:text="http://" />
 
-                <View style="@style/lineHorizontalStyle" />
+                    </TableRow>
 
-                <TableRow
-                    android:id="@+id/tbrLinkUseApp"
-                    style="@style/tableRowConfigStyle">
+                    <View style="@style/lineHorizontalStyle" />
 
-                    <com.vnyi.emenu.maneki.customviews.TextViewFont
-                        android:id="@+id/tvLinkUseAppLabel"
-                        style="@style/tvLabelStyle"
-                        android:text="@string/link_use_app" />
+                    <TableRow
+                        android:id="@+id/tbrLinkUseApp"
+                        style="@style/tableRowConfigStyle">
 
-                    <com.vnyi.emenu.maneki.customviews.TextViewFont
-                        android:id="@+id/tvLinkUseApp"
-                        style="@style/tvLabelValueStyle"
-                        android:text="http://" />
+                        <com.vnyi.emenu.maneki.customviews.TextViewFont
+                            android:id="@+id/tvLinkUseAppLabel"
+                            style="@style/tvLabelStyle"
+                            android:text="@string/link_use_app" />
 
-                </TableRow>
+                        <com.vnyi.emenu.maneki.customviews.TextViewFont
+                            android:id="@+id/tvLinkUseApp"
+                            style="@style/tvLabelValueStyle"
+                            android:text="http://" />
 
-                <View style="@style/lineHorizontalStyle" />
+                    </TableRow>
 
-                <TableRow
-                    android:id="@+id/tbrChangeTable"
-                    style="@style/tableRowConfigStyle">
+                    <View style="@style/lineHorizontalStyle" />
 
-                    <com.vnyi.emenu.maneki.customviews.TextViewFont
-                        android:id="@+id/tvChangeTableLabel"
-                        style="@style/tvLabelStyle"
-                        android:text="@string/change_table" />
+                    <TableRow
+                        android:id="@+id/tbrChangeTable"
+                        style="@style/tableRowConfigStyle">
 
-                    <com.vnyi.emenu.maneki.customviews.TextViewFont
-                        android:id="@+id/tvChangeTable"
-                        style="@style/tvLabelValueStyle"
-                        android:text="1" />
+                        <com.vnyi.emenu.maneki.customviews.TextViewFont
+                            android:id="@+id/tvChangeTableLabel"
+                            style="@style/tvLabelStyle"
+                            android:text="@string/change_table" />
 
-                </TableRow>
+                        <com.vnyi.emenu.maneki.customviews.TextViewFont
+                            android:id="@+id/tvChangeTable"
+                            style="@style/tvLabelValueStyle"
+                            android:text="1" />
 
-                <View style="@style/lineHorizontalStyle" />
+                    </TableRow>
 
-                <TableRow
-                    android:id="@+id/tbrNumTableShow"
-                    style="@style/tableRowConfigStyle">
+                    <View style="@style/lineHorizontalStyle" />
 
-                    <com.vnyi.emenu.maneki.customviews.TextViewFont
-                        android:id="@+id/tvNumTableShowLabel"
-                        style="@style/tvLabelStyle"
-                        android:text="@string/num_table_show" />
+                    <TableRow
+                        android:id="@+id/tbrNumTableShow"
+                        style="@style/tableRowConfigStyle">
 
-                    <com.vnyi.emenu.maneki.customviews.TextViewFont
-                        android:id="@+id/tvNumTableShow"
-                        style="@style/tvLabelValueStyle"
-                        android:text="5" />
+                        <com.vnyi.emenu.maneki.customviews.TextViewFont
+                            android:id="@+id/tvNumTableShowLabel"
+                            style="@style/tvLabelStyle"
+                            android:text="@string/num_table_show" />
 
-                </TableRow>
+                        <com.vnyi.emenu.maneki.customviews.TextViewFont
+                            android:id="@+id/tvNumTableShow"
+                            style="@style/tvLabelValueStyle"
+                            android:text="5" />
 
-                <View style="@style/lineHorizontalStyle" />
+                    </TableRow>
 
-            </LinearLayout>
-        </ScrollView>
+                    <View style="@style/lineHorizontalStyle" />
+
+                </LinearLayout>
+            </ScrollView>
+        </LinearLayout>
 
         <com.vnyi.emenu.maneki.customviews.ButtonFont
             android:id="@+id/btnConfirmConfig"
             android:layout_width="200dp"
             android:layout_height="50dp"
             android:layout_marginBottom="@dimen/margin_layout"
-            android:layout_marginTop="@dimen/margin_layout_default"
+            android:layout_marginTop="@dimen/padding_content"
             android:background="@drawable/bg_btn_confirm_selector"
             android:gravity="center"
             android:maxLines="1"

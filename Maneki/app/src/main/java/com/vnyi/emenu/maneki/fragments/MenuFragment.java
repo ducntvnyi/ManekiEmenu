@@ -3,6 +3,7 @@ package com.vnyi.emenu.maneki.fragments;
 
 import android.animation.Animator;
 import android.graphics.drawable.BitmapDrawable;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -33,6 +34,8 @@ import com.vnyi.emenu.maneki.utils.VnyiUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
@@ -63,12 +66,17 @@ public class MenuFragment extends BaseFragment {
     @BindView(R.id.ivNext)
     ImageView ivNext;
 
+    // timer for check bill
+    private Timer mTimerCheckBill;
+    private TimerTask mTimerTaskCheckBill;
+    private final Handler mHandlerCheckBill = new Handler();
+
     private int itemCounter = 0;
     private MenuAdapter mMenuAdapter;
     private List<ItemCategoryNoListNote> mItemCategoryNoListNotes;
 
     private ItemAdapter mItemAdapter;
-    private List<ItemCategoryDetail> mItemModels;
+    private List<ItemCategoryDetail> mItemCategoryDetails;
     private ItemCategoryDetail mItemCategoryDetail;
 
 
@@ -108,8 +116,8 @@ public class MenuFragment extends BaseFragment {
             rvMenu.setLayoutManager(mLayoutManager);
 
             // init item adapter
-            mItemModels = new ArrayList<>();
-            mItemAdapter = new ItemAdapter(mContext, mItemModels, animationView -> {
+            mItemCategoryDetails = new ArrayList<>();
+            mItemAdapter = new ItemAdapter(mContext, mItemCategoryDetails, animationView -> {
                 onClickAddToCart(animationView.getImageView(), animationView.getView());
                 categoryDetailsOrder.add(animationView.getCategoryDetail());
             });
@@ -127,7 +135,7 @@ public class MenuFragment extends BaseFragment {
     private void debounceOrderItem() {
         try {
             RxTextView.textChanges(tvCart)
-                    .debounce(5, TimeUnit.SECONDS, AndroidSchedulers.mainThread())
+                    .debounce(3, TimeUnit.SECONDS, AndroidSchedulers.mainThread())
                     .observeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(new Observer<CharSequence>() {
@@ -302,10 +310,11 @@ public class MenuFragment extends BaseFragment {
         if (itemCounter == 0) return;
 
         UpdateTicketItemModel updateTicketItemModel = new UpdateTicketItemModel(ticketId, mConfigValueModel, categoryDetailsOrder);
-        new UpdateItemTask(updateItemOrder -> {
+        new UpdateItemTask(updateTicketItemModel, mItemCategoryDetails, updateItemOrder -> {
             ToastUtils.showToast(mContext, "Order successfully!!");
-            categoryDetailsOrder.clear();
-        }).execute(updateTicketItemModel);
+            mItemAdapter.setItemModelList(mItemCategoryDetails);
+
+        }).execute();
 
     }
 
@@ -324,14 +333,7 @@ public class MenuFragment extends BaseFragment {
 
         TicketLoadInfo ticketInfo = VnyiPreference.getInstance(getContext()).getObject(Constant.KEY_TICKET, TicketLoadInfo.class);
         if (ticketInfo == null) {
-
-            Log.e(TAG, "==> requestTicketUpdateInfo create Ticket");
-            requestTicketUpdateInfo(mConfigValueModel, ticketUpdateInfo -> {
-                VnyiPreference.getInstance(getContext()).putObject(Constant.KEY_TICKET_UPDATE_INFO, ticketUpdateInfo);
-                VnyiPreference.getInstance(getContext()).putInt(Constant.KEY_TICKET_ID, ticketUpdateInfo.getTicketId());
-                ticketId = ticketUpdateInfo.getTicketId();
-                loadItem(ticketId);
-            });
+            createTicketBill();
         } else {
             Log.e(TAG, "==> ticketLoadInfo");
             ticketId = ticketInfo.getTicketId();
@@ -339,6 +341,16 @@ public class MenuFragment extends BaseFragment {
         }
 
 
+    }
+
+    private void createTicketBill() {
+        Log.e(TAG, "==> requestTicketUpdateInfo create Ticket");
+        requestTicketUpdateInfo(mConfigValueModel, ticketUpdateInfo -> {
+            VnyiPreference.getInstance(getContext()).putObject(Constant.KEY_TICKET_UPDATE_INFO, ticketUpdateInfo);
+            VnyiPreference.getInstance(getContext()).putInt(Constant.KEY_TICKET_ID, ticketUpdateInfo.getTicketId());
+            ticketId = ticketUpdateInfo.getTicketId();
+            loadItem(ticketId);
+        });
     }
 
     private void loadItem(int ticketId) {
@@ -352,7 +364,7 @@ public class MenuFragment extends BaseFragment {
 
     private void loadMenuLeft(int ticketId) {
         showDialog();
-
+        startTimerTaskCheckBill();
 
         getListItemCategoryNoTicket(mConfigValueModel, ticketId, noTicketModel -> {
             // Update UI menu left
@@ -370,11 +382,40 @@ public class MenuFragment extends BaseFragment {
         showDialog();
         getListItemCategoryDetail(mConfigValueModel, false, categoryId, ticketId, categoryDetailModel -> {
             // Update UI menu right
-            mItemModels = categoryDetailModel.getItemCategoryDetails();
-            mItemAdapter.setItemModelList(mItemModels);
+            mItemCategoryDetails = categoryDetailModel.getItemCategoryDetails();
+            mItemAdapter.setItemModelList(mItemCategoryDetails);
 
             dismissDialog();
             Log.e(TAG, "==> menu right:: " + categoryDetailModel.toString());
         });
     }
+
+    private void checkBillTimer() {
+        checkStatusBill(mConfigValueModel, ticketId, isCheckBill -> {
+            VnyiUtils.LogException(TAG, "==> createTicketBill: " + isCheckBill);
+            if (!isCheckBill) {
+                createTicketBill();
+            }
+        });
+    }
+
+    private void startTimerTaskCheckBill() {
+        VnyiUtils.LogException(TAG, "==> Start startTimerTaskCheckBill");
+        try {
+            mTimerCheckBill = new Timer();
+            mTimerTaskCheckBill = new TimerTask() {
+                @Override
+                public void run() {
+                    mHandlerCheckBill.post(() -> checkBillTimer());
+                }
+            };
+            mTimerCheckBill.schedule(mTimerTaskCheckBill, 30 * 1000, 30 * 1000); // run every 2 min
+
+
+        } catch (Exception e) {
+            VnyiUtils.LogException(getContext(), "startTimerTaskCheckBill", TAG, e.getMessage());
+        }
+        VnyiUtils.LogException(TAG, "==>  End startTimerTaskCheckBill ");
+    }
+
 }

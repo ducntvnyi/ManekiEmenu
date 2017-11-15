@@ -47,6 +47,8 @@ public class DialogConfigFragment extends BaseDialogFragment {
     ImageView ivDismiss;
     @BindView(R.id.rlContent)
     LinearLayout rlContent;
+    @BindView(R.id.llConfigContainer)
+    LinearLayout llConfigContainer;
     @BindView(R.id.switchConfig)
     Switch switchConfig;
     @BindView(R.id.scrollViewConfig)
@@ -131,9 +133,11 @@ public class DialogConfigFragment extends BaseDialogFragment {
             if (checked) {
                 // update UI
                 // Load config valueLoad
-                scrollViewConfig.setVisibility(View.VISIBLE);
+                llConfigContainer.setVisibility(View.VISIBLE);
+//                scrollViewConfig.setVisibility(View.VISIBLE);
             } else {
-                scrollViewConfig.setVisibility(View.GONE);
+//                scrollViewConfig.setVisibility(View.GONE);
+                llConfigContainer.setVisibility(View.GONE);
             }
             KeyboardUtils.hideSoftKeyboard(getActivity());
         });

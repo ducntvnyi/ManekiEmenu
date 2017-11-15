@@ -1,0 +1,35 @@
+<resources>
+  <dimen name="margin_layout">
+    16.0dp
+  </dimen>
+  <dimen name="margin_content">
+    12.0dp
+  </dimen>
+  <dimen name="padding_layout">
+    10.0dp
+  </dimen>
+  <dimen name="padding_content">
+    8.0dp
+  </dimen>
+  <dimen name="padding_item">
+    4.0dp
+  </dimen>
+  <dimen name="margin_layout_default">
+    30.0dp
+  </dimen>
+  <dimen name="ic_next_width_default">
+    70.0dp
+  </dimen>
+  <dimen name="ic_next_width_height">
+    30.0dp
+  </dimen>
+  <dimen name="corners_button_default">
+    15.0dp
+  </dimen>
+  <dimen name="margin_payment">
+    50.0dp
+  </dimen>
+  <dimen name="height_default_item">
+    200.0dp
+  </dimen>
+</resources>

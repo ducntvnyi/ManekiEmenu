@@ -15,14 +15,14 @@
         android:paddingBottom="0dp"
         android:paddingLeft="@dimen/margin_layout_default"
         android:paddingRight="@dimen/margin_layout_default"
-        android:paddingTop="@dimen/margin_layout_default">
+        android:paddingTop="@dimen/padding_content">
 
         <RelativeLayout
             android:id="@+id/llMenuLeft"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_marginBottom="@dimen/margin_layout_default"
-            android:layout_marginTop="@dimen/margin_layout_default"
+            android:layout_marginBottom="@dimen/padding_content"
+            android:layout_marginTop="@dimen/padding_content"
             android:layout_weight="1"
             android:background="@drawable/bg_button_default"
             android:orientation="vertical"
@@ -33,15 +33,17 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:padding="@dimen/padding_content"
+                android:paddingEnd="@dimen/padding_content"
+                android:paddingStart="@dimen/padding_content"
                 android:text="@string/menu"
                 android:textColor="@color/white"
-                android:textSize="@dimen/font_size_tab_header"
+                android:textSize="@dimen/font_size_title"
                 app:font="@string/font_cour" />
 
             <View
                 style="@style/lineHorizontalStyle"
                 android:layout_below="@+id/tvMenu"
+                android:layout_marginTop="@dimen/padding_content"
                 android:background="@color/white" />
 
             <android.support.v7.widget.RecyclerView
@@ -52,10 +54,16 @@
                 android:layout_below="@+id/tvMenu"
                 android:layout_marginTop="@dimen/margin_layout" />
 
+            <View
+                style="@style/lineHorizontalStyle"
+                android:layout_below="@+id/rvMenu"
+                android:background="@color/white"
+                android:visibility="invisible" />
+
             <ImageView
                 android:id="@+id/ivDown"
-                android:layout_width="@dimen/ic_next_width_default"
-                android:layout_height="@dimen/ic_next_width_default"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/ic_next_width_height"
                 android:layout_alignParentBottom="true"
                 android:layout_centerHorizontal="true"
                 android:padding="@dimen/padding_layout"
@@ -91,8 +99,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true"
-        android:layout_marginBottom="@dimen/margin_layout_default"
-        android:layout_marginStart="@dimen/margin_layout_default"
+
+        android:layout_marginStart="@dimen/padding_layout"
         android:background="@drawable/bg_config_home"
         android:padding="@dimen/padding_content"
         android:src="@mipmap/bg_maneki" />
@@ -103,7 +111,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginBottom="@dimen/margin_layout_default"
+        android:layout_marginBottom="@dimen/padding_layout"
         android:layout_marginEnd="@dimen/margin_layout_default"
         android:background="@mipmap/bg_btn_red"
         android:gravity="center"
@@ -122,7 +130,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="@dimen/activity_horizontal_margin"
         android:text="abc"
-        android:textColor="@color/holo_red"
-        android:textSize="35dp" />
+        android:textColor="@color/white"
+        android:textSize="25dp" />
 
 </RelativeLayout>

@@ -3,17 +3,17 @@
     android:id="@+id/rootView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_marginEnd="@dimen/margin_payment"
+    android:layout_marginStart="@dimen/margin_payment"
     android:orientation="vertical">
 
     <LinearLayout
         android:id="@+id/llHeaderTable"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginRight="@dimen/margin_payment"
-        android:layout_marginStart="@dimen/margin_payment"
         android:orientation="horizontal"
-        android:paddingBottom="@dimen/padding_layout"
-        android:paddingTop="@dimen/padding_layout">
+        android:paddingBottom="@dimen/padding_content"
+        android:paddingTop="@dimen/padding_content">
 
         <com.vnyi.emenu.maneki.customviews.TextViewFont
             android:layout_width="0dp"
@@ -23,7 +23,7 @@
             android:text="@string/table"
             android:textAllCaps="true"
             android:textColor="@color/white"
-            android:textSize="@dimen/font_size_content" />
+            android:textSize="@dimen/font_size_title" />
 
         <com.vnyi.emenu.maneki.customviews.TextViewFont
             android:id="@+id/tvTableName"
@@ -33,7 +33,7 @@
             android:text="D1"
             android:textAllCaps="true"
             android:textColor="@color/white"
-            android:textSize="@dimen/font_size_content" />
+            android:textSize="@dimen/font_size_title" />
 
         <com.vnyi.emenu.maneki.customviews.TextViewFont
             android:layout_width="0dp"
@@ -41,7 +41,7 @@
             android:layout_weight="1"
 
             android:textColor="@color/white"
-            android:textSize="@dimen/font_size_content" />
+            android:textSize="@dimen/font_size_title" />
 
         <com.vnyi.emenu.maneki.customviews.TextViewFont
             android:layout_width="0dp"
@@ -51,15 +51,14 @@
             android:text="@string/vnd"
             android:textAllCaps="true"
             android:textColor="@color/white"
-            android:textSize="@dimen/font_size_content" />
+            android:textSize="@dimen/font_size_title" />
     </LinearLayout>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_below="@+id/llHeaderTable"
-        android:layout_marginRight="@dimen/margin_payment"
-        android:layout_marginStart="@dimen/margin_payment"
+
         android:background="@color/white" />
 
     <android.support.v7.widget.RecyclerView
@@ -68,17 +67,13 @@
         android:layout_height="match_parent"
         android:layout_above="@+id/PriceTotal"
         android:layout_below="@+id/llHeaderTable"
-        android:layout_marginStart="@dimen/margin_layout_default"
-        android:layout_marginTop="@dimen/padding_layout"
-        android:paddingRight="@dimen/margin_layout_default" />
+        android:layout_marginTop="@dimen/padding_layout" />
 
     <LinearLayout
         android:id="@+id/PriceTotal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@+id/llAction"
-        android:layout_marginEnd="@dimen/margin_payment"
-        android:layout_marginStart="@dimen/margin_payment"
         android:background="@color/color_transparent"
         android:orientation="vertical">
 
@@ -86,25 +81,19 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:padding="@dimen/padding_layout">
+            android:paddingBottom="@dimen/padding_item"
+            android:paddingTop="@dimen/padding_item">
 
             <com.vnyi.emenu.maneki.customviews.TextViewFont
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="SO TIEN: "
-                android:textColor="@color/white"
-                android:textSize="@dimen/font_size_content" />
+                style="@style/tvMoneyTotalStyle"
+                android:text="@string/money_amount"
+                android:textAllCaps="true" />
 
             <com.vnyi.emenu.maneki.customviews.TextViewFont
                 android:id="@+id/tvTotalMoney"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
+                style="@style/tvMoneyTotalStyle"
                 android:gravity="right"
-                android:text="0 VND"
-                android:textColor="@color/white"
-                android:textSize="@dimen/font_size_content" />
+                android:text="0 VND" />
         </LinearLayout>
 
         <View
@@ -116,25 +105,18 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:padding="@dimen/padding_layout">
+            android:paddingBottom="@dimen/padding_item"
+            android:paddingTop="@dimen/padding_item">
 
             <com.vnyi.emenu.maneki.customviews.TextViewFont
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="GIAM GIA: "
-                android:textColor="@color/white"
-                android:textSize="@dimen/font_size_content" />
+                style="@style/tvMoneyTotalStyle"
+                android:text="@string/discount" />
 
             <com.vnyi.emenu.maneki.customviews.TextViewFont
                 android:id="@+id/tvSaleOffPrice"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
+                style="@style/tvMoneyTotalStyle"
                 android:gravity="right"
-                android:text="0 VND"
-                android:textColor="@color/white"
-                android:textSize="@dimen/font_size_content" />
+                android:text="0 VND" />
         </LinearLayout>
 
         <View
@@ -146,25 +128,18 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:padding="@dimen/padding_layout">
+            android:paddingBottom="@dimen/padding_content"
+            android:paddingTop="@dimen/padding_item">
 
             <com.vnyi.emenu.maneki.customviews.TextViewFont
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="VAT "
-                android:textColor="@color/white"
-                android:textSize="@dimen/font_size_content" />
+                style="@style/tvMoneyTotalStyle"
+                android:text="VAT" />
 
             <com.vnyi.emenu.maneki.customviews.TextViewFont
                 android:id="@+id/tvVAT"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
+                style="@style/tvMoneyTotalStyle"
                 android:gravity="right"
-                android:text="0 VND"
-                android:textColor="@color/white"
-                android:textSize="@dimen/font_size_content" />
+                android:text="0 VND" />
         </LinearLayout>
 
         <View
@@ -176,26 +151,19 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:padding="@dimen/padding_layout">
+            android:paddingBottom="@dimen/padding_item"
+            android:paddingTop="@dimen/padding_item">
 
             <com.vnyi.emenu.maneki.customviews.TextViewFont
 
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="TONG CONG: "
-                android:textColor="@color/white"
-                android:textSize="@dimen/font_size_content" />
+                style="@style/tvMoneyTotalStyle"
+                android:text="@string/total_amount" />
 
             <com.vnyi.emenu.maneki.customviews.TextViewFont
                 android:id="@+id/tvTotalPayment"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
+                style="@style/tvMoneyTotalStyle"
                 android:gravity="right"
-                android:text="0 VND"
-                android:textColor="@color/white"
-                android:textSize="@dimen/font_size_content" />
+                android:text="0 VND" />
         </LinearLayout>
 
         <View
@@ -210,47 +178,45 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginEnd="@dimen/margin_payment"
-        android:layout_marginStart="@dimen/margin_payment"
+        android:layout_marginBottom="@dimen/margin_layout"
+        android:layout_marginTop="@dimen/padding_content"
         android:orientation="horizontal">
 
         <Button
             android:id="@+id/btnOrder"
             android:layout_width="0dp"
-            android:layout_height="50dp"
-            android:layout_marginBottom="@dimen/margin_layout_default"
-            android:layout_marginTop="@dimen/margin_layout"
+            android:layout_height="40dp"
             android:layout_weight="1"
             android:background="@drawable/bg_btn_selector"
             android:text="@string/order"
             android:textColor="@color/white"
-            android:textSize="@dimen/font_size_tab_header" />
+            android:textSize="@dimen/font_size_content" />
 
         <Button
             android:id="@+id/btnAddItem"
             android:layout_width="0dp"
-            android:layout_height="50dp"
-            android:layout_marginBottom="@dimen/margin_layout_default"
+            android:layout_height="40dp"
+
             android:layout_marginStart="@dimen/margin_layout_default"
-            android:layout_marginTop="@dimen/margin_layout"
+
             android:layout_weight="1"
             android:background="@drawable/bg_btn_selector"
             android:text="@string/add_item"
             android:textColor="@color/white"
-            android:textSize="@dimen/font_size_tab_header" />
+            android:textSize="@dimen/font_size_content" />
 
         <Button
             android:id="@+id/btnCancelOrder"
             android:layout_width="0dp"
-            android:layout_height="50dp"
-            android:layout_marginBottom="@dimen/margin_layout_default"
+            android:layout_height="40dp"
+
             android:layout_marginStart="@dimen/margin_layout_default"
-            android:layout_marginTop="@dimen/margin_layout"
+
             android:layout_weight="1"
             android:background="@drawable/bg_btn_selector"
             android:text="@string/cancel_order"
             android:textColor="@color/white"
-            android:textSize="@dimen/font_size_tab_header" />
+            android:textSize="@dimen/font_size_content" />
     </LinearLayout>
 
     <TextView
@@ -259,6 +225,6 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:textColor="@color/white"
-        android:textSize="30dp" />
+        android:textColor="@color/color_red"
+        android:textSize="20dp" />
 </RelativeLayout>

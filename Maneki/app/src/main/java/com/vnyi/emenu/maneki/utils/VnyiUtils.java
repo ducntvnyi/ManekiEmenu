@@ -159,6 +159,7 @@ public class VnyiUtils {
             int langId = 1;
             String machineName = Device.getDeviceName();
             String machineID = Device.getMachineId(context);
+            String versionAndroid = "";
 
             if (!NetworkUtils.isNetworkAvailable(context)) return;
 

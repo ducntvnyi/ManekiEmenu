@@ -656,7 +656,7 @@ public class VnyiServices {
      * @param langId
      * @param soapListener
      */
-    public static void requestTicketCancelItem(String url_config, int orderDetailId, boolean userId, int langId, SoapListenerVyni soapListener) {
+    public static void requestTicketCancelItem(String url_config, int orderDetailId, int userId, int langId, SoapListenerVyni soapListener) {
 
         try {
             String url = url_config + URL;

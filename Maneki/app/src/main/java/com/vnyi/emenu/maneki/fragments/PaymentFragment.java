@@ -50,7 +50,7 @@ public class PaymentFragment extends BaseFragment {
     @BindView(R.id.tvTotalPayment)
     TextViewFont tvTotalPayment;
 
-
+    private String tableName;
     private ConfigValueModel mConfigValueModel;
     private int ticketId;
     private List<TicketPayment> ticketPayments;
@@ -72,6 +72,9 @@ public class PaymentFragment extends BaseFragment {
     @Override
     public void initViews() {
         // init menu adapter
+        tableName = VnyiPreference.getInstance(getContext()).getString(Constant.KEY_TABLE_NAME);
+        tvTableName.setText(tableName);
+
         ticketPayments = new ArrayList<>();
         paymentItemAdapter = new PaymentItemAdapter(mContext, true, ticketPayments);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
@@ -109,7 +112,8 @@ public class PaymentFragment extends BaseFragment {
     private void requestPayment() {
         requestTicketProcessingPayment(mConfigValueModel, ticketId, payment -> {
             if (payment) {
-                mActivity.changeTab(Constant.INDEX_MENU);
+//                mActivity.changeTab(Constant.INDEX_MENU);
+                ToastUtils.showToast(mContext, "Payment successfully!!");
             } else {
                 ToastUtils.showToast(mContext, "Payment failed!!");
             }

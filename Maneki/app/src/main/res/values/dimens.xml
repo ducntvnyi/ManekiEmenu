@@ -4,9 +4,12 @@
     <dimen name="margin_content">12dp</dimen>
     <dimen name="padding_layout">10dp</dimen>
     <dimen name="padding_content">8dp</dimen>
+    <dimen name="padding_item">4dp</dimen>
     <dimen name="margin_layout_default">30dp</dimen>
     <dimen name="ic_next_width_default">70dp</dimen>
+    <dimen name="ic_next_width_height">30dp</dimen>
     <dimen name="corners_button_default">15dp</dimen>
     <dimen name="margin_payment">50dp</dimen>
+    <dimen name="height_default_item">200dp</dimen>
 
 </resources>

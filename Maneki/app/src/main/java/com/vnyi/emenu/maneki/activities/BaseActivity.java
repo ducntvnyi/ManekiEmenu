@@ -7,6 +7,7 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.PersistableBundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -21,6 +22,8 @@ import com.qslib.permission.PermissionUtils;
 import com.qslib.soap.SoapListenerVyni;
 import com.qslib.soap.SoapResponse;
 import com.qslib.util.ProgressDialogUtils;
+import com.qslib.util.ToastUtils;
+import com.vnyi.emenu.maneki.R;
 import com.vnyi.emenu.maneki.applications.VnyiPreference;
 import com.vnyi.emenu.maneki.models.BranchModel;
 import com.vnyi.emenu.maneki.models.ConfigValueModel;
@@ -71,14 +74,14 @@ public abstract class BaseActivity extends FragmentActivity {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState, @Nullable PersistableBundle persistentState) {
         super.onCreate(savedInstanceState, persistentState);
-        initFragmentDefault();
+
     }
 
     public void showProgressDialog() {
         try {
             // dismiss dialog
             this.progressDialog = new ProgressDialogUtils();
-            this.progressDialog.show(this);
+            this.progressDialog.show(BaseActivity.this);
         } catch (Exception ex) {
             Logger.e(TAG, ex);
         }
@@ -101,7 +104,10 @@ public abstract class BaseActivity extends FragmentActivity {
         VnyiUtils.LogException(TAG, "==> permissionApp");
         try {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                        || ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                        || ContextCompat.checkSelfPermission(this, Manifest.permission.BODY_SENSORS) != PackageManager.PERMISSION_GRANTED
+                        || ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
                     requestPermission(this);
                     return;
                 }
@@ -114,10 +120,27 @@ public abstract class BaseActivity extends FragmentActivity {
 
     public static boolean requestPermission(Activity activity) {
         String[] perms = {android.Manifest.permission.INTERNET,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE};
+                android.Manifest.permission.ACCESS_COARSE_LOCATION,
+                android.Manifest.permission.ACCESS_FINE_LOCATION,
+                android.Manifest.permission.BODY_SENSORS,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE
+        };
         return PermissionUtils.requestPermission(activity, REQUEST_CODE_PERMISSION, perms);
     }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode) {
+            case REQUEST_CODE_PERMISSION: {
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    initFragmentDefault();
+                } else {
+                    ToastUtils.showToast(getApplicationContext(), getString(R.string.failed_grant_permisson));
+                }
+            }
+        }
+    }
 
     protected void saveConfigValueLoad(JSONObject configValueObject, boolean isConfirm) {
         try {
@@ -376,13 +399,13 @@ public abstract class BaseActivity extends FragmentActivity {
 
             @Override
             public void onStarted() {
-                showProgressDialog();
+//                showProgressDialog();
                 VnyiUtils.LogException(TAG, "==> loadTables onStarted ");
             }
 
             @Override
             public void onSuccess(SoapResponse soapResponse) {
-                hideProgressDialog();
+//                hideProgressDialog();
                 VnyiUtils.LogException(TAG, "==> loadTables onSuccess ");
                 if (soapResponse == null) return;
 
@@ -405,13 +428,13 @@ public abstract class BaseActivity extends FragmentActivity {
 
             @Override
             public void onFail(Exception ex) {
-                hideProgressDialog();
+//                hideProgressDialog();
                 VnyiUtils.LogException(TAG, "==> loadTables onFail " + ex.getMessage());
             }
 
             @Override
             public void onFinished() {
-                hideProgressDialog();
+//                hideProgressDialog();
                 VnyiUtils.LogException(TAG, "==> loadBloadTablesranch onFinished ");
             }
         });

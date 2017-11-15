@@ -80,9 +80,24 @@ public class OrderFragment extends BaseFragment {
     private String tableName;
 
     public static Fragment newInstance() {
-        Fragment fragment = new OrderFragment();
-        return fragment;
+        return new OrderFragment();
     }
+
+    private void cancelItem(TicketItemOrder1 itemReduce) {
+
+        requestTicketCancelItem(mConfigValueModel, ticketId, aBoolean -> {
+            mTicketItemOrderMoney.setItemAmount(mTicketItemOrderMoney.getItemAmount() - itemReduce.getItemAmount());
+            mTicketItemOrderMoney.setTotalAmount(mTicketItemOrderMoney.getTotalAmount() - itemReduce.getItemAmount());
+            tvTotalMoney.setText("" + mTicketItemOrderMoney.getItemAmount() + " VND");
+            tvTotalPayment.setText("" + mTicketItemOrderMoney.getTotalAmount() + " VND");
+
+            mOrderItemModels.remove(itemReduce);
+            mOrderAdapter.notifyDataSetChanged();
+        });
+
+
+    }
+
 
     @Override
     public int getFragmentLayoutId() {
@@ -91,19 +106,22 @@ public class OrderFragment extends BaseFragment {
 
     @Override
     public void initViews() {
+        debounce();
         // init menu adapter
         tableName = VnyiPreference.getInstance(getContext()).getString(Constant.KEY_TABLE_NAME);
         tvTableName.setText(tableName);
         mOrderItemModels = new ArrayList<>();
 
         mOrderAdapter = new OrderAdapter(mContext, false, mOrderItemModels, orderItemModel -> {
-
-
+            //TODO onClick
         }, itemAdd -> {
             ++itemCounter;
             tvCart.setText("" + itemCounter + "");
             mTicketItemOrderMoney.setItemAmount(mTicketItemOrderMoney.getItemAmount() + itemAdd.getItemAmount());
+            mTicketItemOrderMoney.setTotalAmount(mTicketItemOrderMoney.getTotalAmount() + itemAdd.getItemAmount());
             tvTotalMoney.setText("" + mTicketItemOrderMoney.getItemAmount() + " VND");
+            tvTotalPayment.setText("" + mTicketItemOrderMoney.getTotalAmount() + " VND");
+
             if (mItemOrderList.size() > 0) {
                 boolean isPresent = StreamSupport.stream(mItemOrderList).filter(item -> item.getItemId() == itemAdd.getItemId()).findFirst().isPresent();
                 if (isPresent) {
@@ -116,15 +134,25 @@ public class OrderFragment extends BaseFragment {
             }
 
         }, itemReduce -> {
-            --itemCounter;
-            tvCart.setText("" + itemCounter + "");
-            mTicketItemOrderMoney.setItemAmount(mTicketItemOrderMoney.getItemAmount() - itemReduce.getItemAmount());
-            tvTotalMoney.setText("" + mTicketItemOrderMoney.getItemAmount() + " VND");
-            if (itemReduce.getItemQuantity() == 0) {
 
-                DialogConfirmOrderFragment.newInstance().show(getFragmentManager(), "");
+            if (itemReduce.getItemQuantity() == 0) {
+                DialogRemoveItemFragment.newInstance().setConsumer(removeItem -> {
+                    if (removeItem) {
+                        cancelItem(itemReduce);
+                    } else {
+                        StreamSupport.stream(mOrderItemModels).filter(item -> item.getItemId() == itemReduce.getItemId()).findFirst().get().setItemQuantity(1);
+                        StreamSupport.stream(mOrderItemModels).filter(item -> item.getItemId() == itemReduce.getItemId()).findFirst().get().setItemAmount(itemReduce.getItemAmount());
+                        mOrderAdapter.notifyDataSetChanged();
+                    }
+                }).show(getFragmentManager(), "");
 
             } else {
+                --itemCounter;
+                tvCart.setText("" + itemCounter + "");
+                mTicketItemOrderMoney.setItemAmount(mTicketItemOrderMoney.getItemAmount() - itemReduce.getItemAmount());
+                mTicketItemOrderMoney.setTotalAmount(mTicketItemOrderMoney.getTotalAmount() - itemReduce.getItemAmount());
+                tvTotalMoney.setText("" + mTicketItemOrderMoney.getItemAmount() + " VND");
+                tvTotalPayment.setText("" + mTicketItemOrderMoney.getTotalAmount() + " VND");
                 if (mItemOrderList.size() > 0) {
                     boolean isPresent = StreamSupport.stream(mItemOrderList).filter(item -> item.getItemId() == itemReduce.getItemId()).findFirst().isPresent();
                     if (isPresent) {
@@ -141,8 +169,11 @@ public class OrderFragment extends BaseFragment {
         rvItemOrder.setAdapter(mOrderAdapter);
         rvItemOrder.setLayoutManager(layoutManager);
 
+    }
+
+    private void debounce() {
         RxTextView.textChanges(tvCart)
-                .debounce(5, TimeUnit.SECONDS, AndroidSchedulers.mainThread())
+                .debounce(3, TimeUnit.SECONDS, AndroidSchedulers.mainThread())
                 .observeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<CharSequence>() {
@@ -166,7 +197,6 @@ public class OrderFragment extends BaseFragment {
 
                     }
                 });
-
     }
 
     @Override
@@ -237,13 +267,16 @@ public class OrderFragment extends BaseFragment {
     private void updateOrder(List<TicketItemOrder1> itemOrderList, ConfigValueModel configValueModel, int ticketId) {
         for (TicketItemOrder1 order1 : itemOrderList) {
             ItemCategoryDetail itemCategoryDetail = new ItemCategoryDetail();
+
             itemCategoryDetail.setItemId(order1.getItemId());
             itemCategoryDetail.setUomId(order1.getUomId());
             itemCategoryDetail.setItemPrice(order1.getItemPrice());
             itemCategoryDetail.setItemDiscountPer((int) order1.getItemDiscountPer());
+            itemCategoryDetail.setOrderDetailId(order1.getOrderDetailId());
 
-            requestPostTicketUpdateItem(configValueModel, ticketId, (order1.getItemQuantity() + 1), itemCategoryDetail, ticketUpdateInfo -> {
-
+            requestPostTicketUpdateItem(configValueModel, ticketId, (order1.getItemQuantity()), itemCategoryDetail, ticketUpdateInfo -> {
+                StreamSupport.stream(itemOrderList).forEach(item -> item.setOrderDetailId(item.getItemId() == ticketUpdateInfo.getItemId() ?
+                        ticketUpdateInfo.getOrderDetailId() + "" : item.getOrderDetailId()));
             });
         }
     }

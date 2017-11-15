@@ -71,20 +71,24 @@
 
             <com.vnyi.emenu.maneki.customviews.TextViewFont
                 style="@style/tvTitleStyle"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:gravity="center"
                 android:padding="0dp"
                 android:text="@string/english"
                 android:textColor="@color/white"
+                android:textSize="@dimen/font_size_description"
                 app:font="Redsun  Vietnam Italic" />
 
             <com.vnyi.emenu.maneki.customviews.TextViewFont
                 style="@style/tvTitleStyle"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:gravity="center"
                 android:padding="0dp"
                 android:text="@string/vietnamese"
                 android:textColor="@color/white"
+                android:textSize="@dimen/font_size_description"
                 app:font="Redsun  Vietnam Italic" />
         </LinearLayout>
     </LinearLayout>

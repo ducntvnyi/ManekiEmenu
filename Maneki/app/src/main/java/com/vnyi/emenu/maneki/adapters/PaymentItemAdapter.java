@@ -105,6 +105,7 @@ public class PaymentItemAdapter extends BaseRecycleAdapter<TicketPayment, Paymen
                         .load(VnyiApiServices.URL_CONFIG + itemModel.getItemImageUrl())
                         .fitCenter()
                         .centerCrop()
+                        .error(R.mipmap.ic_app_default)
                         .into(ivItem);
             } catch (Exception e) {
                 VnyiUtils.LogException(TAG, e);
