@@ -3,6 +3,7 @@ package com.vnyi.emenu.maneki.fragments;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
@@ -51,7 +52,6 @@ public class PaymentFragment extends BaseFragment {
     @BindView(R.id.tvTotalPayment)
     TextViewFont tvTotalPayment;
 
-    private String tableName;
     private ConfigValueModel mConfigValueModel;
     private int ticketId;
     private List<TicketPayment> ticketPayments;
@@ -61,8 +61,7 @@ public class PaymentFragment extends BaseFragment {
     private TicketPaymentMoney mTicketItemOrderMoney;
 
     public static Fragment newInstance() {
-        Fragment fragment = new PaymentFragment();
-        return fragment;
+        return new PaymentFragment();
     }
 
     @Override
@@ -72,11 +71,7 @@ public class PaymentFragment extends BaseFragment {
 
     @Override
     public void initViews() {
-        // init menu adapter
         try {
-            tableName = VnyiPreference.getInstance(getContext()).getString(Constant.KEY_TABLE_NAME);
-            tvTableName.setText(tableName);
-
             ticketPayments = new ArrayList<>();
             paymentItemAdapter = new PaymentItemAdapter(mContext, true, ticketPayments);
             LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
@@ -94,9 +89,24 @@ public class PaymentFragment extends BaseFragment {
             mConfigValueModel = VnyiPreference.getInstance(getContext()).getObject(Constant.KEY_CONFIG_VALUE, ConfigValueModel.class);
             ticketId = VnyiPreference.getInstance(getContext()).getInt(Constant.KEY_TICKET_ID);
 
+            loadTableName();
+
             requestLoadInfoTicketPayment(mConfigValueModel, ticketId, this::updateUI);
         } catch (Exception e) {
             VnyiUtils.LogException(getContext(), " initData", TAG, e.getMessage());
+        }
+    }
+
+    private void loadTableName() {
+        try {
+            String tableName = VnyiPreference.getInstance(getContext()).getString(Constant.KEY_TABLE_NAME);
+            if (TextUtils.isEmpty(tableName)) {
+                int tableId = Integer.parseInt(mConfigValueModel.getTableName().getConfigValue());
+                tableName = getTableName(tableId);
+            }
+            tvTableName.setText(tableName);
+        } catch (NumberFormatException e) {
+            VnyiUtils.LogException(mContext, "loadTableName", TAG, e.getMessage());
         }
     }
 

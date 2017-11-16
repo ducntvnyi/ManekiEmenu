@@ -7,7 +7,7 @@
     android:orientation="vertical">
 
     <LinearLayout
-        android:layout_width="450dp"
+        android:layout_width="@dimen/width_dialog_default"
         android:layout_height="wrap_content"
         android:background="@color/white"
         android:gravity="center_horizontal"
@@ -35,7 +35,7 @@
 
         <com.vnyi.emenu.maneki.customviews.TextViewFont
             android:id="@+id/tvCodeOrder"
-            android:layout_width="250dp"
+            android:layout_width="@dimen/width_code_order"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/padding_layout"
             android:background="@color/color_app"
@@ -48,8 +48,8 @@
 
         <EditText
             android:id="@+id/edtCodeOrder"
-            android:layout_width="250dp"
-            android:layout_height="50dp"
+            android:layout_width="@dimen/width_code_order"
+            android:layout_height="@dimen/btn_height_default"
             android:layout_marginBottom="@dimen/margin_layout_default"
             android:layout_marginTop="@dimen/padding_content"
             android:background="@color/color_gray"
@@ -63,7 +63,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/btn_height_default"
             android:orientation="horizontal">
 
             <Button

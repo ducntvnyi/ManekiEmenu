@@ -418,7 +418,7 @@ public class DialogConfigFragment extends BaseDialogFragment {
                 // update config so luong hien thi theo cot tren giao dien
                 updateConfirm(configValueModel.getLinkServer(), configValueModel.getNumbTableShow().getConfigCode(), configValueModel.getNumbTableShow().getConfigValue());
             } catch (Exception e) {
-                VnyiUtils.LogException(getContext(), "onClickBranch", TAG, e.getMessage());
+                VnyiUtils.LogException(getContext(), "ConfirmConfigTask", TAG, e.getMessage());
             }
 
             return true;

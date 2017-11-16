@@ -7,8 +7,8 @@
 
     <ImageView
         android:id="@+id/ivItem"
-        android:layout_width="70dp"
-        android:layout_height="70dp"
+        android:layout_width="@dimen/ic_next_width_default"
+        android:layout_height="@dimen/ic_next_width_default"
         android:src="@mipmap/ic_app_default" />
 
     <com.vnyi.emenu.maneki.customviews.TextViewFont
@@ -33,7 +33,7 @@
 
     <com.vnyi.emenu.maneki.customviews.TextViewFont
         android:id="@+id/tvQuantity"
-        android:layout_width="70dp"
+        android:layout_width="@dimen/ic_next_width_default"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/padding_content"
         android:background="@color/color_app"
@@ -55,7 +55,7 @@
 
         <com.vnyi.emenu.maneki.customviews.TextViewFont
             android:id="@+id/tvAddQuantity"
-            android:layout_width="70dp"
+            android:layout_width="@dimen/ic_next_width_default"
             android:layout_height="wrap_content"
             android:background="@drawable/bg_btn_selector"
             android:gravity="center"
@@ -67,7 +67,7 @@
 
         <com.vnyi.emenu.maneki.customviews.TextViewFont
             android:id="@+id/tvReduceQuantity"
-            android:layout_width="70dp"
+            android:layout_width="@dimen/ic_next_width_default"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/padding_content"
             android:background="@drawable/bg_btn_selector"

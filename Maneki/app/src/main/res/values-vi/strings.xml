@@ -55,5 +55,9 @@
     <string name="discount">Giảm giá:</string>
     <string name="total_amount">Tổng cộng:</string>
     <string name="confirm_remove_item">Bạn có chắc chắn muốn xoá món này</string>
+    <string name="order_item_successfully">Đặt món thành công!</string>
+    <string name="order_item_failed">Đặt món chưa thành công!</string>
+    <string name="cancel_order_failed">Huỷ món không thành công!</string>
+    <string name="Confirm_code_order_wrong">Mã bạn nhập không đúng, hãy nhập lại mã!</string>
 
 </resources>

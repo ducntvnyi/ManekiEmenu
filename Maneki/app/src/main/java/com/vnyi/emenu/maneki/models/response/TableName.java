@@ -12,6 +12,7 @@ public class TableName {
     @JsonProperty("TableName")
     private String tableName;
 
+
     public int getTableId() {
         return tableId;
     }

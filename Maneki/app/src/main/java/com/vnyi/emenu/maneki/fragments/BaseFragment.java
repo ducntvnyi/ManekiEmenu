@@ -30,6 +30,7 @@ import com.vnyi.emenu.maneki.models.TicketPaymentModel;
 import com.vnyi.emenu.maneki.models.UpdateTicketItemModel;
 import com.vnyi.emenu.maneki.models.response.ItemCategoryDetail;
 import com.vnyi.emenu.maneki.models.response.ItemCategoryNoListNote;
+import com.vnyi.emenu.maneki.models.response.TableName;
 import com.vnyi.emenu.maneki.models.response.TicketItemOrder1;
 import com.vnyi.emenu.maneki.models.response.TicketItemOrderMoney;
 import com.vnyi.emenu.maneki.models.response.TicketLoadInfo;
@@ -39,6 +40,7 @@ import com.vnyi.emenu.maneki.models.response.TicketUpdateInfo;
 import com.vnyi.emenu.maneki.models.response.TicketUpdateItem;
 import com.vnyi.emenu.maneki.services.VnyiApiServices;
 import com.vnyi.emenu.maneki.services.VnyiServices;
+import com.vnyi.emenu.maneki.utils.Constant;
 import com.vnyi.emenu.maneki.utils.VnyiUtils;
 
 import org.json.JSONException;
@@ -62,7 +64,7 @@ public abstract class BaseFragment extends Fragment {
     protected ProgressDialogUtils progressDialog = null;
     protected MainActivity mActivity;
     protected Context mContext;
-
+    protected String tableName = "";
     @Nullable
     @BindView(R.id.rootView)
     View rootView;
@@ -113,6 +115,7 @@ public abstract class BaseFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         initData();
+
     }
 
     /**
@@ -916,7 +919,6 @@ public abstract class BaseFragment extends Fragment {
     }
 
     /**
-     *
      * payment or
      *
      * @param configValueModel
@@ -1037,6 +1039,75 @@ public abstract class BaseFragment extends Fragment {
         }
         VnyiUtils.LogException(TAG, "--------------end requestTicketCancelItem------------");
     }
+
+
+
+
+    protected String getTableName(int tableId) {
+        try {
+            if (!NetworkUtils.isNetworkAvailable(getContext())) return tableName;
+            String url = VnyiServices.URL_CONFIG;
+
+            ConfigValueModel configValueModel = VnyiPreference.getInstance(getContext()).getObject(Constant.KEY_CONFIG_VALUE, ConfigValueModel.class);
+
+            if (configValueModel != null && !configValueModel.getLinkServer().equals(""))
+                url = configValueModel.getLinkServer();
+
+            VnyiServices.requestConfigValueTableNameById(url, tableId, new SoapListenerVyni() {
+
+                @Override
+                public void onStarted() {
+                    VnyiUtils.LogException(TAG, "==> getTableName onStarted ");
+                    showDialog();
+                }
+
+                @Override
+                public void onSuccess(SoapResponse soapResponse) {
+                    dismissDialog();
+                    VnyiUtils.LogException(TAG, "==> getTableName onSuccess ");
+                    if (soapResponse == null) return;
+
+                    if (soapResponse.getStatus().toLowerCase().equals("true")) {
+                        if (soapResponse.getResult() != null) {
+                            VnyiUtils.LogException(TAG, "==> getTableName onSuccess:: " + soapResponse.toString());
+                            try {
+                                JSONObject configValueObject = new JSONObject(soapResponse.getResult());
+
+                                List<TableName> tableNames = JacksonUtils.convertJsonToObject(configValueObject.getString(VnyiApiServices.TABLE), new TypeReference<List<TableName>>() {
+                                });
+
+                                if (tableNames != null || tableNames.size() > 0) {
+                                    tableName = tableNames.get(0).getTableName();
+                                    VnyiPreference.getInstance(getContext()).putString(Constant.KEY_TABLE_NAME, tableName);
+
+                                }
+                            } catch (JSONException e) {
+                                VnyiUtils.LogException(TAG, "==> jsonObject passed error:  " + e.getMessage());
+                            }
+
+                        }
+                    }
+
+                }
+
+                @Override
+                public void onFail(Exception ex) {
+                    dismissDialog();
+                    VnyiUtils.LogException(TAG, "==> getTableName onFail " + ex.getMessage());
+                }
+
+                @Override
+                public void onFinished() {
+                    dismissDialog();
+                    VnyiUtils.LogException(TAG, "==> getTableName onFinished ");
+                }
+            });
+        } catch (Exception e) {
+            VnyiUtils.LogException(getContext(), " getTableName", TAG, e.getMessage());
+        }
+        return tableName;
+    }
+
 
 }
 

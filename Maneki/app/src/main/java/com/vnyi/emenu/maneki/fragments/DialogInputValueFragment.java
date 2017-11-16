@@ -36,8 +36,7 @@ public class DialogInputValueFragment extends BaseMainDialogFragment {
     EditTextFont edtValueInt;
 
     public static DialogInputValueFragment newInstance() {
-        DialogInputValueFragment fragment = new DialogInputValueFragment();
-        return fragment;
+        return new DialogInputValueFragment();
 
     }
 

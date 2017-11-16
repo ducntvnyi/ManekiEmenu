@@ -84,6 +84,7 @@ public class DialogCallWaiterFragment extends BaseMainDialogFragment {
             LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
             rvGetList.setAdapter(mGetListAdapter);
             rvGetList.setLayoutManager(layoutManager);
+
         } catch (Exception e) {
             VnyiUtils.LogException(getContext(), "initViews", TAG, e.getMessage());
         }
@@ -100,9 +101,12 @@ public class DialogCallWaiterFragment extends BaseMainDialogFragment {
             String requestDetail = StreamSupport.stream(requestGetLists).map(RequestGetList::getRequestNote).collect(Collectors.joining(", "));
 
             Log.e(TAG, "==> requestDetail:: " + requestDetail);
+
             int ticketId = VnyiPreference.getInstance(getContext()).getInt(Constant.KEY_TICKET_ID);
             if (TextUtils.isEmpty(requestDetail)) return;
+
             requestTicketSendItemWaiter(mConfigValueModel, ticketId, requestDetail);
+
         } catch (Exception e) {
             VnyiUtils.LogException(getContext(), "initViews", TAG, e.getMessage());
         }

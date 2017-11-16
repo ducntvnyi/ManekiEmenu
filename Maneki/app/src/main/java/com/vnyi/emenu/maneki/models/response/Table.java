@@ -14,6 +14,8 @@ public class Table {
     @JsonProperty("RET_DEFINEID")
     private String retDefineId;
 
+    private boolean isSelected;
+
     public int getRetAutoId() {
         return retAutoId;
     }
@@ -30,11 +32,20 @@ public class Table {
         this.retDefineId = retDefineId;
     }
 
+    public boolean isSelected() {
+        return isSelected;
+    }
+
+    public void setSelected(boolean selected) {
+        isSelected = selected;
+    }
+
     @Override
     public String toString() {
         return "Table{" +
                 "retAutoId=" + retAutoId +
                 ", retDefineId='" + retDefineId + '\'' +
+                ", isSelected=" + isSelected +
                 '}';
     }
 }

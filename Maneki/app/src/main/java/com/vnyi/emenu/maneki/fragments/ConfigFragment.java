@@ -45,12 +45,10 @@ public class ConfigFragment extends BaseFragment {
     void onClickConfigHome() {
         // check config: true => go to.. : false: go to configScreen
         try {
-            DialogConfigFragment.newInstance()
-                    .setConsumerConfigValue(isConfigValue -> {
-                        Log.e(TAG, "==> onClickConfigHome:: " + isConfigValue);
-                        mActivity.loadConfigValue();
-                    })
-                    .show(getFragmentManager(), "");
+            DialogConfigFragment.newInstance().setConsumerConfigValue(isConfigValue -> {
+                Log.e(TAG, "==> onClickConfigHome:: " + isConfigValue);
+                mActivity.loadConfigValue();
+            }).show(getFragmentManager(), "");
         } catch (Exception e) {
             VnyiUtils.LogException(mContext, "onClickConfigHome", TAG, e.getMessage());
         }

@@ -62,7 +62,7 @@ public class DialogConfirmOrderFragment extends BaseMainDialogFragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        code = genCodeOrder();
+        code = genCodeOrder(5);
         initViews();
 
     }
@@ -83,9 +83,9 @@ public class DialogConfirmOrderFragment extends BaseMainDialogFragment {
         return edtCode.equals(code);
     }
 
-    private String genCodeOrder() {
+    private String genCodeOrder(int maxLength) {
         String orderCode = "";
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < maxLength; i++) {
             orderCode += ThreadLocalRandom.current().nextInt(0, 9) + "";
         }
         return orderCode;
@@ -97,7 +97,7 @@ public class DialogConfirmOrderFragment extends BaseMainDialogFragment {
             mConsumer.accept(true);
             dismiss();
         } else {
-            ToastUtils.showToast(getContext(), "Mã bạn nhập không đúng, hãy nhập lại mã!");
+            ToastUtils.showToast(getContext(), getString(R.string.Confirm_code_order_wrong));
         }
 
     }

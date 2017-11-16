@@ -8,9 +8,7 @@ import android.view.ViewGroup;
 
 import com.qslib.fragment.BaseMainDialogFragment;
 import com.vnyi.emenu.maneki.R;
-import com.vnyi.emenu.maneki.applications.VnyiPreference;
 import com.vnyi.emenu.maneki.customviews.TextViewFont;
-import com.vnyi.emenu.maneki.utils.Constant;
 import com.vnyi.emenu.maneki.utils.VnyiUtils;
 
 import butterknife.BindView;
@@ -26,8 +24,11 @@ public class DialogRemoveItemFragment extends BaseMainDialogFragment {
 
 
     private static final String TAG = DialogUserOrderFragment.class.getSimpleName();
+
     @BindView(R.id.tvTableName)
     TextViewFont tvTableName;
+
+    private String mTableName;
 
     public static DialogRemoveItemFragment newInstance() {
         return new DialogRemoveItemFragment();
@@ -57,8 +58,7 @@ public class DialogRemoveItemFragment extends BaseMainDialogFragment {
 
     private void initViews() {
         try {
-            String tableName = VnyiPreference.getInstance(getContext()).getString(Constant.KEY_TABLE_NAME);
-            tvTableName.setText(tvTableName.getText() + " " + tableName);
+            tvTableName.setText(tvTableName.getText() + " " + mTableName);
         } catch (Exception e) {
             VnyiUtils.LogException(getContext(), "initViews", TAG, e.getMessage());
         }
@@ -81,6 +81,11 @@ public class DialogRemoveItemFragment extends BaseMainDialogFragment {
 
     public DialogRemoveItemFragment setConsumer(Consumer<Boolean> consumer) {
         this.mConsumer = consumer;
+        return this;
+    }
+
+    public DialogRemoveItemFragment setTableName(String tableName) {
+        this.mTableName = tableName;
         return this;
     }
 

@@ -39,11 +39,9 @@ public class DialogBranchFragment extends BaseMainDialogFragment {
     private BranchAdapter mBranchAdapter;
 
     public static DialogBranchFragment newInstance() {
-        DialogBranchFragment fragment = new DialogBranchFragment();
-        return fragment;
+        return new DialogBranchFragment();
 
     }
-
 
     @Nullable
     @Override

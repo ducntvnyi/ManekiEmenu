@@ -7,7 +7,7 @@
     android:orientation="vertical">
 
     <LinearLayout
-        android:layout_width="500dp"
+        android:layout_width="@dimen/width_dialog_default"
         android:layout_height="wrap_content"
         android:background="@color/white"
         android:gravity="center"
@@ -32,7 +32,7 @@
         <com.vnyi.emenu.maneki.customviews.EditTextFont
             android:id="@+id/edtValueInt"
             android:layout_width="match_parent"
-            android:layout_height="70dp"
+            android:layout_height="@dimen/ic_next_width_default"
             android:layout_marginEnd="@dimen/margin_layout_default"
             android:layout_marginStart="@dimen/margin_layout_default"
             android:layout_marginTop="@dimen/activity_horizontal_margin"
@@ -48,13 +48,13 @@
         <com.vnyi.emenu.maneki.customviews.EditTextFont
             android:id="@+id/edtValueString"
             android:layout_width="match_parent"
-            android:layout_height="70dp"
+            android:layout_height="@dimen/ic_next_width_default"
             android:layout_marginEnd="@dimen/margin_layout_default"
             android:layout_marginStart="@dimen/margin_layout_default"
             android:layout_marginTop="@dimen/activity_horizontal_margin"
             android:background="@drawable/bg_edt_default"
             android:gravity="center"
-            android:hint="int value"
+            android:hint="input value"
             android:imeOptions="actionDone"
             android:inputType="text"
             android:maxLines="1"

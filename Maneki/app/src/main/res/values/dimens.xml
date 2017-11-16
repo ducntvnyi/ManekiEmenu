@@ -10,6 +10,14 @@
     <dimen name="ic_next_width_height">30dp</dimen>
     <dimen name="corners_button_default">15dp</dimen>
     <dimen name="margin_payment">50dp</dimen>
+    <dimen name="btn_height_default">50dp</dimen>
+    <dimen name="btn_width_default">200dp</dimen>
     <dimen name="height_default_item">200dp</dimen>
+    <dimen name="margin_top_header">24dp</dimen>
+    <dimen name="height_recycler_view_default">300dp</dimen>
+    <dimen name="width_dialog_default">500dp</dimen>
+    <dimen name="width_dialog_config">700dp</dimen>
+    <dimen name="width_code_order">250dp</dimen>
+    <dimen name="height_menu_item">40dp</dimen>
 
 </resources>

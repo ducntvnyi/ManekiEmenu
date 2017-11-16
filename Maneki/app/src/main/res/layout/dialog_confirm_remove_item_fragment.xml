@@ -7,7 +7,7 @@
     android:orientation="vertical">
 
     <LinearLayout
-        android:layout_width="450dp"
+        android:layout_width="@dimen/width_dialog_default"
         android:layout_height="wrap_content"
         android:background="@color/white"
         android:gravity="center_horizontal"
@@ -27,7 +27,7 @@
 
         <com.vnyi.emenu.maneki.customviews.TextViewFont
             android:layout_width="match_parent"
-            android:layout_height="200dp"
+            android:layout_height="@dimen/height_recycler_view_default"
             android:gravity="center"
             android:padding="@dimen/padding_content"
             android:text="@string/confirm_remove_item"
@@ -37,7 +37,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/btn_height_default"
             android:orientation="horizontal">
 
             <Button

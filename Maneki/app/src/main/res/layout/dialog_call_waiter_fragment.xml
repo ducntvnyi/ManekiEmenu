@@ -8,7 +8,7 @@
         android:id="@+id/llHeaderTable"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginRight="@dimen/margin_payment"
+        android:layout_marginEnd="@dimen/margin_payment"
         android:layout_marginStart="@dimen/margin_payment"
         android:orientation="horizontal"
         android:paddingBottom="@dimen/padding_layout"
@@ -60,7 +60,7 @@
         android:background="@color/white" />
 
     <LinearLayout
-        android:layout_width="450dp"
+        android:layout_width="@dimen/width_dialog_default"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:background="@color/white"
@@ -91,18 +91,18 @@
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rvGetList"
             android:layout_width="match_parent"
-            android:layout_height="300dp" />
+            android:layout_height="@dimen/height_recycler_view_default" />
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_layout_default"
+            android:layout_height="@dimen/btn_height_default"
+            android:layout_marginTop="@dimen/margin_layout"
             android:orientation="horizontal">
 
             <Button
                 android:id="@+id/btnSendRequest"
                 android:layout_width="0dp"
-                android:layout_height="50dp"
+                android:layout_height="match_parent"
                 android:layout_marginEnd="@dimen/padding_content"
                 android:layout_weight="1"
                 android:background="@drawable/bg_btn_selector"
@@ -113,7 +113,7 @@
             <Button
                 android:id="@+id/btnCancelRquest"
                 android:layout_width="0dp"
-                android:layout_height="50dp"
+                android:layout_height="match_parent"
                 android:layout_marginStart="@dimen/padding_content"
                 android:layout_weight="1"
                 android:background="@drawable/bg_btn_selector"

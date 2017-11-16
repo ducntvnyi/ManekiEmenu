@@ -4,6 +4,7 @@ import android.os.AsyncTask;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.Log;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -69,15 +70,12 @@ public class OrderFragment extends BaseFragment {
     private OrderAdapter mOrderAdapter;
 
     private int itemCounter = 0;
-    private int itemCounterCurrent = 0;
-    private boolean isUpdateItem;
     private ConfigValueModel mConfigValueModel;
     private TicketUpdateInfo mTicketUpdateInfo;
     private List<TicketItemOrder1> mItemOrderList = new ArrayList<>();
     private TicketItemOrderMoney mTicketItemOrderMoney;
     private int ticketId;
-
-    private String tableName;
+    private String mTableName;
 
     public static Fragment newInstance() {
         return new OrderFragment();
@@ -112,16 +110,13 @@ public class OrderFragment extends BaseFragment {
     public void initViews() {
         try {
             debounce();
-            // init menu adapter
-            tableName = VnyiPreference.getInstance(getContext()).getString(Constant.KEY_TABLE_NAME);
-            tvTableName.setText(tableName);
             mOrderItemModels = new ArrayList<>();
-
             mOrderAdapter = new OrderAdapter(mContext, false, mOrderItemModels, orderItemModel -> {
                 //TODO onClick
             }, itemAdd -> {
                 ++itemCounter;
                 tvCart.setText("" + itemCounter + "");
+
                 mTicketItemOrderMoney.setItemAmount(mTicketItemOrderMoney.getItemAmount() + itemAdd.getItemAmount());
                 mTicketItemOrderMoney.setTotalAmount(mTicketItemOrderMoney.getTotalAmount() + itemAdd.getItemAmount());
                 tvTotalMoney.setText("" + mTicketItemOrderMoney.getItemAmount() + " VND");
@@ -149,15 +144,17 @@ public class OrderFragment extends BaseFragment {
                             StreamSupport.stream(mOrderItemModels).filter(item -> item.getItemId() == itemReduce.getItemId()).findFirst().get().setItemAmount(itemReduce.getItemAmount());
                             mOrderAdapter.notifyDataSetChanged();
                         }
-                    }).show(getFragmentManager(), "");
+                    }).setTableName(mTableName).show(getFragmentManager(), "");
 
                 } else {
                     --itemCounter;
                     tvCart.setText("" + itemCounter + "");
+
                     mTicketItemOrderMoney.setItemAmount(mTicketItemOrderMoney.getItemAmount() - itemReduce.getItemAmount());
                     mTicketItemOrderMoney.setTotalAmount(mTicketItemOrderMoney.getTotalAmount() - itemReduce.getItemAmount());
                     tvTotalMoney.setText("" + mTicketItemOrderMoney.getItemAmount() + " VND");
                     tvTotalPayment.setText("" + mTicketItemOrderMoney.getTotalAmount() + " VND");
+
                     if (mItemOrderList.size() > 0) {
                         boolean isPresent = StreamSupport.stream(mItemOrderList).filter(item -> item.getItemId() == itemReduce.getItemId()).findFirst().isPresent();
                         if (isPresent) {
@@ -173,11 +170,13 @@ public class OrderFragment extends BaseFragment {
             LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
             rvItemOrder.setAdapter(mOrderAdapter);
             rvItemOrder.setLayoutManager(layoutManager);
+
         } catch (Exception e) {
             VnyiUtils.LogException(mContext, "initViews", TAG, e.getMessage());
         }
 
     }
+
 
     private void debounce() {
         try {
@@ -213,18 +212,29 @@ public class OrderFragment extends BaseFragment {
 
     @Override
     public void initData() {
-
         try {
-            ticketId = VnyiPreference.getInstance(getContext()).getInt(Constant.KEY_TICKET_ID);
-
             mConfigValueModel = VnyiPreference.getInstance(getContext()).getObject(Constant.KEY_CONFIG_VALUE, ConfigValueModel.class);
+            ticketId = VnyiPreference.getInstance(getContext()).getInt(Constant.KEY_TICKET_ID);
             int getType = 2;
-
+            loadTableName();
             requestGetTicketItemOrder(mConfigValueModel, ticketId, getType, this::updateUI);
         } catch (Exception e) {
             VnyiUtils.LogException(mContext, "initData", TAG, e.getMessage());
         }
 
+    }
+
+    private void loadTableName() {
+        try {
+            mTableName = VnyiPreference.getInstance(getContext()).getString(Constant.KEY_TABLE_NAME);
+            if (TextUtils.isEmpty(mTableName)) {
+                int tableId = Integer.parseInt(mConfigValueModel.getTableName().getConfigValue());
+                mTableName = getTableName(tableId);
+            }
+            tvTableName.setText(mTableName);
+        } catch (NumberFormatException e) {
+            VnyiUtils.LogException(mContext, "loadTableName", TAG, e.getMessage());
+        }
     }
 
     private void updateUI(TicketItemOrderModel ticketItemOrderModel) {
@@ -253,9 +263,8 @@ public class OrderFragment extends BaseFragment {
         private List<TicketItemOrder1> ticketItemOrders;
         private ConfigValueModel configValueModel;
         private int ticketId;
-        private int orderId;
 
-        public UpdateItemOrderTask(List<TicketItemOrder1> itemOrderList, ConfigValueModel configValueModel, int ticketId) {
+        private UpdateItemOrderTask(List<TicketItemOrder1> itemOrderList, ConfigValueModel configValueModel, int ticketId) {
             this.ticketItemOrders = itemOrderList;
             this.configValueModel = configValueModel;
             this.ticketId = ticketId;
@@ -264,12 +273,10 @@ public class OrderFragment extends BaseFragment {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            Log.e(TAG, "==> UpdateItemOrderTask onPreExecute");
         }
 
         @Override
         protected Void doInBackground(Void... voids) {
-            Log.e(TAG, "==> UpdateItemOrderTask doInBackground");
             updateOrder(ticketItemOrders, this.configValueModel, this.ticketId);
             return null;
         }
@@ -278,7 +285,6 @@ public class OrderFragment extends BaseFragment {
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
             ToastUtils.showToast(mContext, "Order successfully!!");
-            Log.e(TAG, "==> UpdateItemOrderTask onPostExecute");
         }
     }
 
@@ -307,24 +313,22 @@ public class OrderFragment extends BaseFragment {
     @OnClick(R.id.btnOrder)
     void onOrderClick() {
         try {
-            DialogConfirmOrderFragment.newInstance()
-                    .setConsumer(isValidCode -> {
-                        requestPostTicketSendItemOrder(mConfigValueModel, ticketId, sendOrder -> {
-                            // Dat hang thanh k va k con mon nao
-                            try {
-                                if (sendOrder) {
-                                    ToastUtils.showToast(getContext(), "Đặt món thành công!");
-                                    VnyiPreference.getInstance(getContext()).putObject(Constant.KEY_TICKET, null);
-                                    mActivity.changeTab(Constant.INDEX_MENU);
-                                } else {
-                                    ToastUtils.showToast(getContext(), "Đặt món chưa thành công!");
-                                }
-                            } catch (Exception e) {
-                                VnyiUtils.LogException(mContext, "DialogConfirmOrderFragment", TAG, e.getMessage());
-                            }
-                        });
-                    })
-                    .show(getFragmentManager(), "");
+            DialogConfirmOrderFragment.newInstance().setConsumer(isValidCode -> {
+                requestPostTicketSendItemOrder(mConfigValueModel, ticketId, sendOrder -> {
+                    try {
+                        if (sendOrder) {
+                            ToastUtils.showToast(getContext(), getString(R.string.order_item_successfully));
+                            VnyiPreference.getInstance(getContext()).putObject(Constant.KEY_TICKET, null);
+                            mActivity.changeTab(Constant.INDEX_MENU);
+                        } else {
+                            ToastUtils.showToast(getContext(), getString(R.string.order_item_failed));
+                        }
+                    } catch (Exception e) {
+                        VnyiUtils.LogException(mContext, "DialogConfirmOrderFragment", TAG, e.getMessage());
+                    }
+                });
+            }).show(getFragmentManager(), "");
+
         } catch (Exception e) {
             VnyiUtils.LogException(TAG, e);
         }
@@ -342,15 +346,13 @@ public class OrderFragment extends BaseFragment {
         try {
             mActivity.showProgressDialog();
             requestPostTicketCancelAllItemOrdering(mConfigValueModel, ticketId, isCallOrder -> {
-    //            VnyiPreference.getInstance(getContext()).putObject(Constant.KEY_TICKET, null);
                 mActivity.changeTab(Constant.INDEX_MENU);
                 if (isCallOrder) {
-    //                VnyiPreference.getInstance(getContext()).putObject(Constant.KEY_TICKET, null);
                     clearData();
                     mActivity.hideProgressDialog();
                     mActivity.changeTab(Constant.INDEX_MENU);
                 } else {
-                    ToastUtils.showToast(getContext(), "Huy mon khong thanh cong!");
+                    ToastUtils.showToast(getContext(), getString(R.string.cancel_order_failed));
                 }
             });
         } catch (Exception e) {

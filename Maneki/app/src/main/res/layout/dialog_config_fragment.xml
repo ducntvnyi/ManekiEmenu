@@ -8,8 +8,8 @@
 
     <ImageView
         android:id="@+id/ivDismiss"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="@dimen/btn_height_default"
+        android:layout_height="@dimen/btn_height_default"
         android:layout_toEndOf="@+id/rlContent"
         android:background="@mipmap/ic_close"
         android:padding="@dimen/padding_content"
@@ -17,7 +17,7 @@
 
     <LinearLayout
         android:id="@+id/rlContent"
-        android:layout_width="700dp"
+        android:layout_width="@dimen/width_dialog_config"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:layout_gravity="center"
@@ -73,7 +73,7 @@
         <LinearLayout
             android:id="@+id/llConfigContainer"
             android:layout_width="match_parent"
-            android:layout_height="300dp"
+            android:layout_height="@dimen/height_recycler_view_default"
             android:orientation="vertical"
             android:visibility="gone">
 
@@ -240,8 +240,8 @@
 
         <com.vnyi.emenu.maneki.customviews.ButtonFont
             android:id="@+id/btnConfirmConfig"
-            android:layout_width="200dp"
-            android:layout_height="50dp"
+            android:layout_width="@dimen/btn_width_default"
+            android:layout_height="@dimen/btn_height_default"
             android:layout_marginBottom="@dimen/margin_layout"
             android:layout_marginTop="@dimen/padding_content"
             android:background="@drawable/bg_btn_confirm_selector"
@@ -251,7 +251,7 @@
             android:text="@string/confirm"
             android:textColor="@drawable/view_order_text_color"
             android:textSize="@dimen/font_size_header"
-            app:font="cour" />
+            app:font="@string/font_redsun_vn" />
     </LinearLayout>
 
 

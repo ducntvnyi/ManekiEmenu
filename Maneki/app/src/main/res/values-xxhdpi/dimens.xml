@@ -29,7 +29,31 @@
   <dimen name="margin_payment">
     50.0dp
   </dimen>
+  <dimen name="btn_height_default">
+    50.0dp
+  </dimen>
+  <dimen name="btn_width_default">
+    200.0dp
+  </dimen>
   <dimen name="height_default_item">
     200.0dp
+  </dimen>
+  <dimen name="margin_top_header">
+    24.0dp
+  </dimen>
+  <dimen name="height_recycler_view_default">
+    300.0dp
+  </dimen>
+  <dimen name="width_dialog_default">
+    500.0dp
+  </dimen>
+  <dimen name="width_dialog_config">
+    700.0dp
+  </dimen>
+  <dimen name="width_code_order">
+    250.0dp
+  </dimen>
+  <dimen name="height_menu_item">
+    40.0dp
   </dimen>
 </resources>

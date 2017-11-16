@@ -83,17 +83,30 @@ public class CallWaiterFragment extends BaseFragment {
             LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
             rvGetList.setAdapter(mGetListAdapter);
             rvGetList.setLayoutManager(layoutManager);
+
         } catch (Exception e) {
-            VnyiUtils.LogException(mContext, "clearData", TAG, e.getMessage());
+            VnyiUtils.LogException(mContext, "initViews", TAG, e.getMessage());
         }
     }
 
     @Override
     public void initData() {
         // new ArrayList<>
+        loadTableName();
         requestRequestGetList(mConfigValueModel, 2, 1);
     }
-
+    private void loadTableName() {
+        try {
+            String tableName = VnyiPreference.getInstance(getContext()).getString(Constant.KEY_TABLE_NAME);
+            if (TextUtils.isEmpty(tableName)) {
+                int tableId = Integer.parseInt(mConfigValueModel.getTableName().getConfigValue());
+                tableName = getTableName(tableId);
+            }
+            tvTableName.setText(tableName);
+        } catch (NumberFormatException e) {
+            VnyiUtils.LogException(mContext, "loadTableName", TAG, e.getMessage());
+        }
+    }
     protected void requestRequestGetList(ConfigValueModel configValueModel, int typeId, int itemId) {
 
         VnyiUtils.LogException(TAG, "--------------Start requestRequestGetList------------");

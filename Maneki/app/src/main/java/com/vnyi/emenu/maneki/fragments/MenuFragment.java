@@ -24,9 +24,11 @@ import com.vnyi.emenu.maneki.customviews.ButtonFont;
 import com.vnyi.emenu.maneki.customviews.CartAnimationUtil;
 import com.vnyi.emenu.maneki.models.AnimationView;
 import com.vnyi.emenu.maneki.models.ConfigValueModel;
+import com.vnyi.emenu.maneki.models.TableModel;
 import com.vnyi.emenu.maneki.models.UpdateTicketItemModel;
 import com.vnyi.emenu.maneki.models.response.ItemCategoryDetail;
 import com.vnyi.emenu.maneki.models.response.ItemCategoryNoListNote;
+import com.vnyi.emenu.maneki.models.response.Table;
 import com.vnyi.emenu.maneki.models.response.TicketLoadInfo;
 import com.vnyi.emenu.maneki.utils.Constant;
 import com.vnyi.emenu.maneki.utils.ViewUtils;
@@ -177,7 +179,18 @@ public class MenuFragment extends BaseFragment {
 
     @OnClick(R.id.ivShowConfig)
     void onClickShowConfig() {
-        mActivity.changeTab(Constant.INDEX_CONFIG);
+
+        List<Table> tables = VnyiPreference.getInstance(getContext()).getObject(Constant.KEY_LIST_TABLE, TableModel.class).getTables();
+
+        if (tables == null || tables.size() == 0) mActivity.changeTab(Constant.INDEX_CONFIG);
+        DialogTableMapFragment.newInstance()
+                .setListTable(tables)
+                .setConsumer(table -> {
+                    mConfigValueModel.getTableName().setConfigValue(table.getRetAutoId() + "");
+                    mConfigValueModel.getTableName().setName(table.getRetDefineId() + "");
+                    VnyiPreference.getInstance(getContext()).putString(Constant.KEY_TABLE_NAME, table.getRetDefineId());
+                })
+                .show(getFragmentManager(), "");
     }
 
     /**
