@@ -36,6 +36,7 @@
                 android:paddingEnd="@dimen/padding_content"
                 android:paddingStart="@dimen/padding_content"
                 android:text="@string/menu"
+                android:textAllCaps="true"
                 android:textColor="@color/white"
                 android:textSize="@dimen/font_size_title"
                 app:font="@string/font_cour" />

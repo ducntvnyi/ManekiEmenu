@@ -104,9 +104,7 @@ public abstract class BaseActivity extends FragmentActivity {
         VnyiUtils.LogException(TAG, "==> permissionApp");
         try {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                        || ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                        || ContextCompat.checkSelfPermission(this, Manifest.permission.BODY_SENSORS) != PackageManager.PERMISSION_GRANTED
+                if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
                         || ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
                     requestPermission(this);
                     return;
@@ -120,9 +118,7 @@ public abstract class BaseActivity extends FragmentActivity {
 
     public static boolean requestPermission(Activity activity) {
         String[] perms = {android.Manifest.permission.INTERNET,
-                android.Manifest.permission.ACCESS_COARSE_LOCATION,
                 android.Manifest.permission.ACCESS_FINE_LOCATION,
-                android.Manifest.permission.BODY_SENSORS,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE
         };
         return PermissionUtils.requestPermission(activity, REQUEST_CODE_PERMISSION, perms);
