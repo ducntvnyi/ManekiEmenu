@@ -86,7 +86,7 @@ public class MenuAdapter extends BaseRecycleAdapter<Branch, MenuAdapter.ViewHold
         private void binData(Context context, ItemCategoryNoListNote categoryNoListNote) {
             tvMenu.setText(categoryNoListNote.getGroupName());
             if (categoryNoListNote.isSelected()) {
-                view.setBackground(context.getDrawable(R.mipmap.bg_btn_white));
+                view.setBackground(context.getResources().getDrawable(R.mipmap.bg_btn_white));
                 tvMenu.setTextColor(ContextCompat.getColor(context, R.color.color_black));
 //                ivItem.setVisibility(View.VISIBLE);
 //                tvMenu.setVisibility(View.GONE);

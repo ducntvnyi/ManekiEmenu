@@ -4,31 +4,32 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/color_app"
+    android:paddingTop="@dimen/status_bar_size"
     tools:context="com.vnyi.emenu.maneki.activities.MainActivity">
 
     <ImageView
         android:id="@+id/ivConfigHome"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@mipmap/bg_app" />
+        android:background="@mipmap/bg_app_black" />
 
     <LinearLayout
         android:id="@+id/llTab"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/color_app"
+        android:background="@mipmap/bg_header"
+        android:gravity="center_vertical"
         android:orientation="horizontal"
         android:paddingBottom="@dimen/padding_content"
         android:paddingLeft="@dimen/padding_content"
         android:paddingRight="@dimen/padding_content"
-        android:paddingTop="@dimen/margin_top_header">
+        android:paddingTop="@dimen/padding_content">
 
         <com.qslib.customview.textview.ExtTextView
             android:id="@+id/tvMenu"
             style="@style/tvTabHeaderStyle"
-            android:background="@mipmap/bg_btn_white"
             android:text="@string/menu"
-            android:textColor="@color/color_black"
             app:textViewFontAssetName="Redsun design DE Light" />
 
         <com.qslib.customview.textview.ExtTextView
@@ -70,6 +71,7 @@
             android:orientation="vertical">
 
             <com.vnyi.emenu.maneki.customviews.TextViewFont
+                android:id="@+id/tvEnglish"
                 style="@style/tvTitleStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -81,6 +83,7 @@
                 app:font="Redsun  Vietnam Italic" />
 
             <com.vnyi.emenu.maneki.customviews.TextViewFont
+                android:id="@+id/tvVietnamese"
                 style="@style/tvTitleStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

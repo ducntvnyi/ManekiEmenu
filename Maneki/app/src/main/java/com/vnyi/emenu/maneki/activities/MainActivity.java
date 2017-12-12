@@ -1,6 +1,7 @@
 package com.vnyi.emenu.maneki.activities;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
@@ -21,6 +22,7 @@ import com.vnyi.emenu.maneki.fragments.OrderFragment;
 import com.vnyi.emenu.maneki.fragments.PaymentFragment;
 import com.vnyi.emenu.maneki.fragments.SaleOffFragment;
 import com.vnyi.emenu.maneki.fragments.UseAppFragment;
+import com.vnyi.emenu.maneki.services.VnyiApiServices;
 import com.vnyi.emenu.maneki.utils.Constant;
 import com.vnyi.emenu.maneki.utils.LanguageUtil;
 import com.vnyi.emenu.maneki.utils.VnyiContextWrapper;
@@ -29,6 +31,7 @@ import com.vnyi.emenu.maneki.utils.VnyiUtils;
 import java.util.Locale;
 import java.util.Stack;
 
+import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -37,8 +40,7 @@ public class MainActivity extends BaseActivity {
 
     private static String TAG = MainActivity.class.getSimpleName();
 
-    private static final String ENGLISH = "en";
-    private static final String VIETNAMESE = "vi";
+
     private static final String KEY_LANGUAGE = "language";
 
     public int currentFragmentIndex = Constant.INDEX_CONFIG;
@@ -56,22 +58,45 @@ public class MainActivity extends BaseActivity {
     TextViewFont tvPayment;
     @BindView(R.id.tvUseApp)
     TextViewFont tvUseApp;
+    @BindView(R.id.tvEnglish)
+    TextViewFont tvEnglish;
+    @BindView(R.id.tvVietnamese)
+    TextViewFont tvVietnamese;
 
+    boolean isChangeLanguage = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        try {
+            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
 
-        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
+            setContentView(R.layout.activity_main);
 
-        setContentView(R.layout.activity_main);
+            ButterKnife.bind(this);
+            permissionApp();
+            intiViews();
+            loadData();
+            changeTab(currentFragmentIndex);
+        } catch (Exception e) {
+            VnyiUtils.LogException(getApplicationContext(), "onCreate", TAG, e.getMessage());
+        }
+    }
 
-        ButterKnife.bind(this);
-        permissionApp();
-        intiViews();
-        loadData();
-//        currentFragmentConstant.INDEX = VnyiPreference.getInstance(this).getInt(KEY_Constant.INDEX);
-        changeTab(currentFragmentIndex);
+    @Override
+    protected void onResume() {
+        super.onResume();
+        try {
+            if (VnyiPreference.getInstance(this).getString(KEY_LANGUAGE).equals(Constant.LOCALE_VI)) {
+                tvVietnamese.setTypeface(Typeface.DEFAULT_BOLD);
+                tvEnglish.setTypeface(Typeface.DEFAULT);
+            } else {
+                tvVietnamese.setTypeface(Typeface.DEFAULT);
+                tvEnglish.setTypeface(Typeface.DEFAULT_BOLD);
+            }
+        } catch (Exception e) {
+            VnyiUtils.LogException(getApplicationContext(), "intiViews", TAG, e.getMessage());
+        }
     }
 
     @Override
@@ -104,6 +129,18 @@ public class MainActivity extends BaseActivity {
     }
 
     private void intiViews() {
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
 
     }
 
@@ -297,6 +334,7 @@ public class MainActivity extends BaseActivity {
      * @param index
      */
     public void changeTab(int index) {
+        Log.e(TAG, "==> changeTab:: " + index);
         VnyiPreference.getInstance(this).putInt(Constant.KEY_INDEX, index);
         try {
             Fragment fragment;
@@ -336,7 +374,7 @@ public class MainActivity extends BaseActivity {
             this.currentFragmentIndex = index;
             this.fragments.clear();
         } catch (Exception e) {
-            VnyiUtils.LogException(TAG, e);
+            VnyiUtils.LogException(getApplicationContext(), "changeTab", TAG, e.getMessage());
         }
     }
 
@@ -372,26 +410,30 @@ public class MainActivity extends BaseActivity {
     }
 
     //-------- End Listener for Onclick Tab (Navigation app) ----------
+
     @Override
     protected void attachBaseContext(Context newBase) {
         Locale languageType = LanguageUtil.getLanguageType(this);
         super.attachBaseContext(VnyiContextWrapper.wrap(newBase, languageType));
     }
 
-    @OnClick(R.id.llChangeLanguage)
+    @OnClick({R.id.llChangeLanguage, R.id.tvVietnamese, R.id.tvEnglish})
     void onClickChangeLanguage() {
+        Log.e(TAG, "==> change language");
         try {
-            if (VnyiPreference.getInstance(this).getString(KEY_LANGUAGE).equals(VIETNAMESE)) {
-                VnyiPreference.getInstance(this).putString(KEY_LANGUAGE, ENGLISH);
-                LanguageUtil.changeLanguageType(this, VnyiUtils.stringToLocale(ENGLISH));
+            if (VnyiPreference.getInstance(this).getString(KEY_LANGUAGE).equals(Constant.LOCALE_VI)) {
+                VnyiPreference.getInstance(this).putString(KEY_LANGUAGE, Constant.LOCALE_EN);
+                VnyiPreference.getInstance(this).putInt(VnyiApiServices.LANG_ID, 2);
+                LanguageUtil.changeLanguageType(this, VnyiUtils.stringToLocale(Constant.LOCALE_EN));
 
             } else {
-                VnyiPreference.getInstance(getApplicationContext()).putString(KEY_LANGUAGE, VIETNAMESE);
-                LanguageUtil.changeLanguageType(this, VnyiUtils.stringToLocale(VIETNAMESE));
+                VnyiPreference.getInstance(this).putString(KEY_LANGUAGE, Constant.LOCALE_VI);
+                VnyiPreference.getInstance(this).putInt(VnyiApiServices.LANG_ID, 1);
+                LanguageUtil.changeLanguageType(this, VnyiUtils.stringToLocale(Constant.LOCALE_VI));
             }
 
         } catch (Exception e) {
-            VnyiUtils.LogException(TAG, e);
+            VnyiUtils.LogException(getApplicationContext(), "onClickChangeLanguage", TAG, e.getMessage());
         }
 
     }

@@ -10,6 +10,8 @@ import com.vnyi.emenu.maneki.R;
 import com.vnyi.emenu.maneki.services.VnyiApiServices;
 import com.vnyi.emenu.maneki.utils.Constant;
 import com.vnyi.emenu.maneki.utils.Device;
+import com.vnyi.emenu.maneki.utils.LanguageUtil;
+import com.vnyi.emenu.maneki.utils.VnyiUtils;
 
 import java.io.File;
 
@@ -44,10 +46,10 @@ public class VnyiApplication extends Application {
             VnyiPreference.getInstance(getApplicationContext()).putString(VnyiApiServices.MACHINE_NAME, Device.getDeviceName());
             VnyiPreference.getInstance(getApplicationContext()).putString(VnyiApiServices.MACHINE_ID, Device.getMachineId(getApplicationContext()));
             VnyiPreference.getInstance(getApplicationContext()).putInt(VnyiApiServices.LANG_ID, 1); // language default
-//            VnyiPreference.getInstance(getApplicationContext()).putObject(Constant.KEY_TICKET, null);
+
 
         } catch (Exception e) {
-
+            VnyiUtils.LogException(getApplicationContext(), "onCreate", TAG, e.getMessage());
         }
     }
 

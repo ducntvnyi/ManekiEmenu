@@ -465,7 +465,7 @@ public abstract class BaseActivity extends FragmentActivity {
         }
     }
 
-    protected void getTableName(int tableId, Consumer<TableName> consumer) {
+    protected void getTableName(int tableId, final Consumer<TableName> consumer) {
 
         if (!NetworkUtils.isNetworkAvailable(getApplicationContext())) return;
 
@@ -539,7 +539,7 @@ public abstract class BaseActivity extends FragmentActivity {
      * @param langId
      * @paramconsumer
      */
-    public void ticketLoadInfo(ConfigValueModel configValueModel, int ticketId, int userId, int langId) {
+    public void ticketLoadInfo(ConfigValueModel configValueModel, final int ticketId, final int userId, final int langId) {
 
         if (!NetworkUtils.isNetworkAvailable(getApplicationContext())) return;
 
@@ -616,7 +616,7 @@ public abstract class BaseActivity extends FragmentActivity {
      * @param langId
      * @param consumer
      */
-    public void getListItemCategoryNoTicket(ConfigValueModel configValueModel, int ticketId, int posId, int langId, Consumer<NoTicketModel> consumer) {
+    public void getListItemCategoryNoTicket(ConfigValueModel configValueModel, int ticketId, int posId, int langId, final Consumer<NoTicketModel> consumer) {
 
         if (!NetworkUtils.isNetworkAvailable(getApplicationContext())) return;
 
@@ -694,7 +694,7 @@ public abstract class BaseActivity extends FragmentActivity {
      * @param consumer
      */
     public void getListItemCategoryDetail(ConfigValueModel configValueModel, boolean postMasterPage, int categoryId,
-                                          int ticketId, int langId, int objId, int posId, Consumer<ItemCategoryDetailModel> consumer) {
+                                          int ticketId, int langId, int objId, int posId, final Consumer<ItemCategoryDetailModel> consumer) {
 
         if (!NetworkUtils.isNetworkAvailable(getApplicationContext())) return;
 

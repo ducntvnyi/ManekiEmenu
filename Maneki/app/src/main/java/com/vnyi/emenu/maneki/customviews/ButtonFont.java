@@ -2,6 +2,7 @@ package com.vnyi.emenu.maneki.customviews;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.AppCompatEditText;
 import android.text.TextUtils;
 import android.util.AttributeSet;
@@ -13,7 +14,7 @@ import com.vnyi.emenu.maneki.utils.FontCacheUtil;
  * Created by Hungnd on 11/1/17.
  */
 
-public class ButtonFont extends AppCompatEditText {
+public class ButtonFont extends AppCompatButton {
 
 
     public ButtonFont(Context context) {

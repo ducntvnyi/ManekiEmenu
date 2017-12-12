@@ -24,26 +24,19 @@
             android:layout_marginBottom="@dimen/padding_content"
             android:layout_marginTop="@dimen/padding_content"
             android:layout_weight="1"
-            android:background="@drawable/bg_button_default"
+            android:background="@mipmap/bg_menu"
             android:orientation="vertical"
             android:padding="@dimen/padding_content">
 
-            <com.vnyi.emenu.maneki.customviews.TextViewFont
-                android:id="@+id/tvMenu"
+            <ImageView
+                android:id="@+id/ivMenuTitle"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:paddingEnd="@dimen/padding_content"
-                android:paddingStart="@dimen/padding_content"
-                android:text="@string/menu"
-                android:textAllCaps="true"
-                android:textColor="@color/white"
-                android:textSize="@dimen/font_size_title"
-                app:font="@string/font_cour" />
+                android:layout_height="20dp"
+                android:src="@mipmap/ic_menu_title"/>
 
             <View
                 style="@style/lineHorizontalStyle"
-                android:layout_below="@+id/tvMenu"
+                android:layout_below="@+id/ivMenuTitle"
                 android:layout_marginTop="@dimen/padding_content"
                 android:background="@color/white" />
 
@@ -52,7 +45,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_above="@+id/ivDown"
-                android:layout_below="@+id/tvMenu"
+                android:layout_below="@+id/ivMenuTitle"
                 android:layout_marginTop="@dimen/margin_layout" />
 
             <View
@@ -100,11 +93,10 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true"
-
         android:layout_marginStart="@dimen/padding_layout"
         android:background="@drawable/bg_config_home"
         android:padding="@dimen/padding_content"
-        android:src="@mipmap/bg_maneki" />
+        android:src="@mipmap/ic_logo" />
 
     <com.vnyi.emenu.maneki.customviews.ButtonFont
         android:id="@+id/btnViewOrder"
@@ -131,6 +123,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="@dimen/activity_horizontal_margin"
         android:text="abc"
+        android:visibility="gone"
         android:textColor="@color/white"
         android:textSize="25dp" />
 
