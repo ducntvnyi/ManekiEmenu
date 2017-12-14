@@ -33,7 +33,7 @@
     50.0dp
   </dimen>
   <dimen name="btn_width_default">
-    200.0dp
+    350.0dp
   </dimen>
   <dimen name="height_default_item">
     300.0dp
@@ -58,5 +58,8 @@
   </dimen>
   <dimen name="status_bar_size">
     24.0dp
+  </dimen>
+  <dimen name="height_btn_default">
+    50.0dp
   </dimen>
 </resources>
