@@ -119,8 +119,8 @@ public class OrderFragment extends BaseFragment {
 
                 mTicketItemOrderMoney.setItemAmount(mTicketItemOrderMoney.getItemAmount() + itemAdd.getItemAmount());
                 mTicketItemOrderMoney.setTotalAmount(mTicketItemOrderMoney.getTotalAmount() + itemAdd.getItemAmount());
-                tvTotalMoney.setText("" + mTicketItemOrderMoney.getItemAmount() + " VND");
-                tvTotalPayment.setText("" + mTicketItemOrderMoney.getTotalAmount() + " VND");
+                tvTotalMoney.setText(mTicketItemOrderMoney.getItemMoney());
+                tvTotalPayment.setText(mTicketItemOrderMoney.getTotalMoney());
 
                 if (mItemOrderList.size() > 0) {
                     boolean isPresent = StreamSupport.stream(mItemOrderList).filter(item -> item.getItemId() == itemAdd.getItemId()).findFirst().isPresent();
@@ -152,8 +152,8 @@ public class OrderFragment extends BaseFragment {
 
                     mTicketItemOrderMoney.setItemAmount(mTicketItemOrderMoney.getItemAmount() - itemReduce.getItemAmount());
                     mTicketItemOrderMoney.setTotalAmount(mTicketItemOrderMoney.getTotalAmount() - itemReduce.getItemAmount());
-                    tvTotalMoney.setText("" + mTicketItemOrderMoney.getItemAmount() + " VND");
-                    tvTotalPayment.setText("" + mTicketItemOrderMoney.getTotalAmount() + " VND");
+                    tvTotalMoney.setText(mTicketItemOrderMoney.getItemMoney());
+                    tvTotalPayment.setText(mTicketItemOrderMoney.getTotalMoney());
 
                     if (mItemOrderList.size() > 0) {
                         boolean isPresent = StreamSupport.stream(mItemOrderList).filter(item -> item.getItemId() == itemReduce.getItemId()).findFirst().isPresent();
@@ -243,10 +243,10 @@ public class OrderFragment extends BaseFragment {
             mOrderAdapter.setTicketItemOrderList(mOrderItemModels);
             mTicketItemOrderMoney = ticketItemOrderModel.getTicketItemOrderMoney();
 
-            tvTotalMoney.setText("" + mTicketItemOrderMoney.getItemAmount() + " VND");
-            tvSaleOffPrice.setText("" + mTicketItemOrderMoney.getDiscountAmount() + " VND");
-            tvVAT.setText("" + mTicketItemOrderMoney.getvATAmount() + " VND");
-            tvTotalPayment.setText("" + mTicketItemOrderMoney.getTotalAmount() + " VND");
+            tvTotalMoney.setText(mTicketItemOrderMoney.getItemMoney());
+            tvSaleOffPrice.setText(mTicketItemOrderMoney.getDiscount());
+            tvVAT.setText(mTicketItemOrderMoney.getVat());
+            tvTotalPayment.setText(mTicketItemOrderMoney.getTotalMoney());
         } catch (Exception e) {
             VnyiUtils.LogException(mContext, "updateUI", TAG, e.getMessage());
         }

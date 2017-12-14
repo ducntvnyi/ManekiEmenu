@@ -34,6 +34,10 @@ public class TicketPayment {
         return itemQuantity;
     }
 
+    public String getQuantity() {
+        return ((int) itemQuantity) + "";
+    }
+
     public void setItemQuantity(double itemQuantity) {
         this.itemQuantity = itemQuantity;
     }

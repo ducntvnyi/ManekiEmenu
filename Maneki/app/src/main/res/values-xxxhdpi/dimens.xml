@@ -36,10 +36,10 @@
     233.33dp
   </dimen>
   <dimen name="height_default_item">
-    233.33dp
+    350.0dp
   </dimen>
   <dimen name="margin_top_header">
-    28.0dp
+    23.33dp
   </dimen>
   <dimen name="height_recycler_view_default">
     350.0dp

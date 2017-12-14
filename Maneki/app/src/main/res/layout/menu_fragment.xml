@@ -21,8 +21,8 @@
             android:id="@+id/llMenuLeft"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_marginBottom="@dimen/padding_content"
-            android:layout_marginTop="@dimen/padding_content"
+            android:layout_marginBottom="@dimen/padding_layout"
+            android:layout_marginTop="@dimen/padding_layout"
             android:layout_weight="1"
             android:background="@mipmap/bg_menu"
             android:orientation="vertical"
@@ -31,7 +31,7 @@
             <ImageView
                 android:id="@+id/ivMenuTitle"
                 android:layout_width="match_parent"
-                android:layout_height="20dp"
+                android:layout_height="25dp"
                 android:src="@mipmap/ic_menu_title"/>
 
             <View
@@ -56,12 +56,13 @@
 
             <ImageView
                 android:id="@+id/ivDown"
-                android:layout_width="match_parent"
+                android:layout_width="80dp"
                 android:layout_height="@dimen/ic_next_width_height"
                 android:layout_alignParentBottom="true"
                 android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/padding_content"
                 android:padding="@dimen/padding_layout"
-                android:src="@mipmap/ic_down" />
+                android:background="@mipmap/ic_down" />
         </RelativeLayout>
 
         <ImageView

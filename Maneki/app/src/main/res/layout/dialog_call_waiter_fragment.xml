@@ -73,7 +73,7 @@
             android:layout_height="wrap_content"
             android:background="@color/color_app"
             android:gravity="center"
-            android:padding="@dimen/font_size_tab_header"
+            android:padding="@dimen/padding_layout"
             android:text="@string/request_waiter"
             android:textAllCaps="true"
             android:textColor="@color/white"
@@ -95,7 +95,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/btn_height_default"
+            android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_layout"
             android:orientation="horizontal">
 
@@ -107,6 +107,7 @@
                 android:layout_weight="1"
                 android:background="@drawable/bg_btn_selector"
                 android:text="@string/yes"
+                android:padding="@dimen/padding_layout"
                 android:textColor="@color/white"
                 android:textSize="@dimen/font_size_tab_header" />
 
@@ -116,6 +117,7 @@
                 android:layout_height="match_parent"
                 android:layout_marginStart="@dimen/padding_content"
                 android:layout_weight="1"
+                android:padding="@dimen/padding_layout"
                 android:background="@drawable/bg_btn_selector"
                 android:text="@string/no"
                 android:textColor="@color/white"

@@ -9,6 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="@dimen/padding_content"
+        android:textColor="@color/color_black"
         android:text="Them khan giay"
         android:textSize="@dimen/font_size_tab_header" />
 </LinearLayout>

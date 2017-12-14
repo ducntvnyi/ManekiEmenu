@@ -116,10 +116,10 @@ public class PaymentFragment extends BaseFragment {
             ticketPayments = ticketItemOrderModel.getTicketPayments();
             paymentItemAdapter.setTicketPaymentList(ticketPayments);
 
-            tvTotalMoney.setText("" + mTicketItemOrderMoney.getItemAmount() + " VND");
-            tvSaleOffPrice.setText("" + mTicketItemOrderMoney.getDiscountItem() + " VND");
-            tvVAT.setText("" + mTicketItemOrderMoney.getVatAmount() + " VND");
-            tvTotalPayment.setText("" + mTicketItemOrderMoney.getTotalAmount() + " VND");
+            tvTotalMoney.setText(mTicketItemOrderMoney.getItemMoney());
+            tvSaleOffPrice.setText(mTicketItemOrderMoney.getDiscount());
+            tvVAT.setText(mTicketItemOrderMoney.getVAT());
+            tvTotalPayment.setText(mTicketItemOrderMoney.getTotalMoney());
         } catch (Exception e) {
             VnyiUtils.LogException(getContext(), " updateUI", TAG, e.getMessage());
         }

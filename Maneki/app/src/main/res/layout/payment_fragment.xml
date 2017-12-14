@@ -40,7 +40,6 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-
             android:textColor="@color/white"
             android:textSize="@dimen/font_size_title" />
 
@@ -174,7 +173,7 @@
     <Button
         android:id="@+id/btnPayment"
         android:layout_width="@dimen/btn_width_default"
-        android:layout_height="@dimen/btn_height_default"
+        android:layout_height="@dimen/height_btn_default"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="@dimen/padding_layout"

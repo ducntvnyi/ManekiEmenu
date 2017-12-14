@@ -98,7 +98,7 @@ public class PaymentItemAdapter extends BaseRecycleAdapter<TicketPayment, Paymen
         private void binData(Context context, TicketPayment itemModel) {
             try {
                 tvItemName.setText(itemModel.getItemName());
-                tvQuantity.setText("" + itemModel.getItemQuantity() + "");
+                tvQuantity.setText(itemModel.getQuantity());
                 tvTotalMoney.setText("" + (int) itemModel.getItemAmount() + " VND");
                 Log.e(TAG, "==> getItemImage::" + VnyiApiServices.URL_CONFIG + itemModel.getItemImageUrl());
                 Glide.with(context)

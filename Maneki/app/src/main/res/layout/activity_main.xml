@@ -24,7 +24,7 @@
         android:paddingBottom="@dimen/padding_content"
         android:paddingLeft="@dimen/padding_content"
         android:paddingRight="@dimen/padding_content"
-        android:paddingTop="@dimen/padding_content">
+        android:paddingTop="@dimen/margin_top_header">
 
         <com.qslib.customview.textview.ExtTextView
             android:id="@+id/tvMenu"
@@ -48,19 +48,19 @@
             android:id="@+id/tvCallWaiter"
             style="@style/tvTabHeaderStyle"
             android:text="@string/call_staff"
-            app:font="cour" />
+            app:textViewFontAssetName="cour" />
 
         <com.vnyi.emenu.maneki.customviews.TextViewFont
             android:id="@+id/tvPayment"
             style="@style/tvTabHeaderStyle"
             android:text="@string/payment"
-            app:font="cour" />
+            app:textViewFontAssetName="cour" />
 
         <com.vnyi.emenu.maneki.customviews.TextViewFont
             android:id="@+id/tvUseApp"
             style="@style/tvTabHeaderStyle"
             android:text="@string/use_intro"
-            app:font="Redsun  Vietnam Italic" />
+            app:textViewFontAssetName="Redsun  Vietnam Italic" />
 
         <LinearLayout
             android:id="@+id/llChangeLanguage"
@@ -80,7 +80,7 @@
                 android:text="@string/english"
                 android:textColor="@color/white"
                 android:textSize="@dimen/font_size_description"
-                app:font="Redsun  Vietnam Italic" />
+                app:textViewFontAssetName="Redsun  Vietnam Italic" />
 
             <com.vnyi.emenu.maneki.customviews.TextViewFont
                 android:id="@+id/tvVietnamese"
@@ -92,7 +92,7 @@
                 android:text="@string/vietnamese"
                 android:textColor="@color/white"
                 android:textSize="@dimen/font_size_description"
-                app:font="Redsun  Vietnam Italic" />
+                app:textViewFontAssetName="Redsun  Vietnam Italic" />
         </LinearLayout>
     </LinearLayout>
 

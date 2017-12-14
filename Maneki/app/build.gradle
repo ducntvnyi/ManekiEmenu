@@ -26,7 +26,7 @@ android {
         variant.outputs.each { output ->
             def fileName = output.outputFile.name.replace("-debug", "")
             fileName = fileName.replace("app", "Maneki")
-            fileName = fileName.replace("-release", "Release")
+            fileName = fileName.replace("-release", "-Release")
             fileName = fileName.replace(".apk", "-${variant.versionName}.apk")
             output.outputFile = new File(
                     output.outputFile.parent,

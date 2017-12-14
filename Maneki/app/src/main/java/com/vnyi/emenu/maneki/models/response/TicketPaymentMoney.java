@@ -68,6 +68,12 @@ public class TicketPaymentMoney {
         return itemAmount;
     }
 
+    public String getItemMoney() {
+        String firstNumberAsString = String.format ("%.0f", itemAmount);
+        return firstNumberAsString + " VND";
+
+    }
+
     public void setItemAmount(double itemAmount) {
         this.itemAmount = itemAmount;
     }
@@ -90,6 +96,10 @@ public class TicketPaymentMoney {
 
     public double getDiscountItem() {
         return discountItem;
+    }
+    public String getDiscount(){
+        String firstNumberAsString = String.format ("%.0f", discountItem);
+        return firstNumberAsString + " VND";
     }
 
     public void setDiscountItem(double discountItem) {
@@ -116,6 +126,10 @@ public class TicketPaymentMoney {
         return vatAmount;
     }
 
+    public String getVAT(){
+        String firstNumberAsString = String.format ("%.0f", vatAmount);
+        return firstNumberAsString + " VND";
+    }
     public void setVatAmount(double vatAmount) {
         this.vatAmount = vatAmount;
     }
@@ -154,6 +168,11 @@ public class TicketPaymentMoney {
 
     public double getTotalAmount() {
         return totalAmount;
+    }
+
+    public String getTotalMoney() {
+        String firstNumberAsString = String.format ("%.0f", totalAmount);
+        return firstNumberAsString + " VND";
     }
 
     public void setTotalAmount(double totalAmount) {
