@@ -60,5 +60,8 @@
     <string name="cancel_order_failed">Huỷ món không thành công!</string>
     <string name="Confirm_code_order_wrong">Mã bạn nhập không đúng, hãy nhập lại mã!</string>
     <string name="cfrm_change_table">Do you want change the table?</string>
+    <string name="input_password">mật khẩu</string>
+    <string name="confirm_table_change">You have choose a table!</string>
+    <string name="password_incorrect">Your password incorrect!</string>
 
 </resources>

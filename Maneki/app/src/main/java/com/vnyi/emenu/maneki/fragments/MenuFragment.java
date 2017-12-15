@@ -186,11 +186,15 @@ public class MenuFragment extends BaseFragment {
         DialogTableMapRequestFragment.newInstance()
                 .setConfigValueModel(mConfigValueModel)
                 .setConsumer(table -> {
-                    Log.e(TAG,"==> tableObj:: " + table.toString());
-                    mConfigValueModel.getTableName().setConfigValue(table.getTableId() + "");
-                    mConfigValueModel.getTableName().setName(table.getTableName() + "");
-                    VnyiPreference.getInstance(getContext()).putString(Constant.KEY_TABLE_NAME, table.getTableName());
-                    createTicketBill();
+                    try {
+                        Log.e(TAG,"==> tableObj:: " + table.toString());
+                        mConfigValueModel.getTableName().setConfigValue(table.getTableId() + "");
+                        mConfigValueModel.getTableName().setName(table.getTableName() + "");
+                        VnyiPreference.getInstance(getContext()).putString(Constant.KEY_TABLE_NAME, table.getTableName());
+                        createTicketBill();
+                    } catch (Exception e) {
+                        VnyiUtils.LogException(getContext(), " onClick change table", TAG, e.getMessage());
+                    }
                 })
                 .show(getFragmentManager(), "");
     }

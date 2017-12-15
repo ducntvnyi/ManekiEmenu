@@ -29,6 +29,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="@dimen/padding_content"
+            android:textColor="@color/color_black"
             android:text="@string/confirm_order"
             android:textSize="@dimen/font_size_tab_header"
             app:textViewFontAssetName="@string/font_redsun_vn" />

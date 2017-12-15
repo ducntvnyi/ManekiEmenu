@@ -9,12 +9,14 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.qslib.jackson.JacksonUtils;
 import com.qslib.network.NetworkUtils;
 import com.qslib.soap.SoapListenerVyni;
 import com.qslib.soap.SoapResponse;
+import com.qslib.util.ToastUtils;
 import com.vnyi.emenu.maneki.R;
 import com.vnyi.emenu.maneki.adapters.TableListAdapter;
 import com.vnyi.emenu.maneki.adapters.TableMapListAdapter;
@@ -37,6 +39,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import java8.util.function.Consumer;
 import java8.util.stream.StreamSupport;
 
@@ -50,6 +53,9 @@ public class DialogTableMapRequestFragment extends BaseDialogFragment {
 
     @BindView(R.id.tvTitle)
     TextViewFont tvTitle;
+    @BindView(R.id.edtCode)
+    EditText edtCode;
+
     @BindView(R.id.rvTableList)
     RecyclerView rvTableList;
 
@@ -58,8 +64,10 @@ public class DialogTableMapRequestFragment extends BaseDialogFragment {
     private TableMapListAdapter mTableListAdapter;
 
     private String linkSerVer;
-    private TableObj mTableObj;
+    private TableObj mTableObj = null;
     private ConfigValueModel mConfigValueModel;
+
+    private String password = "124635";
 
     public static DialogTableMapRequestFragment newInstance() {
         return new DialogTableMapRequestFragment();
@@ -93,14 +101,13 @@ public class DialogTableMapRequestFragment extends BaseDialogFragment {
             mTableListAdapter = new TableMapListAdapter(getContext(), mTableList, tableMap -> {
                 mTableObj = tableMap;
                 StreamSupport.stream(mTableList).forEach(tableObj -> tableObj.setSeleted(tableObj.getTableId() == tableMap.getTableId()));
-
                 mTableListAdapter.notifyDataSetChanged();
-                DialogConfirmChangeTableFragment.newInstance().setConsumer(isConfirm -> {
-                    if (isConfirm) {
-                        new ConfirmConfigTask().execute(mConfigValueModel);
-                    }
-
-                }).show(getFragmentManager(), null);
+//                DialogConfirmChangeTableFragment.newInstance().setConsumer(isConfirm -> {
+//                    if (isConfirm) {
+//                        new ConfirmConfigTask().execute(mConfigValueModel);
+//                    }
+//
+//                }).show(getFragmentManager(), null);
             });
             GridLayoutManager layoutManager = new GridLayoutManager(getContext(), 4);
             rvTableList.setAdapter(mTableListAdapter);
@@ -249,5 +256,19 @@ public class DialogTableMapRequestFragment extends BaseDialogFragment {
         }
     }
 
+    @OnClick(R.id.btnConfirm)
+    void onClickConfirm() {
+        if (mTableObj == null) {
+            ToastUtils.showToast(getContext(), getString(R.string.confirm_table_change));
+        } else {
+            String pw = edtCode.getText().toString().trim();
+            if (pw.equals(password)) {
+                new ConfirmConfigTask().execute(mConfigValueModel);
+            }else {
+                ToastUtils.showToast(getContext(), getString(R.string.password_incorrect));
+            }
+        }
+
+    }
 
 }

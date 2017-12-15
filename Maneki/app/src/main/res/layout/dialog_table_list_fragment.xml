@@ -30,6 +30,41 @@
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rvTableList"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="300dp"
+            android:layout_marginEnd="1dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/btn_height_default"
+            android:layout_margin="@dimen/margin_layout"
+            android:gravity="right"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/edtCode"
+                android:layout_width="@dimen/btn_width_default"
+                android:layout_height="match_parent"
+                android:background="@drawable/bg_edt_confirm"
+                android:gravity="center"
+                android:hint="@string/input_password"
+                android:imeOptions="actionDone"
+                android:inputType="number"
+                android:maxLength="6"
+                android:maxLines="1"
+                android:padding="@dimen/padding_content"
+                android:textColor="@color/color_black"
+                android:textSize="@dimen/font_size_tab_header" />
+
+            <Button
+                android:id="@+id/btnConfirm"
+                android:layout_width="@dimen/width_code_order"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="@dimen/padding_layout"
+                android:layout_marginStart="@dimen/margin_layout"
+                android:background="@drawable/bg_btn_selector"
+                android:padding="@dimen/padding_content"
+                android:text="@string/confirm"
+                android:textColor="@color/white" />
+        </LinearLayout>
     </LinearLayout>
 </LinearLayout>
