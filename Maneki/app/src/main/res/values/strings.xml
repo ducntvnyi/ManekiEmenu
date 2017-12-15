@@ -59,5 +59,6 @@
     <string name="order_item_failed">Đặt món chưa thành công!</string>
     <string name="cancel_order_failed">Huỷ món không thành công!</string>
     <string name="Confirm_code_order_wrong">Mã bạn nhập không đúng, hãy nhập lại mã!</string>
+    <string name="cfrm_change_table">Do you want change the table?</string>
 
 </resources>

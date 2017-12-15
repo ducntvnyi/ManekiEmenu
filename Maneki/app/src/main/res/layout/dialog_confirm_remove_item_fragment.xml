@@ -23,16 +23,17 @@
             android:text="@string/cfrm_table_order"
             android:textColor="@color/white"
             android:textSize="@dimen/font_size_content"
-            app:font="@string/font_redsun_vn" />
+            app:textViewFontAssetName="@string/font_redsun_vn" />
 
         <com.vnyi.emenu.maneki.customviews.TextViewFont
             android:layout_width="match_parent"
             android:layout_height="@dimen/height_recycler_view_default"
             android:gravity="center"
             android:padding="@dimen/padding_content"
+            android:textColor="@color/color_black"
             android:text="@string/confirm_remove_item"
             android:textSize="@dimen/font_size_tab_header"
-            app:font="@string/font_redsun_vn" />
+            app:textViewFontAssetName="@string/font_redsun_vn" />
 
 
         <LinearLayout

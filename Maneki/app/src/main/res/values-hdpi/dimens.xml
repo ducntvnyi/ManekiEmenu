@@ -47,6 +47,9 @@
   <dimen name="width_dialog_default">
     416.67dp
   </dimen>
+  <dimen name="width_dialog_table_default">
+    833.33dp
+  </dimen>
   <dimen name="width_dialog_config">
     583.33dp
   </dimen>

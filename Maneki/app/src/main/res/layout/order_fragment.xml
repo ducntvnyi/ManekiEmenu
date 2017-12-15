@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/rootView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -23,7 +24,8 @@
             android:text="@string/table"
             android:textAllCaps="true"
             android:textColor="@color/white"
-            android:textSize="@dimen/font_size_title" />
+            android:textSize="@dimen/font_size_title"
+            app:textViewFontAssetName="cour" />
 
         <com.vnyi.emenu.maneki.customviews.TextViewFont
             android:id="@+id/tvTableName"
@@ -33,15 +35,16 @@
             android:text="D1"
             android:textAllCaps="true"
             android:textColor="@color/white"
-            android:textSize="@dimen/font_size_title" />
+            android:textSize="@dimen/font_size_title"
+            app:textViewFontAssetName="cour" />
 
         <com.vnyi.emenu.maneki.customviews.TextViewFont
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-
             android:textColor="@color/white"
-            android:textSize="@dimen/font_size_title" />
+            android:textSize="@dimen/font_size_title"
+            app:textViewFontAssetName="cour" />
 
         <com.vnyi.emenu.maneki.customviews.TextViewFont
             android:layout_width="0dp"
@@ -51,14 +54,14 @@
             android:text="@string/vnd"
             android:textAllCaps="true"
             android:textColor="@color/white"
-            android:textSize="@dimen/font_size_title" />
+            android:textSize="@dimen/font_size_title"
+            app:textViewFontAssetName="cour" />
     </LinearLayout>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_below="@+id/llHeaderTable"
-
         android:background="@color/white" />
 
     <android.support.v7.widget.RecyclerView
@@ -196,7 +199,6 @@
             android:id="@+id/btnAddItem"
             android:layout_width="0dp"
             android:layout_height="40dp"
-
             android:layout_marginStart="@dimen/margin_layout_default"
 
             android:layout_weight="1"
@@ -209,7 +211,6 @@
             android:id="@+id/btnCancelOrder"
             android:layout_width="0dp"
             android:layout_height="40dp"
-
             android:layout_marginStart="@dimen/margin_layout_default"
 
             android:layout_weight="1"
@@ -226,5 +227,6 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:textColor="@color/color_red"
-        android:textSize="20dp" />
+        android:textSize="20dp"
+        android:visibility="gone" />
 </RelativeLayout>

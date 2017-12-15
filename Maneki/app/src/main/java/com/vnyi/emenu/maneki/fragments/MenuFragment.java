@@ -183,12 +183,14 @@ public class MenuFragment extends BaseFragment {
         List<Table> tables = VnyiPreference.getInstance(getContext()).getObject(Constant.KEY_LIST_TABLE, TableModel.class).getTables();
 
         if (tables == null || tables.size() == 0) mActivity.changeTab(Constant.INDEX_CONFIG);
-        DialogTableMapFragment.newInstance()
-                .setListTable(tables)
+        DialogTableMapRequestFragment.newInstance()
+                .setConfigValueModel(mConfigValueModel)
                 .setConsumer(table -> {
-                    mConfigValueModel.getTableName().setConfigValue(table.getRetAutoId() + "");
-                    mConfigValueModel.getTableName().setName(table.getRetDefineId() + "");
-                    VnyiPreference.getInstance(getContext()).putString(Constant.KEY_TABLE_NAME, table.getRetDefineId());
+                    Log.e(TAG,"==> tableObj:: " + table.toString());
+                    mConfigValueModel.getTableName().setConfigValue(table.getTableId() + "");
+                    mConfigValueModel.getTableName().setName(table.getTableName() + "");
+                    VnyiPreference.getInstance(getContext()).putString(Constant.KEY_TABLE_NAME, table.getTableName());
+                    createTicketBill();
                 })
                 .show(getFragmentManager(), "");
     }

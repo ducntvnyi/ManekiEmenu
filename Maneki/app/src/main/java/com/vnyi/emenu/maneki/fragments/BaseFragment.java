@@ -231,7 +231,7 @@ public abstract class BaseFragment extends Fragment {
 
                 @Override
                 public void onFinished() {
-                    //                dismissDialog();
+                    dismissDialog();
                     VnyiUtils.LogException(TAG, "==> ticketLoadInfo onFinished ");
                 }
             });

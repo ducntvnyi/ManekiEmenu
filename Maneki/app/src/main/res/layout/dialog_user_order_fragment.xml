@@ -23,7 +23,7 @@
             android:text="@string/choose_user_order"
             android:textColor="@color/white"
             android:textSize="@dimen/font_size_tab_header"
-            app:font="@string/font_cour" />
+            app:textViewFontAssetName="@string/font_cour" />
 
         <View style="@style/lineHorizontalStyle" />
 

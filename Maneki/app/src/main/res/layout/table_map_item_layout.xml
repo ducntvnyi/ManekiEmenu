@@ -16,5 +16,5 @@
         android:text="@string/branch"
         android:textColor="@color/color_black"
         android:textSize="@dimen/font_size_title"
-        app:font="@string/font_redsun_vn" />
+        app:textViewFontAssetName="@string/font_redsun_vn" />
 </LinearLayout>

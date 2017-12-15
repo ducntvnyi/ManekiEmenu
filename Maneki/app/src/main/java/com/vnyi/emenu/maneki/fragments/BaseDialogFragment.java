@@ -205,4 +205,6 @@ public class BaseDialogFragment extends BaseMainDialogFragment {
             VnyiUtils.LogException(getContext(), " updateConfirm", TAG, e.getMessage());
         }
     }
+
+
 }

@@ -20,10 +20,10 @@
             android:background="@color/color_app"
             android:gravity="center"
             android:padding="@dimen/padding_content"
-            android:text="@string/cfrm_table_order"
+            android:text="@string/cfrm_change_table"
             android:textColor="@color/white"
             android:textSize="@dimen/font_size_content"
-            app:textViewFontAssetName="@string/font_redsun_vn" />
+            app:font="@string/font_redsun_vn" />
 
         <com.vnyi.emenu.maneki.customviews.TextViewFont
             android:layout_width="match_parent"
@@ -31,7 +31,7 @@
             android:padding="@dimen/padding_content"
             android:text="@string/confirm_order"
             android:textSize="@dimen/font_size_tab_header"
-            app:textViewFontAssetName="@string/font_redsun_vn" />
+            app:font="@string/font_redsun_vn" />
 
         <com.vnyi.emenu.maneki.customviews.TextViewFont
             android:id="@+id/tvCodeOrder"
@@ -44,7 +44,7 @@
             android:text="@string/order_code"
             android:textColor="@color/white"
             android:textSize="@dimen/font_size_tab_header"
-            app:textViewFontAssetName="@string/font_redsun_vn" />
+            app:font="@string/font_redsun_vn" />
 
         <EditText
             android:id="@+id/edtCodeOrder"

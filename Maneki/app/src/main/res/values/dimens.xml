@@ -16,6 +16,7 @@
     <dimen name="margin_top_header">20dp</dimen>
     <dimen name="height_recycler_view_default">300dp</dimen>
     <dimen name="width_dialog_default">500dp</dimen>
+    <dimen name="width_dialog_table_default">1000dp</dimen>
     <dimen name="width_dialog_config">700dp</dimen>
     <dimen name="width_code_order">250dp</dimen>
     <dimen name="height_menu_item">40dp</dimen>

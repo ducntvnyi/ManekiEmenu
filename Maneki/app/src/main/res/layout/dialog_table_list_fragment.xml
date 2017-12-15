@@ -7,11 +7,10 @@
     android:orientation="vertical">
 
     <LinearLayout
-        android:layout_width="@dimen/width_dialog_default"
+        android:layout_width="@dimen/width_dialog_table_default"
         android:layout_height="wrap_content"
         android:background="@color/white"
         android:orientation="vertical">
-
 
         <com.vnyi.emenu.maneki.customviews.TextViewFont
             android:id="@+id/tvTitle"
@@ -21,7 +20,7 @@
             android:gravity="center"
             android:maxLines="1"
             android:padding="@dimen/margin_layout"
-            android:text="@string/choose_branch"
+            android:text="@string/choose_table"
             android:textColor="@color/white"
             android:textSize="@dimen/font_size_tab_header"
             app:textViewFontAssetName="@string/font_cour" />
@@ -29,9 +28,8 @@
         <View style="@style/lineHorizontalStyle" />
 
         <android.support.v7.widget.RecyclerView
-            android:id="@+id/rvBranchList"
+            android:id="@+id/rvTableList"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/height_recycler_view_default"
-            android:layout_marginTop="@dimen/padding_content" />
+            android:layout_height="wrap_content" />
     </LinearLayout>
 </LinearLayout>

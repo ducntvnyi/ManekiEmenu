@@ -1,8 +1,8 @@
 package com.vnyi.emenu.maneki.fragments;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.annotation.StringRes;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,9 +12,7 @@ import com.qslib.fragment.BaseMainDialogFragment;
 import com.qslib.util.KeyboardUtils;
 import com.qslib.util.ToastUtils;
 import com.vnyi.emenu.maneki.R;
-import com.vnyi.emenu.maneki.applications.VnyiPreference;
 import com.vnyi.emenu.maneki.customviews.TextViewFont;
-import com.vnyi.emenu.maneki.utils.Constant;
 import com.vnyi.emenu.maneki.utils.VnyiUtils;
 
 import butterknife.BindView;
@@ -27,7 +25,7 @@ import java8.util.function.Consumer;
  * Created by Hungnd on 11/6/17. 
  */
 
-public class DialogConfirmOrderFragment extends BaseMainDialogFragment {
+public class DialogConfirmChangeTableFragment extends BaseMainDialogFragment {
 
 
     private static final String TAG = DialogUserOrderFragment.class.getSimpleName();
@@ -39,18 +37,18 @@ public class DialogConfirmOrderFragment extends BaseMainDialogFragment {
     @BindView(R.id.tvTableName)
     TextViewFont tvTableName;
 
+    final int maxLength = 5;
     private String code = "";
 
-
-    public static DialogConfirmOrderFragment newInstance() {
-        return new DialogConfirmOrderFragment();
+    public static DialogConfirmChangeTableFragment newInstance() {
+        return new DialogConfirmChangeTableFragment();
     }
 
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.dialog_confirm_order_fragment, container, false);
+        View view = inflater.inflate(R.layout.dialog_confirm_change_table_fragment, container, false);
         ButterKnife.bind(this, view);
         return view;
     }
@@ -64,17 +62,15 @@ public class DialogConfirmOrderFragment extends BaseMainDialogFragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        code = genCodeOrder(5);
+        code = genCodeOrder();
         initViews();
 
     }
 
+    @SuppressLint("SetTextI18n")
     private void initViews() {
         try {
-            StringBuilder tableName = new StringBuilder().append(getString(R.string.cfrm_table_order)).append(" ").append(VnyiPreference.getInstance(getContext()).getString(Constant.KEY_TABLE_NAME));
-            StringBuilder orderCode = new StringBuilder().append(getString(R.string.order_code)).append(" ").append(code);
-            tvTableName.setText(tableName);
-            tvCodeOrder.setText(orderCode);
+            tvCodeOrder.setText(tvCodeOrder.getText().toString() + "\n" + code);
         } catch (Exception e) {
             VnyiUtils.LogException(getContext(), "initViews", TAG, e.getMessage());
         }
@@ -86,12 +82,12 @@ public class DialogConfirmOrderFragment extends BaseMainDialogFragment {
         return edtCode.equals(code);
     }
 
-    private String genCodeOrder(int maxLength) {
-        String orderCode = "";
+    private String genCodeOrder() {
+        StringBuilder orderCode = new StringBuilder();
         for (int i = 0; i < maxLength; i++) {
-            orderCode += ThreadLocalRandom.current().nextInt(0, 9) + "";
+            orderCode.append(ThreadLocalRandom.current().nextInt(0, 9)).append("");
         }
-        return orderCode;
+        return orderCode.toString();
     }
 
     @OnClick(R.id.btnYes)
@@ -107,7 +103,6 @@ public class DialogConfirmOrderFragment extends BaseMainDialogFragment {
 
     @OnClick(R.id.edtCodeOrder)
     void onClickCodeOrder() {
-
         KeyboardUtils.setFocusToEditText(getContext(), edtCodeOrder);
     }
 
@@ -118,7 +113,7 @@ public class DialogConfirmOrderFragment extends BaseMainDialogFragment {
 
     private Consumer<Boolean> mConsumer;
 
-    public DialogConfirmOrderFragment setConsumer(Consumer<Boolean> consumer) {
+    public DialogConfirmChangeTableFragment setConsumer(Consumer<Boolean> consumer) {
         this.mConsumer = consumer;
         return this;
     }

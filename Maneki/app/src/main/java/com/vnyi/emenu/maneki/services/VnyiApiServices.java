@@ -43,6 +43,7 @@ public interface VnyiApiServices {
     String MACHINE_NAME = "MachineName";
     String CUSTOMER_CODE = "CustomerCode";
     String AREA = "area";
+    String IS_SWITCH = "IsSwitch";
 
     /*KEY PARAMS LOGIN*/
     String USER_NAME = "UserName";
@@ -151,6 +152,8 @@ public interface VnyiApiServices {
     String POST_TICKET_CANCEL_ITEM = "Ticket_CancelItem";
     String POST_TICKET_CANCEL_ALL_ITEM_ORDERING = "Ticket_CancelAllItemOrdering"; // huy order
     String POST_SYS_LOG_ERROR_CLIENT = "Sys_LogErrorClient";
+    String GET_LIST_TABLE_REQUEST = "Srv_RequestTableList";
+    String GET_TABLE_LIST_BY_AREA = "Ticket_LoadTableByCondition";
 
     // emenuOrder
     String LOGIN_SYSTEM = "Srv_LoginSystem";

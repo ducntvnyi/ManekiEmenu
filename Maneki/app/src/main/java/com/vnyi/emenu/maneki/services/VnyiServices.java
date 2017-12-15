@@ -197,7 +197,7 @@ public class VnyiServices {
      * @param langId
      * @param soapListener
      */
-    public static void requestRequestGetList(String url_config, int typeId,int itemId, int langId, SoapListenerVyni soapListener) {
+    public static void requestRequestGetList(String url_config, int typeId, int itemId, int langId, SoapListenerVyni soapListener) {
         try {
             String url = url_config + URL;
             SoapServiceVnyi.getInstance(NAME_SPACE, url, VnyiApiServices.REQUEST_GET_LIST).setSoapListener(soapListener)
@@ -778,6 +778,35 @@ public class VnyiServices {
                     .addPropertySoapObject(VnyiApiServices.LIST_TYPE, listType)
                     .addPropertySoapObject(VnyiApiServices.BRANCH_ID, branchId)
                     .addPropertySoapObject(VnyiApiServices.LANG_ID, langId)
+                    .execute();
+
+        } catch (Exception e) {
+            VnyiUtils.LogException(TAG, e);
+        }
+    }
+
+    /**
+     * @param url_config
+     * @param branchId
+     * @param counterId
+     * @param areaId
+     * @param langId
+     * @param objId
+     * @param postId
+     * @param isSwitch
+     * @param soapListener
+     */
+    public static void requestGetTableMap(String url_config, int branchId, int counterId, int areaId, int langId, int objId, int postId, boolean isSwitch, SoapListenerVyni soapListener) {
+        try {
+            String url = url_config + URL;
+            SoapServiceVnyi.getInstance(NAME_SPACE, url, VnyiApiServices.GET_TABLE_LIST_BY_AREA).setSoapListener(soapListener)
+                    .addPropertySoapObject(VnyiApiServices.BRANCH_ID, branchId)
+                    .addPropertySoapObject(VnyiApiServices.COUNTER_ID, counterId)
+                    .addPropertySoapObject(VnyiApiServices.AREA_ID, areaId)
+                    .addPropertySoapObject(VnyiApiServices.LANG_ID, langId)
+                    .addPropertySoapObject(VnyiApiServices.OBJ_ID, objId)
+                    .addPropertySoapObject(VnyiApiServices.POST_ID, postId)
+                    .addPropertySoapObject(VnyiApiServices.IS_SWITCH, isSwitch)
                     .execute();
 
         } catch (Exception e) {
