@@ -1,5 +1,7 @@
 package com.vnyi.emenu.maneki.fragments;
 
+import android.util.Log;
+
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.qslib.fragment.BaseMainDialogFragment;
 import com.qslib.jackson.JacksonUtils;
@@ -49,12 +51,12 @@ public class BaseDialogFragment extends BaseMainDialogFragment {
                 @Override
                 public void onStarted() {
                     VnyiUtils.LogException(TAG, "==> getTableName onStarted ");
-                    showDialog();
+//                    showDialog();
                 }
 
                 @Override
                 public void onSuccess(SoapResponse soapResponse) {
-                    dismissDialog();
+//                    dismissDialog();
                     VnyiUtils.LogException(TAG, "==> getTableName onSuccess ");
                     if (soapResponse == null) return;
 
@@ -70,7 +72,7 @@ public class BaseDialogFragment extends BaseMainDialogFragment {
                                 if (tableNames != null || tableNames.size() > 0) {
                                     tableName = tableNames.get(0).getTableName();
                                     VnyiPreference.getInstance(getContext()).putString(Constant.KEY_TABLE_NAME, tableName);
-
+                                    Log.e(TAG, "==> Table name21: " + tableName);
                                 }
                             } catch (JSONException e) {
                                 VnyiUtils.LogException(TAG, "==> jsonObject passed error:  " + e.getMessage());
@@ -83,7 +85,7 @@ public class BaseDialogFragment extends BaseMainDialogFragment {
 
                 @Override
                 public void onFail(Exception ex) {
-                    dismissDialog();
+//                    dismissDialog();
                     VnyiUtils.LogException(TAG, "==> getTableName onFail " + ex.getMessage());
                 }
 

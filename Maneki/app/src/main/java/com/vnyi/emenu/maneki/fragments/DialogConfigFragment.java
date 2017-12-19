@@ -3,6 +3,7 @@ package com.vnyi.emenu.maneki.fragments;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,6 +35,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import java8.util.function.Consumer;
+import java8.util.stream.Stream;
+import java8.util.stream.StreamSupport;
 
 /**
  * Created by Hungnd on 11/6/17. 
@@ -197,8 +200,13 @@ public class DialogConfigFragment extends BaseDialogFragment {
                 tvBranch.setText(getBranchName());
 
                 tvTableNameLabel.setText(mConfigValueModel.getTableName().getConfigName());
-                tvTableName.setText(getTableName(tableId));
-                VnyiPreference.getInstance(getContext()).putString(Constant.KEY_TABLE_NAME, tvTableName.getText().toString().trim());
+                Log.e(TAG, "==> tableID name111:" + tableId);
+                List<Table> tables = VnyiPreference.getInstance(getContext()).getObject(Constant.KEY_LIST_TABLE, TableModel.class).getTables();
+                Table table = StreamSupport.stream(tables).filter(table1 -> table1.getRetAutoId() == tableId).findFirst().get();
+                String tableName = table.getRetDefineId();
+                Log.e(TAG, "==> table name111:" + tableName);
+                tvTableName.setText(tableName);
+//                VnyiPreference.getInstance(getContext()).putString(Constant.KEY_TABLE_NAME, tvTableName.getText().toString().trim());
 
                 tvTableNameUserLabel.setText(mConfigValueModel.getUserOrder().getConfigName());
                 tvTableNameUser.setText(getUserName());
@@ -429,7 +437,8 @@ public class DialogConfigFragment extends BaseDialogFragment {
             super.onPostExecute(aBoolean);
             dismissDialog();
             VnyiUtils.LogException("ConfirmConfigTask", "==> onPostExecute:: " + aBoolean);
-            mConsumerConfigValue.accept(true);
+            if (mConsumerConfigValue != null)
+                mConsumerConfigValue.accept(true);
         }
     }
 

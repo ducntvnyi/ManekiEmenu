@@ -276,12 +276,12 @@ public abstract class BaseActivity extends FragmentActivity {
             @Override
             public void onStarted() {
                 VnyiUtils.LogException(TAG, "==> loadBranch onStarted ");
-                showProgressDialog();
+//                showProgressDialog();
             }
 
             @Override
             public void onSuccess(SoapResponse soapResponse) {
-                hideProgressDialog();
+//                hideProgressDialog();
                 VnyiUtils.LogException(TAG, "==> loadBranch onSuccess ");
                 if (soapResponse == null) return;
 
@@ -311,7 +311,7 @@ public abstract class BaseActivity extends FragmentActivity {
 
             @Override
             public void onFail(Exception ex) {
-                hideProgressDialog();
+//                hideProgressDialog();
                 VnyiUtils.LogException(TAG, "==> loadBranch onFail " + ex.getMessage());
             }
 
@@ -327,25 +327,25 @@ public abstract class BaseActivity extends FragmentActivity {
 
         if (!NetworkUtils.isNetworkAvailable(getApplicationContext())) return;
 
-        int branchId = 1942; // Integer.parseInt(configValueModel.getBranch().getConfigValue());
+        int branchId =  Integer.parseInt(configValueModel.getBranch().getConfigValue());
 
         VnyiServices.requestConfigValueUserOrder(configValueModel.getLinkServer(), branchId, 1, new SoapListenerVyni() {
 
             @Override
             public void onStarted() {
                 VnyiUtils.LogException(TAG, "==> loadTables onStarted ");
-                showProgressDialog();
+//                showProgressDialog();
             }
 
             @Override
             public void onSuccess(SoapResponse soapResponse) {
-                hideProgressDialog();
-                VnyiUtils.LogException(TAG, "==> loadTables onSuccess ");
+//                hideProgressDialog();
+                VnyiUtils.LogException(TAG, "==> loadListUser onSuccess ");
                 if (soapResponse == null) return;
 
                 if (soapResponse.getStatus().toLowerCase().equals("true")) {
                     if (soapResponse.getResult() != null) {
-                        VnyiUtils.LogException(TAG, "==> loadTables onSuccess:: " + soapResponse.toString());
+                        VnyiUtils.LogException(TAG, "==> loadListUser onSuccess:: " + soapResponse.toString());
                         try {
                             JSONObject configValueObject = new JSONObject(soapResponse.getResult());
 
@@ -462,6 +462,32 @@ public abstract class BaseActivity extends FragmentActivity {
             super.onPostExecute(result);
             hideProgressDialog();
             VnyiUtils.LogException("ConfirmConfigTask", "==> onPostExecute");
+        }
+    }
+    private class GetTableName extends AsyncTask<ConfigValueModel, Void, Void> {
+
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            VnyiUtils.LogException("GetTableName", "==> onPostExecute");
+            showProgressDialog();
+
+        }
+
+        @Override
+        protected Void doInBackground(ConfigValueModel... configValueModels) {
+            VnyiUtils.LogException("GetTableName", "==> doInBackground");
+            ConfigValueModel configValueModel = configValueModels[0];
+            loadTables(configValueModel);
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void result) {
+            super.onPostExecute(result);
+            hideProgressDialog();
+            VnyiUtils.LogException("GetTableName", "==> onPostExecute");
         }
     }
 

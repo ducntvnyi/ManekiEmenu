@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:background="@android:color/transparent"
     android:orientation="vertical">
 
@@ -120,7 +121,7 @@
                         <com.vnyi.emenu.maneki.customviews.TextViewFont
                             android:id="@+id/tvTableName"
                             style="@style/tvLabelValueStyle"
-                            android:hint="D1" />
+                            tools:text="D1" />
 
                     </TableRow>
 
@@ -138,7 +139,7 @@
                         <com.vnyi.emenu.maneki.customviews.TextViewFont
                             android:id="@+id/tvTableNameUser"
                             style="@style/tvLabelValueStyle"
-                            android:text="Emenu" />
+                            tools:text="Emenu" />
 
                     </TableRow>
 
@@ -156,7 +157,7 @@
                         <com.vnyi.emenu.maneki.customviews.TextViewFont
                             android:id="@+id/tvLoadListParent"
                             style="@style/tvLabelValueStyle"
-                            android:text="4" />
+                            tools:text="4" />
 
                     </TableRow>
 
