@@ -203,7 +203,8 @@ public class DialogConfigFragment extends BaseDialogFragment {
                 Log.e(TAG, "==> tableID name111:" + tableId);
                 List<Table> tables = VnyiPreference.getInstance(getContext()).getObject(Constant.KEY_LIST_TABLE, TableModel.class).getTables();
                 Table table = StreamSupport.stream(tables).filter(table1 -> table1.getRetAutoId() == tableId).findFirst().get();
-                String tableName = table.getRetDefineId();
+
+                String tableName = table != null ? table.getRetDefineId() : "";
                 Log.e(TAG, "==> table name111:" + tableName);
                 tvTableName.setText(tableName);
 //                VnyiPreference.getInstance(getContext()).putString(Constant.KEY_TABLE_NAME, tvTableName.getText().toString().trim());
