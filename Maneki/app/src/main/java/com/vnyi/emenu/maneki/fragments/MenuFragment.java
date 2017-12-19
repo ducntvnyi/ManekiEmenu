@@ -191,6 +191,7 @@ public class MenuFragment extends BaseFragment {
                         mConfigValueModel.getTableName().setConfigValue(table.getTableId() + "");
                         mConfigValueModel.getTableName().setName(table.getTableName() + "");
                         VnyiPreference.getInstance(getContext()).putString(Constant.KEY_TABLE_NAME, table.getTableName());
+                        stopTimeTaskCheckBill();
                         createTicketBill();
                     } catch (Exception e) {
                         VnyiUtils.LogException(getContext(), " onClick change table", TAG, e.getMessage());
@@ -435,4 +436,14 @@ public class MenuFragment extends BaseFragment {
         VnyiUtils.LogException(TAG, "==>  End startTimerTaskCheckBill ");
     }
 
+    private void stopTimeTaskCheckBill(){
+        try {
+            if (mTimerCheckBill != null) {
+                mTimerCheckBill.cancel();
+                mTimerCheckBill = null;
+            }
+        } catch (Exception e) {
+            VnyiUtils.LogException(TAG, "==> " + e.getMessage());
+        }
+    }
 }
