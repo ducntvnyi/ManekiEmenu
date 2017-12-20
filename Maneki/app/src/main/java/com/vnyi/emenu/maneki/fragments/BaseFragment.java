@@ -570,7 +570,7 @@ public abstract class BaseFragment extends Fragment {
             int langId = VnyiPreference.getInstance(getContext()).getInt(VnyiApiServices.LANG_ID);
             int yourVersion = VnyiPreference.getInstance(getContext()).getInt(VnyiApiServices.YOUR_VERSION);
 
-            if (!NetworkUtils.isNetworkAvailable(getContext())) return;
+            if (!NetworkUtils.isNetworkAvailable(getActivity())) return;
 
             String url = configValueModel.getLinkServer();
 

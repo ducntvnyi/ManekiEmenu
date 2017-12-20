@@ -163,7 +163,7 @@ public class VnyiUtils {
 
             if (!NetworkUtils.isNetworkAvailable(context)) return;
 
-            VnyiServices.requestPostSysLogErrorClient(Constant.KEY_CONFIG_URL, machineID, machineName, objId, loginName, "", "", apiError, exception, "", "", "", langId, new SoapListenerVyni() {
+            VnyiServices.requestPostSysLogErrorClient(VnyiServices.URL_CONFIG, machineID, machineName, objId, loginName, "", "", apiError, exception, "", "", "", langId, new SoapListenerVyni() {
                 @Override
                 public void onStarted() {
                     Log.e(TAG, "==> onStarted");

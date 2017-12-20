@@ -18,6 +18,7 @@ import com.vnyi.emenu.maneki.customviews.TextViewFont;
 import com.vnyi.emenu.maneki.models.ConfigValueModel;
 import com.vnyi.emenu.maneki.models.TicketItemOrderModel;
 import com.vnyi.emenu.maneki.models.response.ItemCategoryDetail;
+import com.vnyi.emenu.maneki.models.response.Table;
 import com.vnyi.emenu.maneki.models.response.TicketItemOrder1;
 import com.vnyi.emenu.maneki.models.response.TicketItemOrderMoney;
 import com.vnyi.emenu.maneki.models.response.TicketUpdateInfo;
@@ -231,6 +232,7 @@ public class OrderFragment extends BaseFragment {
                 int tableId = Integer.parseInt(mConfigValueModel.getTableName().getConfigValue());
                 mTableName = getTableName(tableId);
             }
+            Log.e(TAG,"==> tableName Order: " + tableName);
             tvTableName.setText(mTableName);
         } catch (NumberFormatException e) {
             VnyiUtils.LogException(mContext, "loadTableName", TAG, e.getMessage());

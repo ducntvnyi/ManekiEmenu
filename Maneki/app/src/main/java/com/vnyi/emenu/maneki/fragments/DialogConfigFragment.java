@@ -201,13 +201,20 @@ public class DialogConfigFragment extends BaseDialogFragment {
 
                 tvTableNameLabel.setText(mConfigValueModel.getTableName().getConfigName());
                 Log.e(TAG, "==> tableID name111:" + tableId);
+                String tableName = "";
                 List<Table> tables = VnyiPreference.getInstance(getContext()).getObject(Constant.KEY_LIST_TABLE, TableModel.class).getTables();
-                Table table = StreamSupport.stream(tables).filter(table1 -> table1.getRetAutoId() == tableId).findFirst().get();
+                if (tables == null || tables.size() == 0) {
+                    Log.e(TAG, "==> table name222:");
+                    tableName = getTableName(tableId);
+                    tvTableName.setText(tableName);
+                } else {
+                    Table table = StreamSupport.stream(tables).filter(table1 -> table1.getRetAutoId() == tableId).findFirst().get();
+                    tableName = table != null ? table.getRetDefineId() : "";
+                    tvTableName.setText(tableName);
+                }
+                Log.e(TAG, "==> table name122:" + tableName);
 
-                String tableName = table != null ? table.getRetDefineId() : "";
-                Log.e(TAG, "==> table name111:" + tableName);
-                tvTableName.setText(tableName);
-//                VnyiPreference.getInstance(getContext()).putString(Constant.KEY_TABLE_NAME, tvTableName.getText().toString().trim());
+//                VnyiPreference.getInstance(getContext()).putString(Constant.KEY_TABLE_NAME, tableName);
 
                 tvTableNameUserLabel.setText(mConfigValueModel.getUserOrder().getConfigName());
                 tvTableNameUser.setText(getUserName());
@@ -251,6 +258,7 @@ public class DialogConfigFragment extends BaseDialogFragment {
                 //
                 loadTables(mConfigValueModel, table -> {
                     tvTableName.setText(table.getRetDefineId());
+                    VnyiPreference.getInstance(getContext()).putString(Constant.KEY_TABLE_NAME, table.getRetDefineId());
                     mConfigValueModel.getTableName().setConfigValue(table.getRetAutoId() + "");
                     mConfigValueModel.getTableName().setName(table.getRetDefineId() + "");
                 });
