@@ -248,13 +248,16 @@ public abstract class BaseFragment extends Fragment {
      * @param ticketId
      * @param consumer
      */
-    public void getListItemCategoryNoTicket(ConfigValueModel configValueModel, int ticketId, Consumer<NoTicketModel> consumer) {
+    public void getListItemCategoryNoTicket(Context context, ConfigValueModel configValueModel, int ticketId, Consumer<NoTicketModel> consumer) {
         VnyiUtils.LogException(TAG, "<<<--------------start getListItemCategoryNoTicket------------>>>");
         try {
-            int posId = VnyiPreference.getInstance(getActivity()).getInt(VnyiApiServices.POST_ID);
-            int langId = VnyiPreference.getInstance(getActivity()).getInt(VnyiApiServices.LANG_ID);
+            int posId = VnyiPreference.getInstance(context).getInt(VnyiApiServices.POST_ID);
+            int langId = VnyiPreference.getInstance(context).getInt(VnyiApiServices.LANG_ID);
 
-            if (!NetworkUtils.isNetworkAvailable(getActivity())) return;
+            if (!NetworkUtils.isNetworkAvailable(context)) {
+                Log.e(TAG, "Error: null context");
+                return;
+            }
 
             String url = VnyiServices.URL_CONFIG;
             int tableId = 0;
@@ -294,29 +297,29 @@ public abstract class BaseFragment extends Fragment {
                                     consumer.accept(noTicketModel);
                                 }
                             } catch (JSONException e) {
-                                VnyiUtils.LogException(mContext, "onSuccess", TAG, "==> jsonObject passed error:  " + e.getMessage());
+                                VnyiUtils.LogException(mContext, "JSONException onSuccess", TAG, "==> jsonObject passed error:  " + e.getMessage());
                             }
 
                         }
                     }
-                    //                dismissDialog();
+                    dismissDialog();
 
                 }
 
                 @Override
                 public void onFail(Exception ex) {
-//                    dismissDialog();
+                    dismissDialog();
                     VnyiUtils.LogException(mContext, "onFail", TAG, "==> getListItemCategoryNoTicket onFail " + ex.getMessage());
                 }
 
                 @Override
                 public void onFinished() {
-                    //                dismissDialog();
+                    dismissDialog();
                     VnyiUtils.LogException(TAG, "==> getListItemCategoryNoTicket onFinished ");
                 }
             });
         } catch (Exception e) {
-            VnyiUtils.LogException(mContext, "getListItemCategoryNoTicket", TAG, e.getMessage());
+            VnyiUtils.LogException(mContext, "Exception getListItemCategoryNoTicket", TAG, e.getMessage());
         }
         VnyiUtils.LogException(TAG, "<<<--------------end getListItemCategoryNoTicket------------>>>");
     }
@@ -330,14 +333,14 @@ public abstract class BaseFragment extends Fragment {
      * @param ticketId
      * @param consumer
      */
-    public void getListItemCategoryDetail(ConfigValueModel configValueModel, boolean postMasterPage, int categoryId,
+    public void getListItemCategoryDetail(Context context, ConfigValueModel configValueModel, boolean postMasterPage, int categoryId,
                                           int ticketId, Consumer<ItemCategoryDetailModel> consumer) {
         VnyiUtils.LogException(TAG, "<<<--------------start getListItemCategoryDetail------------>>>");
-        int posId = VnyiPreference.getInstance(getActivity()).getInt(VnyiApiServices.POST_ID);
-        int langId = VnyiPreference.getInstance(getActivity()).getInt(VnyiApiServices.LANG_ID);
+        int posId = VnyiPreference.getInstance(context).getInt(VnyiApiServices.POST_ID);
+        int langId = VnyiPreference.getInstance(context).getInt(VnyiApiServices.LANG_ID);
         int objId = Integer.parseInt(configValueModel.getUserOrder().getConfigValue());
 
-        if (!NetworkUtils.isNetworkAvailable(getActivity())) return;
+        if (!NetworkUtils.isNetworkAvailable(context)) return;
 
         String url = VnyiServices.URL_CONFIG;
 
@@ -392,7 +395,7 @@ public abstract class BaseFragment extends Fragment {
 
             @Override
             public void onFinished() {
-//                dismissDialog();
+                dismissDialog();
                 VnyiUtils.LogException(TAG, "==> getListItemCategoryDetail onFinished ");
             }
         });
@@ -465,7 +468,7 @@ public abstract class BaseFragment extends Fragment {
 
                 @Override
                 public void onFinished() {
-//                    dismissDialog();
+                    dismissDialog();
                     VnyiUtils.LogException(TAG, "==> requestTicketUpdateInfo onFinished ");
                 }
             });
@@ -1039,8 +1042,6 @@ public abstract class BaseFragment extends Fragment {
         }
         VnyiUtils.LogException(TAG, "--------------end requestTicketCancelItem------------");
     }
-
-
 
 
     protected String getTableName(int tableId) {

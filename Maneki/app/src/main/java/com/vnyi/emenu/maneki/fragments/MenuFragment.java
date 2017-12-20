@@ -2,6 +2,7 @@ package com.vnyi.emenu.maneki.fragments;
 
 
 import android.animation.Animator;
+import android.content.Context;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
@@ -384,13 +385,14 @@ public class MenuFragment extends BaseFragment {
         showDialog();
         startTimerTaskCheckBill();
 
-        getListItemCategoryNoTicket(mConfigValueModel, ticketId, noTicketModel -> {
+        getListItemCategoryNoTicket(getActivity(), mConfigValueModel, ticketId, noTicketModel -> {
             // Update UI menu left
             mItemCategoryNoListNotes = noTicketModel.getItemCategoryNoListNotes();
             mMenuAdapter.setMenuList(mItemCategoryNoListNotes);
             selectMenu(mItemCategoryNoListNotes.get(position));
 
             Log.e(TAG, "==> menu Left:: " + noTicketModel.toString());
+            dismissDialog();
             loadMenuRight(noTicketModel.getItemCategoryNoListNotes().get(0).getGroupID(), ticketId);
         });
     }
@@ -398,18 +400,25 @@ public class MenuFragment extends BaseFragment {
     private void loadMenuRight(int categoryId, int ticketId) {
 
         showDialog();
-        getListItemCategoryDetail(mConfigValueModel, false, categoryId, ticketId, categoryDetailModel -> {
+        getListItemCategoryDetail(getActivity(), mConfigValueModel, false, categoryId, ticketId, categoryDetailModel -> {
             // Update UI menu right
             mItemCategoryDetails = categoryDetailModel.getItemCategoryDetails();
             mItemAdapter.setItemModelList(mItemCategoryDetails);
 
-            dismissDialog();
             Log.e(TAG, "==> menu right:: " + categoryDetailModel.toString());
+            dismissDialog();
         });
     }
 
     private void checkBillTimer() {
-        checkStatusBill(getActivity().getApplicationContext(), mConfigValueModel, ticketId, isCheckBill -> {
+//        Context context = getActivity().getApplicationContext();
+        Context context = getActivity();
+        if (context == null) {
+            Log.d(TAG, "Context is null");
+            return;
+        }
+
+        checkStatusBill(context, mConfigValueModel, ticketId, isCheckBill -> {
             VnyiUtils.LogException(TAG, "==> createTicketBill: " + isCheckBill);
             if (!isCheckBill) {
                 createTicketBill();
