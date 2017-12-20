@@ -409,7 +409,7 @@ public class MenuFragment extends BaseFragment {
     }
 
     private void checkBillTimer() {
-        checkStatusBill(mConfigValueModel, ticketId, isCheckBill -> {
+        checkStatusBill(getActivity().getApplicationContext(), mConfigValueModel, ticketId, isCheckBill -> {
             VnyiUtils.LogException(TAG, "==> createTicketBill: " + isCheckBill);
             if (!isCheckBill) {
                 createTicketBill();

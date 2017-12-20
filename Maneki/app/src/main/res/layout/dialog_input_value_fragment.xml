@@ -42,6 +42,7 @@
             android:imeOptions="actionDone"
             android:inputType="number"
             android:maxLines="1"
+            android:textColor="@color/bg_app_color"
             android:textSize="@dimen/font_size_tab_header"
             android:visibility="visible" />
 

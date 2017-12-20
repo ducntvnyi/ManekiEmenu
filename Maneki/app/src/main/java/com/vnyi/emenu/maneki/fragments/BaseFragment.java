@@ -564,13 +564,13 @@ public abstract class BaseFragment extends Fragment {
      * @param configValueModel
      * @param ticketId
      */
-    public void checkStatusBill(ConfigValueModel configValueModel, int ticketId, Consumer<Boolean> consumer) {
+    public void checkStatusBill(Context context, ConfigValueModel configValueModel, int ticketId, Consumer<Boolean> consumer) {
         VnyiUtils.LogException(TAG, "--------------start checkStatusBill------------");
         try {
             int langId = VnyiPreference.getInstance(getContext()).getInt(VnyiApiServices.LANG_ID);
             int yourVersion = VnyiPreference.getInstance(getContext()).getInt(VnyiApiServices.YOUR_VERSION);
 
-            if (!NetworkUtils.isNetworkAvailable(getActivity())) return;
+            if (!NetworkUtils.isNetworkAvailable(context)) return;
 
             String url = configValueModel.getLinkServer();
 
