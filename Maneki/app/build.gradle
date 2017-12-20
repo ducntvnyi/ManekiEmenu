@@ -79,6 +79,7 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
     }
 }
+
 def getDate() {
     def date = new Date()
     def formattedDate = date.format('-MM-dd-yyyy')
@@ -88,6 +89,7 @@ def getDate() {
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile 'com.android.support.constraint:constraint-layout:1.0.2'
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
