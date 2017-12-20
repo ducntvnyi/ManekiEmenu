@@ -187,12 +187,12 @@ public class MenuFragment extends BaseFragment {
                 .setConfigValueModel(mConfigValueModel)
                 .setConsumer(table -> {
                     try {
-                        Log.e(TAG,"==> tableObj:: " + table.toString());
+                        Log.e(TAG, "==> tableObj:: " + table.toString());
                         mConfigValueModel.getTableName().setConfigValue(table.getTableId() + "");
                         mConfigValueModel.getTableName().setName(table.getTableName() + "");
                         VnyiPreference.getInstance(getContext()).putString(Constant.KEY_TABLE_NAME, table.getTableName());
                         stopTimeTaskCheckBill();
-                        createTicketBill();
+
                     } catch (Exception e) {
                         VnyiUtils.LogException(getContext(), " onClick change table", TAG, e.getMessage());
                     }
@@ -420,7 +420,8 @@ public class MenuFragment extends BaseFragment {
     private void startTimerTaskCheckBill() {
         VnyiUtils.LogException(TAG, "==> Start startTimerTaskCheckBill");
         try {
-            mTimerCheckBill = new Timer();
+            if (mTimerCheckBill == null)
+                mTimerCheckBill = new Timer();
             mTimerTaskCheckBill = new TimerTask() {
                 @Override
                 public void run() {
@@ -436,11 +437,15 @@ public class MenuFragment extends BaseFragment {
         VnyiUtils.LogException(TAG, "==>  End startTimerTaskCheckBill ");
     }
 
-    private void stopTimeTaskCheckBill(){
+    private void stopTimeTaskCheckBill() {
         try {
             if (mTimerCheckBill != null) {
                 mTimerCheckBill.cancel();
+                mTimerCheckBill.purge();
                 mTimerCheckBill = null;
+                mTimerTaskCheckBill.cancel();
+
+                createTicketBill(); // create build after change table
             }
         } catch (Exception e) {
             VnyiUtils.LogException(TAG, "==> " + e.getMessage());

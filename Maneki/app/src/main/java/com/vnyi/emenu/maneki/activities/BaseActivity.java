@@ -19,6 +19,7 @@ import com.qslib.jackson.JacksonUtils;
 import com.qslib.logger.Logger;
 import com.qslib.network.NetworkUtils;
 import com.qslib.permission.PermissionUtils;
+import com.qslib.sharepreferences.AppPreferences;
 import com.qslib.soap.SoapListenerVyni;
 import com.qslib.soap.SoapResponse;
 import com.qslib.util.ProgressDialogUtils;
@@ -212,8 +213,8 @@ public abstract class BaseActivity extends FragmentActivity {
 
         if (!NetworkUtils.isNetworkAvailable(getApplicationContext())) return;
 
-        String machineId = "584357E3-02BE-406A-962B-51B2D03D1703";  //AppPreferences.getInstance(getApplicationContext()).getString(VnyiApiServices.MACHINE_ID);
-        String machineName = "Duong Van Chien’s iPad";              //AppPreferences.getInstance(getApplicationContext()).getString(VnyiApiServices.MACHINE_NAME);
+        String machineId = AppPreferences.getInstance(getApplicationContext()).getString(VnyiApiServices.MACHINE_ID); //"584357E3-02BE-406A-962B-51B2D03D1703";
+        String machineName = AppPreferences.getInstance(getApplicationContext()).getString(VnyiApiServices.MACHINE_NAME); // "Duong Van Chien’s iPad";
         String url = VnyiServices.URL_CONFIG;
 
         ConfigValueModel configValueModel = VnyiPreference.getInstance(getApplicationContext()).getObject(Constant.KEY_CONFIG_VALUE, ConfigValueModel.class);
@@ -327,7 +328,7 @@ public abstract class BaseActivity extends FragmentActivity {
 
         if (!NetworkUtils.isNetworkAvailable(getApplicationContext())) return;
 
-        int branchId =  Integer.parseInt(configValueModel.getBranch().getConfigValue());
+        int branchId = Integer.parseInt(configValueModel.getBranch().getConfigValue());
 
         VnyiServices.requestConfigValueUserOrder(configValueModel.getLinkServer(), branchId, 1, new SoapListenerVyni() {
 
@@ -464,6 +465,7 @@ public abstract class BaseActivity extends FragmentActivity {
             VnyiUtils.LogException("ConfirmConfigTask", "==> onPostExecute");
         }
     }
+
     private class GetTableName extends AsyncTask<ConfigValueModel, Void, Void> {
 
 
