@@ -1,0 +1,9 @@
+*.iml
+.gradle
+Maneki/local.properties
+Maneki/.idea/workspace.xml
+Maneki/.idea/libraries
+Maneki/.DS_Store
+Maneki/build
+Maneki/captures
+Maneki/.externalNativeBuild
