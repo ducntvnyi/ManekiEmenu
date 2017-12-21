@@ -95,18 +95,29 @@ public class CallWaiterFragment extends BaseFragment {
         loadTableName();
         requestRequestGetList(mConfigValueModel, 2, 1);
     }
+
     private void loadTableName() {
         try {
-            String tableName = VnyiPreference.getInstance(getContext()).getString(Constant.KEY_TABLE_NAME);
-            if (TextUtils.isEmpty(tableName)) {
-                int tableId = Integer.parseInt(mConfigValueModel.getTableName().getConfigValue());
-                tableName = getTableName(tableId);
-            }
-            tvTableName.setText(tableName);
+//            String tableName = VnyiPreference.getInstance(getContext()).getString(Constant.KEY_TABLE_NAME);
+//            if (TextUtils.isEmpty(tableName)) {
+//                int tableId = Integer.parseInt(mConfigValueModel.getTableName().getConfigValue());
+//                tableName = getTableName(tableId);
+//            }
+
+            // Edited by Bean Nguyen | 21/12/2017
+            int tableId = Integer.parseInt(mConfigValueModel.getTableName().getConfigValue());
+            getTableName(tableId, this::updateTableNameCallback);
         } catch (NumberFormatException e) {
             VnyiUtils.LogException(mContext, "loadTableName", TAG, e.getMessage());
         }
     }
+
+    private void updateTableNameCallback(String tableName) {
+        tableName = VnyiPreference.getInstance(getContext()).getString(Constant.KEY_TABLE_NAME);
+        Log.e(TAG,"==> tableName Order: " + tableName);
+        tvTableName.setText(tableName);
+    }
+
     protected void requestRequestGetList(ConfigValueModel configValueModel, int typeId, int itemId) {
 
         VnyiUtils.LogException(TAG, "--------------Start requestRequestGetList------------");

@@ -1044,7 +1044,7 @@ public abstract class BaseFragment extends Fragment {
     }
 
 
-    protected String getTableName(int tableId) {
+    protected String getTableName(int tableId, Consumer<String> consumer) {
         try {
             if (!NetworkUtils.isNetworkAvailable(getContext())) return tableName;
             String url = VnyiServices.URL_CONFIG;
@@ -1080,8 +1080,9 @@ public abstract class BaseFragment extends Fragment {
                                 if (tableNames != null || tableNames.size() > 0) {
                                     tableName = tableNames.get(0).getTableName();
                                     VnyiPreference.getInstance(getContext()).putString(Constant.KEY_TABLE_NAME, tableName);
-
+                                    consumer.accept(tableName);
                                 }
+//                                consumer.accept(tableName);
                             } catch (JSONException e) {
                                 VnyiUtils.LogException(TAG, "==> jsonObject passed error:  " + e.getMessage());
                             }

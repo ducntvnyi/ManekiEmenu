@@ -227,16 +227,24 @@ public class OrderFragment extends BaseFragment {
 
     private void loadTableName() {
         try {
-            mTableName = VnyiPreference.getInstance(getContext()).getString(Constant.KEY_TABLE_NAME);
-            if (TextUtils.isEmpty(mTableName)) {
-                int tableId = Integer.parseInt(mConfigValueModel.getTableName().getConfigValue());
-                mTableName = getTableName(tableId);
-            }
-            Log.e(TAG,"==> tableName Order: " + tableName);
-            tvTableName.setText(mTableName);
+//            mTableName = VnyiPreference.getInstance(getContext()).getString(Constant.KEY_TABLE_NAME);
+//            if (TextUtils.isEmpty(mTableName)) {
+//                int tableId = Integer.parseInt(mConfigValueModel.getTableName().getConfigValue());
+//                mTableName = getTableName(tableId);
+//            }
+
+            // Edited by Bean Nguyen | 21/12/2017
+            int tableId = Integer.parseInt(mConfigValueModel.getTableName().getConfigValue());
+            getTableName(tableId, this::updateTableNameCallback);
         } catch (NumberFormatException e) {
             VnyiUtils.LogException(mContext, "loadTableName", TAG, e.getMessage());
         }
+    }
+
+    private void updateTableNameCallback(String tableName) {
+        mTableName = VnyiPreference.getInstance(getContext()).getString(Constant.KEY_TABLE_NAME);
+        Log.e(TAG,"==> tableName Order: " + tableName);
+        tvTableName.setText(mTableName);
     }
 
     private void updateUI(TicketItemOrderModel ticketItemOrderModel) {

@@ -4,6 +4,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
@@ -99,15 +100,25 @@ public class PaymentFragment extends BaseFragment {
 
     private void loadTableName() {
         try {
-            String tableName = VnyiPreference.getInstance(getContext()).getString(Constant.KEY_TABLE_NAME);
-            if (TextUtils.isEmpty(tableName)) {
-                int tableId = Integer.parseInt(mConfigValueModel.getTableName().getConfigValue());
-                tableName = getTableName(tableId);
-            }
+//            String tableName = VnyiPreference.getInstance(getContext()).getString(Constant.KEY_TABLE_NAME);
+//            if (TextUtils.isEmpty(tableName)) {
+//                int tableId = Integer.parseInt(mConfigValueModel.getTableName().getConfigValue());
+//                tableName = getTableName(tableId);
+//            }
+
+            // Edited by Bean Nguyen | 21/12/2017
+            int tableId = Integer.parseInt(mConfigValueModel.getTableName().getConfigValue());
+            getTableName(tableId, this::updateTableNameCallback);
             tvTableName.setText(tableName);
         } catch (NumberFormatException e) {
             VnyiUtils.LogException(mContext, "loadTableName", TAG, e.getMessage());
         }
+    }
+
+    private void updateTableNameCallback(String tableName) {
+        tableName = VnyiPreference.getInstance(getContext()).getString(Constant.KEY_TABLE_NAME);
+        Log.e(TAG,"==> tableName Order: " + tableName);
+        tvTableName.setText(tableName);
     }
 
     private void updateUI(TicketPaymentModel ticketItemOrderModel) {

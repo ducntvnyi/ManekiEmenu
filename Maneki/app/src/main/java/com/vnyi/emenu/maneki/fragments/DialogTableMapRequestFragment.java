@@ -237,6 +237,8 @@ public class DialogTableMapRequestFragment extends BaseDialogFragment {
                 updateConfirm(configValueModel.getLinkServer(), configValueModel.getUserOrder().getConfigCode(), configValueModel.getUserOrder().getConfigValue());
                 // update config chon thay doi ban
                 updateConfirm(configValueModel.getLinkServer(), configValueModel.getChangeTable().getConfigCode(), configValueModel.getChangeTable().getConfigValue());
+                String tableConfigValue = configValueModel.getTableName().getConfigValue();
+                updateConfirm(configValueModel.getLinkServer(), configValueModel.getTableName().getConfigCode(), tableConfigValue);
                 // update config so luong hien thi theo cot tren giao dien
                 updateConfirm(configValueModel.getLinkServer(), configValueModel.getNumbTableShow().getConfigCode(), configValueModel.getNumbTableShow().getConfigValue());
             } catch (Exception e) {
@@ -263,6 +265,8 @@ public class DialogTableMapRequestFragment extends BaseDialogFragment {
         } else {
             String pw = edtCode.getText().toString().trim();
             if (pw.equals(password)) {
+                mConfigValueModel.getChangeTable().setConfigValue(mTableObj.getTableId() + "");
+                mConfigValueModel.getTableName().setConfigValue(mTableObj.getTableName() + "");
                 new ConfirmConfigTask().execute(mConfigValueModel);
             }else {
                 ToastUtils.showToast(getContext(), getString(R.string.password_incorrect));

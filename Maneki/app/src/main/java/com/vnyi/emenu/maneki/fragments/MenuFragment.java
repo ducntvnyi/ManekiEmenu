@@ -191,6 +191,7 @@ public class MenuFragment extends BaseFragment {
                         Log.e(TAG, "==> tableObj:: " + table.toString());
                         mConfigValueModel.getTableName().setConfigValue(table.getTableId() + "");
                         mConfigValueModel.getTableName().setName(table.getTableName() + "");
+                        VnyiPreference.getInstance(getContext()).putObject(Constant.KEY_CONFIG_VALUE, mConfigValueModel);
                         VnyiPreference.getInstance(getContext()).putString(Constant.KEY_TABLE_NAME, table.getTableName());
                         stopTimeTaskCheckBill();
 
