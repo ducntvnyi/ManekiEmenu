@@ -65,4 +65,7 @@
   <dimen name="height_btn_default">
     33.33dp
   </dimen>
+  <dimen name="fab_margin">
+    10.67dp
+  </dimen>
 </resources>

@@ -63,5 +63,6 @@
     <string name="input_password">mật khẩu</string>
     <string name="confirm_table_change">You have choose a table!</string>
     <string name="password_incorrect">Your password incorrect!</string>
+    <string name="title_activity_splash">Maneki</string>
 
 </resources>
